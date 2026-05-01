@@ -13,13 +13,15 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "api.collegesathi.com" },
       { protocol: "https", hostname: "media.collegesathi.com" },
       { protocol: "https", hostname: "upload.wikimedia.org" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
   async rewrites() {
+    const cmsUrl = process.env.CMS_URL || "http://localhost:3001";
     return [
       {
         source: "/admin/:path*",
-        destination: "http://localhost:3001/admin/:path*",
+        destination: `${cmsUrl}/admin/:path*`,
       },
     ];
   },
