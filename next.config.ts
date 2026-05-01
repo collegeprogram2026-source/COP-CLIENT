@@ -14,12 +14,18 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
-  async rewrites() {
+  async redirects() {
     const cmsUrl = process.env.CMS_URL || "http://localhost:3001";
     return [
       {
+        source: "/admin",
+        destination: `${cmsUrl}/admin`,
+        permanent: false,
+      },
+      {
         source: "/admin/:path*",
         destination: `${cmsUrl}/admin/:path*`,
+        permanent: false,
       },
     ];
   },
