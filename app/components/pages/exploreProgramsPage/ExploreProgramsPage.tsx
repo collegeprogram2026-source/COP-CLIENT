@@ -9,6 +9,7 @@ import ProgramCard from "./ProgramCard";
 import Link from "next/link";
 import TalkToCounselor from "../../talkToCounselor";
 import CompactUniversityCard from "./CompactUniversityCard";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { getAllProviderCourses } from "@/app/lib/api";
 import { ProviderCourse } from "@/app/lib/types";
 
@@ -19,6 +20,7 @@ interface ExploreProgramsPageProps {
   specializations: Specialization[];
   initialType?: string;
   initialCourse?: string;
+  initialSpecialization?: string;
 }
 
 export default function ExploreProgramsPage({
@@ -28,7 +30,12 @@ export default function ExploreProgramsPage({
   specializations,
   initialType,
   initialCourse,
+  initialSpecialization,
 }: ExploreProgramsPageProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [selectedDegreeTypeId, setSelectedDegreeTypeId] = React.useState<string | null>(null);
   const [selectedCourseId, setSelectedCourseId] = React.useState<string | null>(null);
   const [selectedSpecializationId, setSelectedSpecializationId] = React.useState<string | null>(null);
@@ -36,6 +43,7 @@ export default function ExploreProgramsPage({
   const [isLoadingProviders, setIsLoadingProviders] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedToCompare, setSelectedToCompare] = React.useState<string[]>([]);
+  const [selectedSort, setSelectedSort] = React.useState<string | null>(null);
 
   // Load selection from localStorage on mount
   React.useEffect(() => {
@@ -67,6 +75,15 @@ export default function ExploreProgramsPage({
     }
   };
 
+  const updateQueryParams = React.useCallback((updates: Record<string, string | null>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null) params.delete(key);
+      else params.set(key, value);
+    });
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [searchParams, pathname, router]);
+
   React.useEffect(() => {
     if (initialType && degreeTypes.length > 0) {
       const match = degreeTypes.find((dt) => {
@@ -85,6 +102,8 @@ export default function ExploreProgramsPage({
       if (match) {
         setSelectedDegreeTypeId(match._id);
       }
+    } else if (!initialType) {
+      setSelectedDegreeTypeId(null);
     }
 
     if (initialCourse && courses.length > 0) {
@@ -94,8 +113,38 @@ export default function ExploreProgramsPage({
         const dId = typeof match.degreeTypeId === "string" ? match.degreeTypeId : match.degreeTypeId?._id;
         if (dId) setSelectedDegreeTypeId(dId);
       }
+    } else if (!initialCourse) {
+      setSelectedCourseId(null);
     }
-  }, [initialType, initialCourse, degreeTypes, courses]);
+
+    if (initialSpecialization) {
+      setSelectedSpecializationId(initialSpecialization);
+      // Automatically load provider courses if spec is in URL
+      const loadProviderCourses = async () => {
+        setIsLoadingProviders(true);
+        try {
+          const data = await getAllProviderCourses(initialSpecialization);
+          setProviderCoursesList(data);
+        } catch (err) {
+          console.error("Failed to load provider courses:", err);
+        } finally {
+          setIsLoadingProviders(false);
+        }
+      };
+      loadProviderCourses();
+    } else {
+      setProviderCoursesList([]);
+      setSelectedSpecializationId(null);
+    }
+
+    // Load sort from URL
+    const sortParam = searchParams.get("sort");
+    if (sortParam) {
+      setSelectedSort(sortParam);
+    } else {
+      setSelectedSort(null);
+    }
+  }, [initialType, initialCourse, initialSpecialization, degreeTypes, courses, specializations, searchParams]);
 
   const filteredCourses = useMemo(() => {
     let list = courses;
@@ -112,7 +161,7 @@ export default function ExploreProgramsPage({
   }, [courses, selectedDegreeTypeId, searchQuery]);
 
   const filteredSpecializations = useMemo(() => {
-    let list = specializations;
+    let list = [...specializations];
     if (selectedCourseId) {
       list = list.filter((s) => {
         const cId = typeof s.courseId === "string" ? s.courseId : s.courseId?.["_id"];
@@ -129,48 +178,57 @@ export default function ExploreProgramsPage({
     if (searchQuery) {
       list = list.filter((s) => s.name.toLowerCase().includes(searchQuery.toLowerCase()));
     }
+
+    if (selectedSort === "trending") {
+      list.sort((a, b) => (b.providerCount || 0) - (a.providerCount || 0));
+    } else if (selectedSort === "roi") {
+      // Sort by name as placeholder for ROI if no better metric
+      list.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
     return list;
-  }, [specializations, selectedCourseId, selectedDegreeTypeId, searchQuery, courses]);
+  }, [specializations, selectedCourseId, selectedDegreeTypeId, searchQuery, courses, selectedSort]);
 
   const filteredProviderCourses = useMemo(() => {
-    let list = providerCoursesList;
+    let list = [...providerCoursesList];
     if (searchQuery) {
       list = list.filter((pc) => {
         const providerName = (pc.providerId as any)?.name || "";
         return providerName.toLowerCase().includes(searchQuery.toLowerCase());
       });
     }
+
+    if (selectedSort === "roi") {
+      list.sort((a, b) => {
+        const feeA = a.minFees || a.fees || Number.MAX_SAFE_INTEGER;
+        const feeB = b.minFees || b.fees || Number.MAX_SAFE_INTEGER;
+        return feeA - feeB;
+      });
+    } else if (selectedSort === "trending") {
+      list.sort((a, b) => (b.trending ? 1 : 0) - (a.trending ? 1 : 0));
+    }
+
     return list;
-  }, [providerCoursesList, searchQuery]);
+  }, [providerCoursesList, searchQuery, selectedSort]);
 
   const isSpecializationView = !!selectedCourseId && !selectedSpecializationId;
   const isUniversityView = !!selectedSpecializationId;
 
   const handleBack = () => {
+    setSearchQuery("");
     if (selectedSpecializationId) {
-      setSelectedSpecializationId(null);
-      setProviderCoursesList([]);
+      updateQueryParams({ spec: null });
     } else if (selectedCourseId) {
-      setSelectedCourseId(null);
+      updateQueryParams({ course: null });
     } else if (selectedDegreeTypeId) {
-      setSelectedDegreeTypeId(null);
+      updateQueryParams({ type: null });
+    } else {
+      router.back();
     }
   };
 
   const handleSpecializationClick = async (specId: string) => {
-    setSelectedSpecializationId(specId);
-    setIsLoadingProviders(true);
-    try {
-      const [data] = await Promise.all([
-        getAllProviderCourses(specId),
-        new Promise((resolve) => setTimeout(resolve, 1500)),
-      ]);
-      setProviderCoursesList(data);
-    } catch (err) {
-      console.error("Failed to load provider courses:", err);
-    } finally {
-      setIsLoadingProviders(false);
-    }
+    updateQueryParams({ spec: specId });
   };
 
   return (
@@ -178,17 +236,15 @@ export default function ExploreProgramsPage({
       {/* Hero / Header Section */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-[87vw] mx-auto  py-8">
-          {isSpecializationView && (
+          {(isSpecializationView || isUniversityView) ? (
             <button
               onClick={handleBack}
               className="flex items-center cursor-pointer text-xl font-bold text-purple-600 mb-4 hover:text-purple-700 transition-colors"
             >
               <IconArrowLeft stroke={2} size={25} />
-              Back to Programs
+              {isUniversityView ? "Back to Specializations" : "Back to Programs"}
             </button>
-          )}
-
-          {!isSpecializationView && (
+          ) : (
             <Link
               href="/"
               className="flex items-center cursor-pointer text-xl font-bold text-purple-600 mb-4 hover:text-purple-700 transition-colors"
@@ -224,7 +280,18 @@ export default function ExploreProgramsPage({
             onSelectDegreeType={(id) => {
               setSelectedDegreeTypeId(id);
               setSelectedCourseId(null);
+              setSelectedSpecializationId(null);
+              const match = degreeTypes.find(dt => dt._id === id);
+              updateQueryParams({ type: match?.slug || id, course: null, spec: null, sort: null });
+              setSearchQuery("");
+              setSelectedSort(null);
             }}
+            selectedSort={selectedSort}
+            onSelectSort={(sort) => {
+              setSelectedSort(sort);
+              updateQueryParams({ sort });
+            }}
+            showSort={isSpecializationView}
           />
 
           {/* Main Content */}
@@ -249,13 +316,13 @@ export default function ExploreProgramsPage({
             </div>
 
             {/* Grid */}
-            <div className={`grid grid-cols-1 ${isUniversityView ? "md:grid-cols-2" : "md:grid-cols-2 xl:grid-cols-3"} gap-6`}>
+            <div className={`grid grid-cols-1 ${isUniversityView ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-2 xl:grid-cols-3"} gap-6`}>
               {isUniversityView ? (
                 // Universities View
                 isLoadingProviders ? (
                   <>
                     {[...Array(4)].map((_, i) => (
-                      <div key={i} className="bg-white rounded-2xl p-5 border border-[#E5E7EB] shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col items-center text-center gap-4 animate-pulse max-w-80">
+                      <div key={i} className="bg-white rounded-2xl p-5 border border-[#E5E7EB] shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col items-center text-center gap-4 animate-pulse w-full">
                         {/* Logo Skeleton */}
                         <div className="h-20 w-32 bg-gray-100 rounded-xl mb-1"></div>
                         
@@ -298,7 +365,7 @@ export default function ExploreProgramsPage({
                     subtitle={(typeof course.degreeTypeId === 'string' ? '' : course.degreeTypeId?.name) || 'Program'}
                     degreeType={typeof course.degreeTypeId === 'string' ? '' : course.degreeTypeId?.name}
                     count={specializations.filter(s => (typeof s.courseId === 'string' ? s.courseId : s.courseId?._id) === course._id).length}
-                    onClick={() => setSelectedCourseId(course._id)}
+                    onClick={() => updateQueryParams({ course: course.slug || course._id, spec: null })}
                   />
                 ))
               ) : (
@@ -308,7 +375,7 @@ export default function ExploreProgramsPage({
                     key={spec._id}
                     variant="specialization"
                     title={spec.name}
-                    subtitle="2-4 Years | 150+ Universities" // Placeholders as per image
+                    count={spec.providerCount}
                     onClick={() => handleSpecializationClick(spec._id)}
                   />
                 ))

@@ -6,6 +6,7 @@ import { Star, BookOpen, Clock, Users } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import FocusCenterSlider from "./FocusCenterSlider";
+import CounselorCard from "./CounselorCard";
 
 interface Section4Props {
   section: SectionContent;
@@ -209,35 +210,11 @@ export default function Section4({ section }: Section4Props) {
         {/* Counselor Cards — Mobile focus-center slider */}
         <FocusCenterSlider className="mt-8 mb-8">
           {counselors.map((counselor) => (
-            <div
+            <CounselorCard
               key={counselor.id}
-              style={{ width: '100%', minHeight: 300, borderRadius: 16, border: '1px solid #E5E7EB', backgroundColor: '#fff', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
-            >
-              {/* Image */}
-              <div style={{ position: 'relative', width: '100%', height: 160, background: '#E5E7EB', flexShrink: 0 }}>
-                <Image src={counselor.image} alt={counselor.name} fill sizes="280px" style={{ objectFit: 'cover', objectPosition: 'top' }} />
-                <div style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(107,70,255,0.92)', borderRadius: 9999, padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <Star size={12} fill="white" color="white" />
-                  <span style={{ color: '#fff', fontSize: 11, fontWeight: 700 }}>{counselor.rating.toFixed(1)} / {counselor.reviewCount} reviews</span>
-                </div>
-              </div>
-              {/* Content */}
-              <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
-                <h3 style={{ fontFamily: 'Inter', fontSize: 15, fontWeight: 700, color: '#101828', lineHeight: '20px', margin: 0 }}>{counselor.name}</h3>
-                <p style={{ fontFamily: 'Inter', fontSize: 13, fontWeight: 600, color: '#4F39F6', lineHeight: '18px', margin: 0 }}>{counselor.title}</p>
-                <div style={{ borderTop: '1px solid #E5E7EB', marginTop: 6, paddingTop: 6, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <div className="flex items-center gap-2" style={{ color: '#4A5565', fontSize: 13 }}>
-                    <BookOpen size={14} color="#4F39F6" /><span>{counselor.expertise}</span>
-                  </div>
-                  <div className="flex items-center gap-2" style={{ color: '#4A5565', fontSize: 13 }}>
-                    <Clock size={14} color="#4F39F6" /><span>{counselor.experience}</span>
-                  </div>
-                  <div className="flex items-center gap-2" style={{ color: '#4A5565', fontSize: 13 }}>
-                    <Users size={14} color="#4F39F6" /><span>{counselor.studentsGuided}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+              counselor={counselor}
+              isMobile={true}
+            />
           ))}
         </FocusCenterSlider>
 
@@ -259,52 +236,9 @@ export default function Section4({ section }: Section4Props) {
                   style={{
                     flex: `0 0 ${cardW > 0 ? cardW + 'px' : 'calc(33.33% - 22px)'}`,
                     minWidth: 0,
-                    backgroundColor: '#FFFFFF',
-                    border: '1px solid #E5E7EB',
-                    borderRadius: 24,
-                    overflow: 'hidden',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
                   }}
                 >
-                  <div className="relative overflow-hidden bg-gray-200" style={{ height: 240 }}>
-                    <Image
-                      src={counselor.image}
-                      alt={counselor.name}
-                      fill
-                      sizes="33vw"
-                      style={{ objectFit: 'cover', objectPosition: 'top' }}
-                    />
-                    <div
-                      className="absolute top-3 left-3 px-3 py-1 rounded-full text-white font-semibold text-sm flex items-center gap-1"
-                      style={{ backgroundColor: 'rgba(107,70,255,0.92)', zIndex: 1 }}
-                    >
-                      <Star size={14} fill="white" />
-                      <span>{counselor.rating.toFixed(1)} / {counselor.reviewCount} reviews</span>
-                    </div>
-                  </div>
-
-                  <div className="p-4">
-                    <h3 className="font-bold mb-1" style={{ fontSize: '20px', lineHeight: '28px', color: '#101828', fontFamily: 'Inter', fontWeight: 700 }}>
-                      {counselor.name}
-                    </h3>
-                    <p className="mb-4" style={{ fontSize: '16px', lineHeight: '24px', color: '#4F39F6', fontFamily: 'Inter', fontWeight: 600 }}>
-                      {counselor.title}
-                    </p>
-                    <div className="space-y-3">
-                      <div className="flex items-start gap-3">
-                        <BookOpen size={18} className="flex-shrink-0 mt-0.5" style={{ color: '#4F39F6' }} />
-                        <span style={{ fontSize: '14px', color: '#4A5565', fontFamily: 'Inter', lineHeight: '20px' }}>{counselor.expertise}</span>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Clock size={18} className="flex-shrink-0 mt-0.5" style={{ color: '#4F39F6' }} />
-                        <span style={{ fontSize: '14px', color: '#4A5565', fontFamily: 'Inter', lineHeight: '20px' }}>{counselor.experience}</span>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Users size={18} className="flex-shrink-0 mt-0.5" style={{ color: '#4F39F6' }} />
-                        <span style={{ fontSize: '14px', color: '#4A5565', fontFamily: 'Inter', lineHeight: '20px' }}>{counselor.studentsGuided}</span>
-                      </div>
-                    </div>
-                  </div>
+                  <CounselorCard counselor={counselor} isMobile={false} />
                 </div>
               ))}
             </div>

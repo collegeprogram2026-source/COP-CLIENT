@@ -18,6 +18,7 @@ export default function UniversityPage({ sections, providers }: UniversityPagePr
   const [searchTerm, setSearchTerm] = useState("");
   const [allowedProviderIds, setAllowedProviderIds] = useState<string[] | null>(null);
   const [filteredProviders, setFilteredProviders] = useState<Provider[]>(providers);
+  const [selectedSort, setSelectedSort] = useState<string | null>(null);
 
   // Load selection and shortlist from localStorage/API on mount
   useEffect(() => {
@@ -84,7 +85,7 @@ export default function UniversityPage({ sections, providers }: UniversityPagePr
   };
 
   useEffect(() => {
-    let filtered = providers;
+    let filtered = [...providers];
 
     if (searchTerm) {
       filtered = filtered.filter(p =>
@@ -96,8 +97,18 @@ export default function UniversityPage({ sections, providers }: UniversityPagePr
       filtered = filtered.filter(p => allowedProviderIds.includes(p._id));
     }
 
+    if (selectedSort === "roi") {
+      filtered.sort((a, b) => {
+        const feeA = a.comparison?.feesStartingFrom || Number.MAX_SAFE_INTEGER;
+        const feeB = b.comparison?.feesStartingFrom || Number.MAX_SAFE_INTEGER;
+        return feeA - feeB;
+      });
+    } else if (selectedSort === "trending") {
+      filtered.sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0));
+    }
+
     setFilteredProviders(filtered);
-  }, [searchTerm, allowedProviderIds, providers]);
+  }, [searchTerm, allowedProviderIds, providers, selectedSort]);
 
   const handleFilterByCourse = (providerIds: string[] | null) => {
     setAllowedProviderIds(providerIds);
@@ -131,6 +142,8 @@ export default function UniversityPage({ sections, providers }: UniversityPagePr
             selectedToCompare={selectedToCompare}
             onSearchChange={setSearchTerm}
             onFilterChange={handleFilterByCourse}
+            selectedSort={selectedSort}
+            onSelectSort={setSelectedSort}
           />
 
           {/* Results Grid */}

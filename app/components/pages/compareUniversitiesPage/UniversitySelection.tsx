@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconLayoutGrid, IconMinus, IconPlus, IconArrowRight } from '@tabler/icons-react';
+import React, { useState } from 'react';
+import { IconLayoutGrid, IconMinus, IconPlus, IconArrowRight, IconSearch } from '@tabler/icons-react';
 import { IconMenu2 } from '@tabler/icons-react';
 interface University {
     id: string;
@@ -18,17 +18,44 @@ interface UniversitySelectionProps {
 }
 
 const UniversitySelection = ({ universities, selectedUniversities, onToggle, onCompare, isTableOpen }: UniversitySelectionProps) => {
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredUniversities = universities.filter(uni =>
+        uni.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const sortedUniversities = [...filteredUniversities].sort((a, b) => {
+        const aSelected = selectedUniversities.includes(a.id);
+        const bSelected = selectedUniversities.includes(b.id);
+        if (aSelected && !bSelected) return -1;
+        if (!aSelected && bSelected) return 1;
+        return 0;
+    });
+
     return (
         <section className="bg-white border border-gray-100 rounded-2xl p-4 sm:p-8 mb-8 sm:mb-12 shadow-sm max-w-[1240px] mx-auto">
-            <div className="flex items-center gap-3 pb-4 mb-6 sm:mb-10 border-b-[1px] border-[#E5E7EB]">
-                <div className="bg-[#EEF2FF] p-2 rounded-xl text-white flex-shrink-0">
-                    <IconMenu2 stroke={2} color='#7C3AED' />
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 mb-6 sm:mb-10 border-b-[1px] border-[#E5E7EB]">
+                <div className="flex items-center gap-3">
+                    <div className="bg-[#EEF2FF] p-2 rounded-xl text-white flex-shrink-0">
+                        <IconMenu2 stroke={2} color='#7C3AED' />
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-[#111827]">Compare with similar Universities</h3>
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-[#111827]">Compare with similar Universities</h3>
+
+                <div className="relative w-full sm:w-72">
+                    <input
+                        type="text"
+                        placeholder="Search universities..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#803AF2] focus:bg-white focus:border-transparent text-sm transition-all"
+                    />
+                    <IconSearch size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-3 sm:gap-4 mb-8 sm:mb-12">
-                {universities.map((uni) => (
+                {sortedUniversities.map((uni) => (
                     <div
                         key={uni.id}
                         className={`flex flex-col sm:flex-row items-center sm:items-center gap-3 sm:gap-4 bg-[#F8FAFC] p-4 sm:p-6 rounded-2xl border-2 transition-all duration-200 cursor-pointer ${selectedUniversities.includes(uni.id)
@@ -75,7 +102,7 @@ const UniversitySelection = ({ universities, selectedUniversities, onToggle, onC
                     disabled={selectedUniversities.length < 2}
                 >
                     <IconArrowRight size={20} className={isTableOpen ? 'rotate-90 transition-transform' : 'transition-transform'} />
-                    {isTableOpen ? 'Close Full Comparison Table' : 'Open Full Comparison Table'}
+                    {isTableOpen ? 'Close Comparison Table' : 'Open Comparison Table'}
                 </button>
                 {selectedUniversities.length < 2 && (
                     <p className="mt-4 text-gray-400 text-sm font-medium italic">

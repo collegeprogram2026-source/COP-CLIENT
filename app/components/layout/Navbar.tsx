@@ -4,38 +4,42 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-const explorePrograms = [
-  {
-    label: "PG Courses", href: "/explore-programs?type=PG", icon: (
+const getIconForSlug = (slug: string) => {
+  const s = slug.toLowerCase();
+  if (s.includes('pg') || s.includes('post')) {
+    return (
       <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6m-4-3.5l4 2 4-2" /></svg>
-    )
-  },
-  {
-    label: "UG Courses", href: "/explore-programs?type=UG", icon: (
+    );
+  }
+  if (s.includes('ug') || s.includes('under')) {
+    return (
       <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
-    )
-  },
-  {
-    label: "Diploma", href: "/explore-programs?type=Diploma", icon: (
+    );
+  }
+  if (s.includes('diploma')) {
+    return (
       <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
-    )
-  },
-  {
-    label: "Certificate", href: "/explore-programs?type=Certificate", icon: (
+    );
+  }
+  if (s.includes('certificate')) {
+    return (
       <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-.723 3.066 3.745 3.745 0 01-3.066.723 3.745 3.745 0 01-3.068 1.593 3.745 3.745 0 01-3.068-1.594 3.745 3.745 0 01-3.066-.722 3.745 3.745 0 01-.723-3.067A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 01.723-3.066 3.745 3.745 0 013.066-.723A3.745 3.745 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.745 3.745 0 013.066.723 3.745 3.745 0 01.723 3.066A3.745 3.745 0 0121 12z" /></svg>
-    )
-  },
-  {
-    label: "Executive Programs", href: "/explore-programs?type=Executive", icon: (
+    );
+  }
+  if (s.includes('executive')) {
+    return (
       <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
-    )
-  },
-  {
-    label: "Doctorate", href: "/explore-programs?type=Doctorate", icon: (
+    );
+  }
+  if (s.includes('doctorate') || s.includes('phd')) {
+    return (
       <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" /></svg>
-    )
-  },
-];
+    );
+  }
+  return (
+    <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+  );
+};
 
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -47,6 +51,7 @@ export default function Navbar() {
   const [isClient, setIsClient] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [degreeTypes, setDegreeTypes] = useState<{ label: string; href: string; icon: React.ReactNode }[]>([]);
 
   const handleSearch = () => {
     const q = searchQuery.trim();
@@ -109,6 +114,22 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    fetch(`${apiBase}/api/public/degree-types`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setDegreeTypes(data.map(dt => ({
+            label: dt.name,
+            href: `/explore-programs?type=${dt.slug.toUpperCase()}`,
+            icon: getIconForSlug(dt.slug)
+          })));
+        }
+      })
+      .catch(err => console.error("Error fetching degree types:", err));
+  }, []);
+
+  useEffect(() => {
     if (!promoText) return;
     function recalc() {
       const contentEl = contentRef.current;
@@ -139,7 +160,7 @@ export default function Navbar() {
               <style>{`
                 .promo-wrapper{overflow:hidden;width:100%;}
                 .promo-track{display:flex;align-items:center;gap:2.5rem;width:max-content}
-                .promo-content{display:flex;gap:2.5rem;align-items:center;padding:0;flex-shrink:0}
+                .promo-content{display:flex;gap:15rem;align-items:center;padding:0;flex-shrink:0}
                 .promo-item{flex-shrink:0;display:inline-block;padding:0 1rem; font-family: 'Nunito', sans-serif; font-size: clamp(14px, 1.2vw, 18px); line-height:1; color: #fff; white-space:nowrap}
                 @keyframes promo-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-1 * var(--marquee-distance))); } }
                 .promo-animate { animation: promo-marquee var(--marquee-duration, 14s) linear infinite; }
@@ -231,7 +252,7 @@ export default function Navbar() {
               >
                 {/* Invisible bridge to prevent hover loss */}
                 <div className="absolute -top-4 left-0 w-full h-4 bg-transparent" aria-hidden="true" />
-                {explorePrograms.map((item) => {
+                {degreeTypes.map((item) => {
                   const isActive = pathname === item.href || (item.href.includes('?') ? pathname === item.href.split('?')[0] && typeof window !== 'undefined' && window.location.search === '?' + item.href.split('?')[1] : pathname.startsWith(item.href));
                   return (
                     <Link
@@ -344,7 +365,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed inset-0 z-[100] transition-opacity duration-500 md:hidden ${isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        className={`fixed inset-0 z-[100] transition-all duration-500 md:hidden ${isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
       >
         {/* Backdrop */}
         <div
@@ -396,7 +417,7 @@ export default function Navbar() {
               <div>
                 <h3 className="text-[11px] font-black text-purple-400 uppercase tracking-[2.5px] mb-6 px-1">Explore Programs</h3>
                 <div className="space-y-3">
-                  {explorePrograms.map((item) => (
+                  {degreeTypes.map((item) => (
                     <Link
                       key={item.label}
                       href={item.href}

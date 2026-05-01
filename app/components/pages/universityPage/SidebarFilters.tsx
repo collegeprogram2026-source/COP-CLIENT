@@ -1,4 +1,4 @@
-import { IconChevronLeft, IconSearch, IconAdjustmentsHorizontal, IconChevronDown } from "@tabler/icons-react";
+import { IconChevronLeft, IconSearch, IconAdjustmentsHorizontal, IconChevronDown, IconChartBar, IconFlame } from "@tabler/icons-react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -6,6 +6,8 @@ interface SidebarFiltersProps {
   selectedToCompare?: string[];
   onSearchChange: (term: string) => void;
   onFilterChange: (providerIds: string[] | null) => void;
+  selectedSort?: string | null;
+  onSelectSort?: (sort: string | null) => void;
 }
 
 interface ProviderCourse {
@@ -20,7 +22,9 @@ interface ProviderCourse {
 export default function SidebarFilters({
   selectedToCompare = [],
   onSearchChange,
-  onFilterChange
+  onFilterChange,
+  selectedSort = null,
+  onSelectSort
 }: SidebarFiltersProps) {
   const router = useRouter();
   const [courses, setCourses] = useState<ProviderCourse[]>([]);
@@ -99,34 +103,33 @@ export default function SidebarFilters({
   }
 
   return (
-    <aside className="w-full lg:w-[340px] shrink-0">
-      <div className="bg-white rounded-[24px] p-6 lg:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#F3F4F6]">
-        <h2 className="text-[20px] lg:text-[20px] font-bold mb-2 text-[#0F172A] text-center lg:text-left">Explore Elite Universities</h2>
-        <p className="text-[14px] lg:text-[16px] text-[#94A3B8] mb-6 text-center lg:text-left">Course & Specializations</p>
+    <aside className="w-full lg:w-[340px] shrink-0 space-y-6 self-start h-fit">
+      {/* Mobile Filter Toggle */}
+      <button
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        className="lg:hidden w-full flex items-center justify-center gap-2 h-[56px] rounded-[14px] border-2 border-[#7C3AED] text-[#7C3AED] font-bold text-[16px] bg-white transition-all active:scale-95 shadow-sm"
+      >
+        <IconAdjustmentsHorizontal className="w-6 h-6" stroke={2.5} />
+        <span>Filters</span>
+        <IconChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileOpen ? 'rotate-180' : ''}`} stroke={3} />
+      </button>
 
-        {/* University Search */}
-        <div className="relative mb-4 lg:mb-6">
-          <input
-            type="text"
-            placeholder="Search university here..."
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full h-[52px] lg:h-[56px] pl-12 pr-4 rounded-[14px] border border-[#E2E8F0] outline-none focus:border-[#7C3AED] transition-all text-[15px] placeholder:text-[#94A3B8]"
-          />
-          <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]" stroke={2} />
-        </div>
+      <div className={`${isMobileOpen ? 'block' : 'hidden'} lg:block space-y-6 animate-in fade-in slide-in-from-top-4 duration-300`}>
+        <div className="bg-white rounded-[24px] p-6 lg:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#F3F4F6]">
+          <h2 className="text-[20px] lg:text-[20px] font-bold mb-2 text-[#0F172A] text-center lg:text-left">Explore Elite Universities</h2>
+          <p className="text-[14px] lg:text-[16px] text-[#94A3B8] mb-6 text-center lg:text-left">Course & Specializations</p>
 
-        {/* Mobile Filter Toggle */}
-        <button
-          onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="lg:hidden w-full flex items-center justify-center gap-2 h-[52px] rounded-[14px] border-2 border-[#7C3AED] text-[#7C3AED] font-bold text-[16px] transition-all mb-4 active:scale-95"
-        >
-          <IconAdjustmentsHorizontal className="w-6 h-6" stroke={2.5} />
-          <span>Filters</span>
-          <IconChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileOpen ? 'rotate-180' : ''}`} stroke={3} />
-        </button>
+          {/* University Search */}
+          <div className="relative mb-4 lg:mb-6">
+            <input
+              type="text"
+              placeholder="Search university here..."
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="w-full h-[52px] lg:h-[56px] pl-12 pr-4 rounded-[14px] border border-[#E2E8F0] outline-none focus:border-[#7C3AED] transition-all text-[15px] placeholder:text-[#94A3B8]"
+            />
+            <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]" stroke={2} />
+          </div>
 
-        {/* Filters Content - Hidden on mobile unless toggled */}
-        <div className={`${isMobileOpen ? 'block' : 'hidden'} lg:block animate-in fade-in slide-in-from-top-4 duration-300`}>
           {!selectedCategory ? (
             <div className="space-y-3">
               {categories.map((cat) => (
@@ -212,6 +215,51 @@ export default function SidebarFilters({
               </button>
             </div>
           )}
+        </div>
+
+        {/* Sort Section */}
+        <div className="bg-white rounded-[24px] p-6 lg:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#F3F4F6]">
+          <h3 className="text-xl font-bold mb-6 text-gray-900">Sort</h3>
+          <div className="space-y-3">
+            <button
+              onClick={() => onSelectSort?.(null)}
+              className={`w-full flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer ${selectedSort === null
+                ? "bg-purple-600 text-white border-purple-600 shadow-lg shadow-purple-200"
+                : "bg-white text-gray-700 border-gray-100 hover:bg-purple-50 hover:border-purple-200"
+                }`}
+            >
+              <span className={selectedSort === null ? "text-white" : "text-purple-600"}>
+                <IconAdjustmentsHorizontal className="w-5 h-5" />
+              </span>
+              <span className="font-semibold">Default</span>
+            </button>
+
+            <button
+              onClick={() => onSelectSort?.("roi")}
+              className={`w-full flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer ${selectedSort === "roi"
+                ? "bg-purple-600 text-white border-purple-600 shadow-lg shadow-purple-200"
+                : "bg-white text-gray-700 border-gray-100 hover:bg-purple-50 hover:border-purple-200"
+                }`}
+            >
+              <span className={selectedSort === "roi" ? "text-white" : "text-purple-600"}>
+                <IconChartBar className="w-5 h-5" />
+              </span>
+              <span className="font-semibold">Best ROI</span>
+            </button>
+
+            <button
+              onClick={() => onSelectSort?.("trending")}
+              className={`w-full flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer ${selectedSort === "trending"
+                ? "bg-purple-600 text-white border-purple-600 shadow-lg shadow-purple-200"
+                : "bg-white text-gray-700 border-gray-100 hover:bg-purple-50 hover:border-purple-200"
+                }`}
+            >
+              <span className={selectedSort === "trending" ? "text-white" : "text-purple-600"}>
+                <IconFlame className="w-5 h-5" />
+              </span>
+              <span className="font-semibold">Trending</span>
+            </button>
+          </div>
         </div>
       </div>
     </aside>

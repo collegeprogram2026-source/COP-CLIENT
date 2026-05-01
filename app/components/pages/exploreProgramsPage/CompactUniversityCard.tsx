@@ -17,7 +17,7 @@ export default function CompactUniversityCard({
   onToggleCompare,
 }: CompactUniversityCardProps) {
   return (
-    <div className="bg-white rounded-2xl p-5 border border-[#E5E7EB] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)] transition-all duration-300 flex flex-col items-center text-center gap-4 group max-w-80">
+    <div className="bg-white rounded-2xl p-5 border border-[#E5E7EB] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)] transition-all duration-300 flex flex-col items-center text-center gap-4 group w-full">
       {/* Logo */}
       <div className="h-20 w-full flex items-center justify-center mb-1 transition-transform duration-300 group-hover:scale-105">
         <img

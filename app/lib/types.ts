@@ -161,6 +161,7 @@ export interface Specialization {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  providerCount?: number;
 }
 
 export interface ProviderCourse {
@@ -173,6 +174,7 @@ export interface ProviderCourse {
   slug: string;
   shortDescription?: string;
   thumbnail?: string;
+  minFees?: number;
   fees: number;
   discountedFees?: number;
   duration?: string;

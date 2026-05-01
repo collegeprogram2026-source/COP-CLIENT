@@ -5,6 +5,7 @@ import { richTextToPlain } from "./tuUtils";
 import Image from "next/image";
 import Link from "next/link";
 import FocusCenterSlider from "./FocusCenterSlider";
+import TrendingBadge from "@/app/components/ui/TrendingBadge";
 
 interface Section9Props {
   section: SectionContent;
@@ -136,14 +137,14 @@ export default function Section9({ section }: Section9Props) {
 
   const articles = rawArticleValues.length > 0
     ? rawArticleValues.map((raw, i) => {
-        const parsed = parseArticle(raw);
-        const def = DEFAULT_ARTICLES[i] || DEFAULT_ARTICLES[0];
-        return {
-          ...def,
-          title: parsed.title || def.title,
-          description: parsed.description || def.description,
-        };
-      })
+      const parsed = parseArticle(raw);
+      const def = DEFAULT_ARTICLES[i] || DEFAULT_ARTICLES[0];
+      return {
+        ...def,
+        title: parsed.title || def.title,
+        description: parsed.description || def.description,
+      };
+    })
     : DEFAULT_ARTICLES;
 
   return (
@@ -211,7 +212,8 @@ export default function Section9({ section }: Section9Props) {
           {articles.map((article, idx) => (
             <div
               key={`m9-${idx}`}
-              style={{ width: '100%', minHeight: 300, borderRadius: 16, border: '1px solid #E5E7EB', backgroundColor: '#fff', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
+              className="rounded-3xl"
+              style={{ width: '100%', minHeight: 300, border: '1px solid #E5E7EB', backgroundColor: '#fff', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
             >
               <div style={{ position: 'relative', width: '100%', height: 140, flexShrink: 0 }}>
                 <Image src="/Blogs.png" alt={article.title} fill sizes="280px" style={{ objectFit: 'cover' }} />
@@ -239,10 +241,10 @@ export default function Section9({ section }: Section9Props) {
           {articles.map((article, idx) => (
             <div
               key={idx}
+              className="rounded-3xl"
               style={{
                 background: "#FFFFFF",
                 border: "1px solid #E5E7EB",
-                borderRadius: "16px",
                 overflow: "hidden",
                 boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
                 display: "flex",
@@ -258,23 +260,12 @@ export default function Section9({ section }: Section9Props) {
                   sizes="(max-width: 768px) 100vw, 33vw"
                   style={{ objectFit: "cover" }}
                 />
-                <span
-                  style={{
-                    position: "absolute",
-                    top: 12,
-                    left: 12,
-                    background: "linear-gradient(135deg, #4F39F6 0%, #9810FA 100%)",
-                    color: "#FFFFFF",
-                    fontFamily: "Inter",
-                    fontSize: 11,
-                    fontWeight: 600,
-                    lineHeight: "16px",
-                    padding: "4px 12px",
-                    borderRadius: 9999,
-                  }}
+                <TrendingBadge
+                  icon={null}
+                  className="absolute top-3 left-3 !px-3 !py-0.5 text-[11px] font-semibold"
                 >
                   {article.category}
-                </span>
+                </TrendingBadge>
               </div>
 
               {/* Card content */}

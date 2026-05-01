@@ -47,6 +47,7 @@ export default async function ExploreProgramsRoute({ searchParams }: { searchPar
   const params = await searchParams;
   const initialType = typeof params.type === "string" ? params.type : undefined;
   const initialCourse = typeof params.course === "string" ? params.course : undefined;
+  const initialSpecialization = typeof params.spec === "string" ? params.spec : undefined;
 
   let pageData: PageResponse | null = null;
   let degreeTypes = [];
@@ -85,6 +86,7 @@ export default async function ExploreProgramsRoute({ searchParams }: { searchPar
       specializations={specializations}
        initialType={initialType}
       initialCourse={initialCourse}
+      initialSpecialization={initialSpecialization}
     />
   );
 }

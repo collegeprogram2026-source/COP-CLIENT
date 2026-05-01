@@ -2,7 +2,7 @@
 
 import { SectionContent } from "@/app/lib/types";
 import { richTextToPlain } from "./tuUtils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import FocusCenterSlider from "./FocusCenterSlider";
 
@@ -13,6 +13,7 @@ interface Section8Props {
 export default function Section8({ section }: Section8Props) {
   const v = section.values || {};
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const getFieldValue = (aliases: string[], fallback = "") => {
     for (const a of aliases) {
@@ -73,9 +74,58 @@ export default function Section8({ section }: Section8Props) {
       university: "Amity Online",
       avatar: "/Girl.png",
     },
+    {
+      quote: getFieldValue(
+        ["Fifth Card", "fifth card", "Card 5", "card5"],
+        "I was confused about UGC and AICTE approval. The platform clearly marked which universities had what. The transparency is refreshing."
+      ),
+      name: "Vikram Singh",
+      degree: "B.Tech Student",
+      university: "VIT Online",
+      avatar: "/image 15.png",
+    },
+    {
+      quote: getFieldValue(
+        ["Sixth Card", "sixth card", "Card 6", "card6"],
+        "Found exactly what I needed without the typical sales pitch. The comparison between Manipal and Amity was detailed and honest."
+      ),
+      name: "Ananya Rao",
+      degree: "MBA Student",
+      university: "Manipal Online",
+      avatar: "/Girl.png",
+    },
+    {
+      quote: getFieldValue(
+        ["Seventh Card", "seventh card", "Card 7", "card7"],
+        "The career counseling session was eye-opening. They didn't just push a university; they analyzed my profile first."
+      ),
+      name: "Rohan Mehta",
+      degree: "MCA Student",
+      university: "LPU",
+      avatar: "/Container (40).png",
+    },
+    {
+      quote: getFieldValue(
+        ["Eighth Card", "eighth card", "Card 8", "card8"],
+        "Very smooth process. From comparison to admission, everything was handled professionally. No spam calls at all!"
+      ),
+      name: "Megha Jain",
+      degree: "B.Com Student",
+      university: "Jain Online",
+      avatar: "/Girl.png",
+    },
   ];
 
-  const totalDots = 4;
+  const totalDots = Math.ceil(cards.length / 4);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % totalDots);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [totalDots, isPaused]);
+
   const prev = () => setActiveSlide((p) => (p - 1 + totalDots) % totalDots);
   const next = () => setActiveSlide((p) => (p + 1) % totalDots);
 
@@ -143,7 +193,7 @@ export default function Section8({ section }: Section8Props) {
         {/* Carousel: Cards with overlaid arrows */}
         <div style={{ position: "relative" }}>
           {/* Mobile: focus-center slider */}
-          <FocusCenterSlider className="mb-8">
+          <FocusCenterSlider className="mb-8" interval={5000}>
             {cards.map((card, idx) => (
               <div
                 key={`m8-${idx}`}
@@ -193,142 +243,169 @@ export default function Section8({ section }: Section8Props) {
             </svg>
           </button>
 
-          {/* Desktop: Cards — 4 columns */}
-          <div className="hidden md:grid" style={{ gridTemplateColumns: "repeat(4, 1fr)", gap: "24px" }}>
-            {cards.map((card, idx) => (
-              <div
-                key={idx}
-                style={{
-                  background: "#FFFFFF",
-                  border: "1px solid #E5E7EB",
-                  borderRadius: "16px",
-                  padding: "24px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
-                }}
-              >
-                {/* Quote mark + text */}
-                <div>
-                  <div
-                    style={{
-                      fontFamily: "Georgia, serif",
-                      fontSize: 48,
-                      lineHeight: "1",
-                      color: "#E5E7EB",
-                      marginBottom: "8px",
-                      userSelect: "none",
-                    }}
-                  >
-                    &ldquo;
-                  </div>
-                  <p
-                    style={{
-                      fontFamily: "Inter",
-                      fontSize: 14,
-                      fontWeight: 400,
-                      lineHeight: "22px",
-                      color: "#374151",
-                      margin: 0,
-                    }}
-                  >
-                    {card.quote}
-                  </p>
-                </div>
-
-                {/* Author row */}
-                <div style={{ marginTop: "20px" }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      {/* Avatar */}
-                      <div
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: "50%",
-                          overflow: "hidden",
-                          background: "#E5E7EB",
-                          flexShrink: 0,
-                          position: "relative",
-                        }}
-                      >
-                        <Image
-                          src={card.avatar}
-                          alt={card.name}
-                          fill
-                          sizes="40px"
-                          style={{ objectFit: "cover" }}
-                          onError={(e) => {
-                            const img = e?.target as HTMLImageElement | null;
-                            if (img) img.style.display = "none";
-                          }}
-                        />
-                      </div>
-                      {/* Name + Degree */}
+          {/* Desktop: Cards Carousel */}
+          <div 
+            className="hidden md:block overflow-hidden"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <div 
+              style={{ 
+                display: "flex", 
+                transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)", 
+                transform: `translateX(-${(activeSlide / totalDots) * 100}%)`,
+                width: `${totalDots * 100}%`
+              }}
+            >
+              {Array.from({ length: totalDots }).map((_, pageIdx) => (
+                <div 
+                  key={pageIdx}
+                  style={{ 
+                    flex: `0 0 ${100 / totalDots}%`, 
+                    display: "grid", 
+                    gridTemplateColumns: "repeat(4, 1fr)", 
+                    gap: "24px",
+                    padding: "10px" 
+                  }}
+                >
+                  {cards.slice(pageIdx * 4, pageIdx * 4 + 4).map((card, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        background: "#FFFFFF",
+                        border: "1px solid #E5E7EB",
+                        borderRadius: "16px",
+                        padding: "24px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
+                        height: "100%"
+                      }}
+                    >
+                      {/* Quote mark + text */}
                       <div>
                         <div
                           style={{
-                            fontFamily: "Inter",
-                            fontSize: 14,
-                            fontWeight: 600,
-                            color: "#101828",
-                            lineHeight: "20px",
+                            fontFamily: "Georgia, serif",
+                            fontSize: 48,
+                            lineHeight: "1",
+                            color: "#E5E7EB",
+                            marginBottom: "8px",
+                            userSelect: "none",
                           }}
                         >
-                          {card.name}
+                          &ldquo;
                         </div>
-                        <div
+                        <p
                           style={{
                             fontFamily: "Inter",
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: 400,
-                            color: "#6B7280",
-                            lineHeight: "16px",
+                            lineHeight: "22px",
+                            color: "#374151",
+                            margin: 0,
                           }}
                         >
-                          {card.degree}
+                          {card.quote}
+                        </p>
+                      </div>
+
+                      {/* Author row */}
+                      <div style={{ marginTop: "20px" }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                            {/* Avatar */}
+                            <div
+                              style={{
+                                width: 40,
+                                height: 40,
+                                borderRadius: "50%",
+                                overflow: "hidden",
+                                background: "#E5E7EB",
+                                flexShrink: 0,
+                                position: "relative",
+                              }}
+                            >
+                              <Image
+                                src={card.avatar}
+                                alt={card.name}
+                                fill
+                                sizes="40px"
+                                style={{ objectFit: "cover" }}
+                                onError={(e) => {
+                                  const img = e?.target as HTMLImageElement | null;
+                                  if (img) img.style.display = "none";
+                                }}
+                              />
+                            </div>
+                            {/* Name + Degree */}
+                            <div>
+                              <div
+                                style={{
+                                  fontFamily: "Inter",
+                                  fontSize: 14,
+                                  fontWeight: 600,
+                                  color: "#101828",
+                                  lineHeight: "20px",
+                                }}
+                              >
+                                {card.name}
+                              </div>
+                              <div
+                                style={{
+                                  fontFamily: "Inter",
+                                  fontSize: 12,
+                                  fontWeight: 400,
+                                  color: "#6B7280",
+                                  lineHeight: "16px",
+                                }}
+                              >
+                                {card.degree}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* LinkedIn icon */}
+                          <div
+                            style={{
+                              width: 28,
+                              height: 28,
+                              background: "#0077B5",
+                              borderRadius: "4px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0,
+                            }}
+                          >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+                              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                              <rect x="2" y="9" width="4" height="12" />
+                              <circle cx="4" cy="4" r="2" />
+                            </svg>
+                          </div>
+                        </div>
+
+                        {/* University */}
+                        <div
+                          style={{
+                            textAlign: "right",
+                            fontFamily: "Inter",
+                            fontSize: 12,
+                            fontWeight: 500,
+                            color: "#9CA3AF",
+                            marginTop: "8px",
+                          }}
+                        >
+                          {card.university}
                         </div>
                       </div>
                     </div>
-
-                    {/* LinkedIn icon */}
-                    <div
-                      style={{
-                        width: 28,
-                        height: 28,
-                        background: "#0077B5",
-                        borderRadius: "4px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                        <rect x="2" y="9" width="4" height="12" />
-                        <circle cx="4" cy="4" r="2" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* University */}
-                  <div
-                    style={{
-                      textAlign: "right",
-                      fontFamily: "Inter",
-                      fontSize: 12,
-                      fontWeight: 500,
-                      color: "#9CA3AF",
-                      marginTop: "8px",
-                    }}
-                  >
-                    {card.university}
-                  </div>
+                  ))}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Right Arrow — desktop only */}
@@ -411,4 +488,24 @@ export const usedFields = [
   "third card",
   "Card 3",
   "card3",
+  "Fourth Card",
+  "fourth card",
+  "Card 4",
+  "card4",
+  "Fifth Card",
+  "fifth card",
+  "Card 5",
+  "card5",
+  "Sixth Card",
+  "sixth card",
+  "Card 6",
+  "card6",
+  "Seventh Card",
+  "seventh card",
+  "Card 7",
+  "card7",
+  "Eighth Card",
+  "eighth card",
+  "Card 8",
+  "card8",
 ];
