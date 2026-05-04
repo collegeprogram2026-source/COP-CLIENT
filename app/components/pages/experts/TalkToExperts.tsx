@@ -1,6 +1,6 @@
 'use client';
 
-import { Phone, Mail, MessageCircle, CheckCircle } from "lucide-react";
+import { Phone, Mail, CheckCircle } from "lucide-react";
 import TalkToExpertsForm from "../../shared/TalkToExpertsForm";
 
 export default function TalkToExperts() {
@@ -8,7 +8,6 @@ export default function TalkToExperts() {
   const contactMethods = [
     { icon: <Phone size={20} color="#7C3AED" />, title: "Schedule a Call", subtitle: "Get personalized guidance over phone" },
     { icon: <Mail size={20} color="#7C3AED" />, title: "Email Us", subtitle: "We'll respond within 24 hours" },
-    { icon: <MessageCircle size={20} color="#7C3AED" />, title: "Live Chat", subtitle: "Instant answers to your questions" },
   ];
   const benefits = ["Free career counseling", "Course recommendations", "University guidance", "Scholarship information", "EMI & payment options"];
   const experts = [
@@ -30,8 +29,8 @@ export default function TalkToExperts() {
           {contactMethods.map((m, i) => (
             <div key={i} style={{
               display: "flex", alignItems: "center", gap: 14,
-              padding: "14px 16px", marginBottom: 10,
-              backgroundColor: "#FFFFFF", borderRadius: 12,
+              padding: "14px 20px", marginBottom: 10,
+              backgroundColor: "#FFFFFF", borderRadius: 9999,
               border: "1px solid #F3F4F6",
               boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
             }}>

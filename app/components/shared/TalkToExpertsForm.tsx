@@ -412,9 +412,13 @@ export default function TalkToExpertsForm({
               type="tel"
               placeholder="98765 43210"
               value={formData.phoneNumber}
-              onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+              onChange={(e) => {
+                const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+                setFormData({ ...formData, phoneNumber: digits });
+              }}
               style={{ ...inputStyle, paddingLeft: "42px", paddingRight: "100px" }}
               required
+              maxLength={10}
               disabled={otpVerified}
             />
             {!otpVerified && (

@@ -134,7 +134,7 @@ export default function UpperWhiteBox({
                             const lowerLogo = String(logoCandidate || "").toLowerCase();
                             const isDypatil = lowerKey.includes("dypatil") || lowerLogo.includes("dypatil");
                             const isNmims = lowerLogo.includes("nmims");
-                            const height = isDypatil ? "clamp(200px, 26vw, 700px)" : isNmims ? "clamp(56px, 6.5vw, 90px)" : "clamp(72px, 9vw, 120px)";
+                            const height = isDypatil ? "clamp(48px, 6vw, 80px)" : isNmims ? "clamp(56px, 6.5vw, 90px)" : "clamp(72px, 9vw, 120px)";
                             return (
                               <img
                                 src={logoCandidate}
@@ -145,6 +145,11 @@ export default function UpperWhiteBox({
                                   width: "auto",
                                   objectFit: "contain",
                                   display: "block",
+                                }}
+                                onError={(e) => {
+                                  const el = e.currentTarget as HTMLImageElement;
+                                  const parent = el.closest(".logo-item") as HTMLElement | null;
+                                  if (parent) parent.style.display = "none";
                                 }}
                               />
                             );

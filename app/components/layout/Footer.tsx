@@ -12,9 +12,8 @@ export default function Footer() {
   ];
 
   const toolLinks = [
-    { label: "Time Commitment Estimator", href: "#" },
-    { label: "Eligibility Checker", href: "#" },
-    { label: "ROI Calculator", href: "#" },
+    { label: "Compare Universities", href: "/compareUniversities" },
+    { label: "Talk to Expert", href: "/talk-to-experts" },
   ];
 
   return (

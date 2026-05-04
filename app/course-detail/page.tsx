@@ -1137,13 +1137,6 @@ export default async function CourseDetailPage({
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
               <Link
-                href="#programs"
-                className="bg-white text-[#7C3AED] px-8 py-3.5 rounded-xl font-bold text-sm shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] inline-flex items-center justify-center gap-2"
-              >
-                Apply Now
-                <IconArrowRight className="w-4 h-4" stroke={2.5} />
-              </Link>
-              <Link
                 href="#talk-to-experts"
                 className="bg-white/10 backdrop-blur border-2 border-white/30 text-white px-8 py-3.5 rounded-xl font-bold text-sm transition-all hover:bg-white/20"
               >

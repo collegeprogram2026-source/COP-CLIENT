@@ -30,8 +30,6 @@ export default function StatsBox({
       style={{
         background: "linear-gradient(90deg, #EAD8FF 0%, #E3CEFF 50%, #EAD8FF 100%)",
         padding: "clamp(20px, 4vw, 36px) clamp(8px, 2vw, 16px)",
-        borderBottomLeftRadius: 12,
-        borderBottomRightRadius: 12,
       }}
     >
       {/* Single row — all 4 stats side by side */}

@@ -67,7 +67,6 @@ export default async function TopUniversities({ section }: TopUniversitiesProps)
   const rating = getFieldValue(ratingAliases, "4.8/5");
   trackKey(ratingAliases);
   // Try to fetch providers from API and render their logos in the white box.
-  // Fallback: build university logos list from CMS section values if the fetch fails.
   let universityLogos: Array<[string, any]> = [];
   try {
     const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -75,17 +74,22 @@ export default async function TopUniversities({ section }: TopUniversitiesProps)
     if (res.ok) {
       const providers = await res.json();
       if (Array.isArray(providers) && providers.length > 0) {
-        // combine featured providers first, then fill with non-featured to get up to 7
+        // combine featured providers first, then fill with non-featured
         const featured = providers.filter((p: any) => !!p.isFeatured);
         const nonFeatured = providers.filter((p: any) => !p.isFeatured);
-        const top = [...featured, ...nonFeatured].slice(0, 7);
-        universityLogos = top.map((p: any) => [p._id || p.slug || p.name, p.logo || ""] as [string, any]);
+        // Only keep providers with a real HTTP logo URL
+        const validProviders = [...featured, ...nonFeatured].filter((p: any) => {
+          const logo = String(p.logo || "").trim();
+          return logo.startsWith("http");
+        });
+        universityLogos = validProviders.map((p: any) => [p.name || p.slug || p._id, p.logo] as [string, string]);
       }
     }
   } catch (e) {
     // ignore and fallback below
   }
 
+  // Fallback: pull from CMS section values if API returned nothing
   if (universityLogos.length === 0) {
     const usedKeysLower = Array.from(usedKeys).map((k) => k.toLowerCase());
     universityLogos = Object.entries(v)
@@ -93,9 +97,8 @@ export default async function TopUniversities({ section }: TopUniversitiesProps)
         if (usedKeysLower.includes(k.toLowerCase())) return false;
         if (val === undefined || val === null) return false;
         const text = typeof val === "string" ? val : JSON.stringify(val);
-        // prefer values that look like image urls
         const lower = text.toLowerCase();
-        return (lower.includes("http") || lower.endsWith(".png") || lower.endsWith(".jpg") || lower.endsWith(".svg"));
+        return (lower.startsWith("http") && (lower.includes("image") || lower.endsWith(".png") || lower.endsWith(".jpg") || lower.endsWith(".svg")));
       })
       .slice(0, 7);
   }

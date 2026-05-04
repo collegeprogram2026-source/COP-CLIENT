@@ -152,7 +152,7 @@ export default function Section3Client({ courseGroups }: Props) {
     <>
       <div className="mt-4 md:mt-10">
         <div className="relative lg:max-w-7xl mx-auto lg:px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="w-full flex justify-center pb-4 md:pb-7  md:px-0">
+            <div className="w-full flex justify-center pb-0 md:pb-7  md:px-0">
             {/* Desktop Tabs: Limit 4 */}
             <div className="hidden md:flex items-center gap-2 bg-[#FFFFFF] border border-[#F3F4F6] rounded-full px-4 py-2 overflow-x-auto scrollbar-hide lg:max-w-[72%] shadow-sm">
               {courseGroups.slice(0, 4).map((group) => (
@@ -211,7 +211,7 @@ export default function Section3Client({ courseGroups }: Props) {
       </div>
 
       {/* Course Cards — Mobile focus-center slider */}
-      <div ref={containerRef} className="md:hidden mt-8 relative" style={{ overflow: 'hidden' }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      <div ref={containerRef} className="md:hidden mt-4 relative" style={{ overflow: 'hidden' }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
         <div
           onTransitionEnd={handleTransitionEnd}
           style={{
