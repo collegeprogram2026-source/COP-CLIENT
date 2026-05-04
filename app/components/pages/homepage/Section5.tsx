@@ -37,7 +37,7 @@ export default function Section5({ section }: Section5Props) {
   // ─── description paragraph (reused twice) ────────────────────────────────────
   const DescPara = () => (
     <p style={{
-      fontFamily: "Inter", fontSize: "18px", fontWeight: 400, lineHeight: "28px",
+      fontFamily: "Inter", fontSize: "clamp(15px, 3.5vw, 18px)", fontWeight: 400, lineHeight: 1.55,
       color: "#4A5565", maxWidth: "546px", marginBottom: "20px"
     }}>
       {richTextToPlain(desc)}
@@ -45,12 +45,12 @@ export default function Section5({ section }: Section5Props) {
   );
 
   return (
-    <section id="contact-experts" style={{ width: "100%", backgroundColor: "#FFFFFF", padding: "60px 0" }}>
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
+    <section id="contact-experts" style={{ width: "100%", backgroundColor: "#FFFFFF", padding: "clamp(40px, 6vw, 60px) 0" }}>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)" }}>
 
         {/* ── MOBILE VERSION (hidden on lg and up) ── */}
         <div className="lg:hidden" style={{ textAlign: "center" }}>
-          <h2 style={{ fontFamily: "Inter", fontSize: "32px", fontWeight: 700, color: "#101828", marginBottom: "16px" }}>{title}</h2>
+          <h2 style={{ fontFamily: "Inter", fontSize: "clamp(24px, 6vw, 32px)", fontWeight: 700, lineHeight: 1.2, color: "#101828", marginBottom: "16px" }}>{title}</h2>
           <DescPara />
           <div style={{ marginTop: "24px", textAlign: "left" }}>
             <TalkToExpertsForm source="homepage_section5" isHomePage={true} programs={programs} />
@@ -58,13 +58,13 @@ export default function Section5({ section }: Section5Props) {
         </div>
 
         {/* ── DESKTOP VERSION (hidden on md and down) ── */}
-        <div className="hidden lg:flex" style={{ gap: "64px", alignItems: "flex-start" }}>
+        <div className="hidden lg:flex" style={{ gap: "clamp(32px, 5vw, 64px)", alignItems: "flex-start" }}>
 
           {/* ── LEFT SIDE ── */}
           <div style={{ flex: 1, minWidth: "300px" }}>
             <h2 style={{
-              fontFamily: "Inter", fontSize: "48px", fontWeight: 700,
-              lineHeight: "60px", color: "#101828", marginBottom: "16px"
+              fontFamily: "Inter", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700,
+              lineHeight: 1.2, color: "#101828", marginBottom: "16px"
             }}>
               {title}
             </h2>
@@ -75,7 +75,7 @@ export default function Section5({ section }: Section5Props) {
               <img src={officeImg} alt="Our office" style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }} />
             </div>
 
-            <div style={{ display: "flex", gap: "48px", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: "clamp(24px, 4vw, 48px)", flexWrap: "wrap" }}>
               {/* India */}
               <div>
                 <p style={{ fontFamily: "Inter", fontSize: "14px", fontWeight: 600, color: "#101828", marginBottom: "8px" }}>India</p>

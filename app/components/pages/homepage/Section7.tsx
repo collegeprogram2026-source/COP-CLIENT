@@ -78,21 +78,32 @@ export default function Section7({ section }: Section7Props) {
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Mobile: heading + horizontal slider for all 7 boxes */}
         <div className="lg:hidden">
-          <h2 className="text-[28px] leading-[36px] font-bold text-[#1F2937] mb-2">{mainHeading}</h2>
-          <p className="text-[14px] leading-[22px] text-[#6B7280] mb-6">{textBelowHeading}</p>
-          <AutoSlider className="-mx-4 px-4">
+          <h2 className="text-[28px] leading-[36px] font-bold text-[#111827] mb-2">{mainHeading}</h2>
+          <p className="text-[14px] leading-[22px] text-[#4B5563] mb-8">{textBelowHeading}</p>
+          <AutoSlider className="-mx-4 px-4" cardWidth={228}>
             {boxFields.map((box, idx) => (
               <div
                 key={`m7-${idx}`}
                 className="snap-start flex-none"
-                style={{ width: 189, minHeight: 232, borderRadius: 12, border: '0.5px solid #E5E7EB', backgroundColor: '#F9FAFB', overflow: 'hidden', display: 'flex', flexDirection: 'column', padding: '16px 14px', gap: 10 }}
+                style={{ 
+                  width: 220, 
+                  minHeight: 180, 
+                  borderRadius: 20, 
+                  border: '1px solid #F1F5F9', 
+                  backgroundColor: '#fff', 
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  padding: '24px 20px', 
+                  gap: 16 
+                }}
               >
-                <div style={{ width: 44, height: 44, borderRadius: 8, background: '#F3E8FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Image src={box.icon} alt={`icon-${idx}`} width={22} height={22} />
+                <div style={{ width: 48, height: 48, borderRadius: 12, background: '#F5F3FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Image src={box.icon} alt={`icon-${idx}`} width={24} height={24} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: 13, fontWeight: 600, color: '#1F2937', lineHeight: '18px', marginBottom: 4 }}>{box.heading}</h3>
-                  <p style={{ fontSize: 11, lineHeight: '16px', color: '#6B7280', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{box.content}</p>
+                  <h3 style={{ fontSize: 15, fontWeight: 700, color: '#111827', lineHeight: '20px', marginBottom: 6 }}>{box.heading}</h3>
+                  <p style={{ fontSize: 12, lineHeight: '18px', color: '#4B5563', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{box.content}</p>
                 </div>
               </div>
             ))}

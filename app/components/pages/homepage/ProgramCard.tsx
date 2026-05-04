@@ -1,6 +1,7 @@
 "use client";
 
-import { Star, CheckCircle2, Clock, IndianRupee, ClipboardList, DollarSign } from "lucide-react";
+import { Star, CheckCircle2, Clock, IndianRupee, ClipboardList } from "lucide-react";
+import { IconCurrencyRupee } from '@tabler/icons-react';
 import TrendingBadge from "@/app/components/ui/TrendingBadge";
 
 export interface Program {
@@ -41,88 +42,113 @@ export default function ProgramCard({ program: p, variant = "desktop", showTrend
 
   if (variant === "mobile") {
     return (
-      <div style={{ width: '100%', minHeight: 280, borderRadius: 20, border: '1px solid #E5E7EB', backgroundColor: '#fff', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+      <div style={{ 
+        width: '100%', 
+        borderRadius: 24, 
+        border: '1px solid #F1F5F9', 
+        backgroundColor: '#fff', 
+        overflow: 'hidden', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04)',
+      }}>
         {/* Image area */}
-        <div style={{ height: 110, position: 'relative', background: 'linear-gradient(180deg,#F3E8FF 0%,#EEF2FF 100%)', flexShrink: 0 }}>
+        <div style={{ height: 130, position: 'relative', overflow: 'hidden', background: 'linear-gradient(180deg,#F3E8FF 0%,#EEF2FF 100%)', flexShrink: 0 }}>
           {p.thumbnail && <img src={p.thumbnail} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />}
-          {p.thumbnail && <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.3))' }} />}
-          {p.trending && <TrendingBadge className="absolute right-2 top-2 scale-75" />}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.4) 100%)' }} />
+          
+          {p.trending && (
+            <div style={{ position: 'absolute', right: 8, top: 8 }}>
+              <TrendingBadge className="scale-75 origin-top-right" />
+            </div>
+          )}
+
           {p.rating ? (
-            <div style={{ position: 'absolute', left: 8, bottom: 6, background: '#fff', padding: '3px 5px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 3 }}>
-              <Star size={10} className="text-yellow-500" fill="#EAB308" />
-              <strong style={{ fontSize: 10 }}>{p.rating}</strong>
+            <div style={{ position: 'absolute', left: 10, bottom: 10, background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(4px)', padding: '4px 8px', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 4, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+              <Star size={12} className="text-yellow-500" fill="#EAB308" />
+              <strong style={{ fontSize: 11, color: '#1E293B' }}>{p.rating}</strong>
             </div>
           ) : null}
         </div>
-        {/* Content */}
-        <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
-          <h3 style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 14, lineHeight: '18px', margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', color: '#1E293B' }}>{p.title}</h3>
 
-          {/* Duration and Fee */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-            <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-              <div style={{ backgroundColor: '#EEF2FF', padding: 5, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Clock size={12} color="#6366F1" />
+        {/* Content */}
+        <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
+          {p.providerName && (
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#4F46E5', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {p.providerName}
+            </div>
+          )}
+          
+          <h3 style={{ 
+            fontFamily: 'Inter, system-ui, sans-serif', 
+            fontWeight: 700, 
+            fontSize: 15, 
+            lineHeight: '20px', 
+            margin: 0, 
+            display: '-webkit-box', 
+            WebkitLineClamp: 2, 
+            WebkitBoxOrient: 'vertical', 
+            overflow: 'hidden', 
+            color: '#1E293B' 
+          }}>
+            {p.title}
+          </h3>
+
+          {/* Info Grid (Duration & Fee) */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <div style={{ width: 32, height: 32, backgroundColor: '#EEF2FF', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Clock size={16} color="#6366F1" />
               </div>
-              <div>
-                <div style={{ fontSize: 10, color: '#64748B', fontWeight: 500 }}>Duration</div>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#0F172A' }}>{p.duration || '—'}</div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 9, color: '#64748B', fontWeight: 600, textTransform: 'uppercase' }}>Duration</div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#0F172A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.duration || '—'}</div>
               </div>
             </div>
-            <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-              <div style={{ backgroundColor: '#ECFDF5', padding: 5, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <DollarSign size={12} color="#10B981" />
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <div style={{ width: 32, height: 32, backgroundColor: '#ECFDF5', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <IconCurrencyRupee size={16} color="#10B981" stroke={2} />
               </div>
-              <div>
-                <div style={{ fontSize: 10, color: '#64748B', fontWeight: 500 }}>Total Fee</div>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#0F172A' }}>{p.fees ? formatCurrency(p.fees) : '—'}</div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 9, color: '#64748B', fontWeight: 600, textTransform: 'uppercase' }}>Total Fee</div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#0F172A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.fees ? formatCurrency(p.fees) : '—'}</div>
               </div>
             </div>
           </div>
 
           {/* EMI Badge */}
           {p.fees > 0 && (
-            <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 8, padding: '5px 10px', color: '#166534', fontWeight: 600, fontSize: 11 }}>
-              EMI Starting: {formatCurrency(emi(p.discountedFees || p.fees))}/mo
+            <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 12, padding: '8px 12px', color: '#166534', fontWeight: 600, fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <CheckCircle2 size={14} color="#16A34A" />
+              <span>EMI Starting: {formatCurrency(emi(p.discountedFees || p.fees))}/mo</span>
             </div>
           )}
 
-          {/* Badges */}
-          <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+          {/* Badges and Features (Compressed for Mobile) */}
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
             {(p.certifications && p.certifications.length > 0 ? p.certifications : ['UGC', 'NAAC A+']).slice(0, 2).map((badge, i) => (
-              <span key={i} style={{ background: '#EFF6FF', color: '#2563EB', border: '1px solid #BFDBFE', padding: '2px 8px', borderRadius: 6, fontSize: 10, fontWeight: 600 }}>
+              <span key={i} style={{ background: '#F8FAFC', color: '#64748B', border: '1px solid #E2E8F0', padding: '2px 8px', borderRadius: 8, fontSize: 10, fontWeight: 600 }}>
                 {badge}
               </span>
             ))}
           </div>
 
-          {/* Features */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {(p.features && p.features.length > 0 ? p.features.slice(0, 2) : ['Job Assistance', 'Flexible Learning']).map((feature, i) => (
-              <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                <div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <CheckCircle2 size={10} color="#16A34A" />
-                </div>
-                <div style={{ fontSize: 11, color: '#475569', fontWeight: 500 }}>{feature}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-auto pt-2">
+          {/* Action Button */}
+          <div style={{ marginTop: 'auto', paddingTop: 8 }}>
             <a
               href={p.providerSlug ? `/universities/${p.providerSlug}?courseId=${p._id}#fees-breakdown` : '#'}
-              className="hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
+              className="hover:opacity-90 active:scale-95 transition-all duration-200"
               style={{
                 display: 'block',
-                padding: '10px 0',
-                background: '#4F46E5',
+                padding: '12px 0',
+                background: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
                 color: '#fff',
-                borderRadius: 10,
-                fontSize: 13,
-                fontWeight: 600,
+                borderRadius: 14,
+                fontSize: 14,
+                fontWeight: 700,
                 textAlign: 'center',
                 textDecoration: 'none',
-                boxShadow: '0 2px 4px rgba(79, 70, 229, 0.15)',
+                boxShadow: '0 4px 12px rgba(79, 70, 229, 0.25)',
                 cursor: 'pointer'
               }}
             >
@@ -183,7 +209,7 @@ export default function ProgramCard({ program: p, variant = "desktop", showTrend
           </div>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <div style={{ backgroundColor: '#ECFDF5', padding: 8, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <DollarSign size={18} color="#10B981" />
+              <IconCurrencyRupee size={18} color="#10B981" stroke={2} />
             </div>
             <div>
               <div style={{ fontSize: 12, color: '#64748B', fontWeight: 500 }}>Total Fee</div>

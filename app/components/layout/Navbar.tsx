@@ -53,8 +53,9 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [degreeTypes, setDegreeTypes] = useState<{ label: string; href: string; icon: React.ReactNode }[]>([]);
-  const [trendingCourses, setTrendingCourses] = useState<{ title: string; slug: string }[]>([]);
+  const [trendingCourses, setTrendingCourses] = useState<{ title: string; slug: string; id: string }[]>([]);
   const [providers, setProviders] = useState<{ name: string; slug: string }[]>([]);
+  const [courses, setCourses] = useState<{ name: string; slug: string; id: string }[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const suggestionRef = useRef<HTMLDivElement>(null);
@@ -69,19 +70,17 @@ export default function Navbar() {
     const matches = new Set<string>();
 
     providers.forEach((p) => {
-      if (p.name.toLowerCase().includes(lowerQuery)) {
-        matches.add(p.name);
-      }
+      if (p.name.toLowerCase().includes(lowerQuery)) matches.add(p.name);
     });
-
+    courses.forEach((c) => {
+      if (c.name.toLowerCase().includes(lowerQuery)) matches.add(c.name);
+    });
     trendingCourses.forEach((c) => {
-      if (c.title.toLowerCase().includes(lowerQuery)) {
-        matches.add(c.title);
-      }
+      if (c.title.toLowerCase().includes(lowerQuery)) matches.add(c.title);
     });
 
-    return Array.from(matches).slice(0, 5);
-  }, [searchQuery, trendingCourses, providers]);
+    return Array.from(matches).slice(0, 6);
+  }, [searchQuery, trendingCourses, providers, courses]);
 
   const handleSearch = (qOverride?: string) => {
     const q = (qOverride ?? searchQuery).trim();
@@ -89,21 +88,39 @@ export default function Navbar() {
       router.push("/search");
       return;
     }
+    const lower = q.toLowerCase();
 
-    const matchedProvider = providers.find(p => p.name.toLowerCase() === q.toLowerCase());
-    if (matchedProvider && matchedProvider.slug) {
-      router.push(`/universities/${matchedProvider.slug}`);
+    // Provider — exact, then partial
+    const provider =
+      providers.find((p) => p.name.toLowerCase() === lower) ||
+      providers.find((p) => p.name.toLowerCase().includes(lower));
+    if (provider?.slug) {
+      router.push(`/universities/${provider.slug}`);
       setShowSuggestions(false);
       return;
     }
 
-    const matchedCourse = trendingCourses.find(c => c.title.toLowerCase() === q.toLowerCase());
-    if (matchedCourse && matchedCourse.slug) {
-      router.push(`/online-courses/${matchedCourse.slug}`);
+    // Course — exact, then partial. Course-detail accepts id OR slug.
+    const course =
+      courses.find((c) => c.name.toLowerCase() === lower) ||
+      courses.find((c) => c.name.toLowerCase().includes(lower));
+    if (course && (course.id || course.slug)) {
+      router.push(`/course-detail?id=${course.id || course.slug}`);
       setShowSuggestions(false);
       return;
     }
 
+    // Trending provider-course (course-detail resolves these too)
+    const trending =
+      trendingCourses.find((t) => t.title.toLowerCase() === lower) ||
+      trendingCourses.find((t) => t.title.toLowerCase().includes(lower));
+    if (trending && (trending.id || trending.slug)) {
+      router.push(`/course-detail?id=${trending.id || trending.slug}`);
+      setShowSuggestions(false);
+      return;
+    }
+
+    // Fallback: hand off to the full search page
     router.push(`/search?q=${encodeURIComponent(q)}`);
     setShowSuggestions(false);
   };
@@ -211,16 +228,21 @@ export default function Navbar() {
       })
       .catch(err => console.error("Error fetching degree types:", err));
 
-    // Fetch trending courses and providers for search suggestions
+    // Fetch trending provider-courses, providers, and the full course list for search suggestions
     fetch(`${apiBase}/api/public/providers/programs/trending`, { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          const courses = data
+          const trending = data
             .slice(0, 8)
-            .map((p: any) => ({ title: p.title || p.name || "", slug: p.slug || "" }))
+            .map((p: any) => ({
+              title: p.title || p.name || "",
+              slug: p.slug || "",
+              // Prefer parent Course id; fall back to provider-course id
+              id: p.courseId?._id || p.courseId || p._id || "",
+            }))
             .filter((c) => c.title);
-          if (courses.length > 0) setTrendingCourses(courses);
+          if (trending.length > 0) setTrendingCourses(trending);
         }
       })
       .catch(() => { });
@@ -229,8 +251,26 @@ export default function Navbar() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (Array.isArray(data)) {
-          const provs = data.map((p: any) => ({ name: p.name || "", slug: p.slug || "" })).filter((p: any) => p.name);
+          const provs = data
+            .map((p: any) => ({ name: p.name || "", slug: p.slug || "" }))
+            .filter((p) => p.name && p.slug);
           setProviders(provs);
+        }
+      })
+      .catch(() => { });
+
+    fetch(`${apiBase}/api/public/courses`, { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const mapped = data
+            .map((c: any) => ({
+              name: c.name || "",
+              slug: c.slug || "",
+              id: c._id || c.id || "",
+            }))
+            .filter((c) => c.name && (c.id || c.slug));
+          setCourses(mapped);
         }
       })
       .catch(() => { });
@@ -258,39 +298,42 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', recalc);
   }, [promoText]);
 
+  const isHomepage = pathname === "/";
+
   return (
     <header className="sticky top-0 z-50">
+      <style>{`
+        .promo-wrapper{overflow:hidden;width:100%;}
+        .promo-track{display:flex;align-items:center;gap:2.5rem;width:max-content}
+        .promo-content{display:flex;gap:15rem;align-items:center;padding:0;flex-shrink:0}
+        .promo-item{flex-shrink:0;display:inline-block;padding:0 1rem; font-family: 'Nunito', sans-serif; font-size: clamp(14px, 1.2vw, 18px); line-height:1; color: #fff; white-space:nowrap}
+        @keyframes promo-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-1 * var(--marquee-distance))); } }
+        .promo-animate { animation: promo-marquee var(--marquee-duration, 14s) linear infinite; }
+        .nav-glass {
+          background: linear-gradient(90deg, rgba(157, 111, 221, 0.65) 0%, rgba(168, 132, 244, 0.65) 55%, rgba(139, 92, 246, 0.65) 100%);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          box-shadow: 0 8px 32px rgba(157, 111, 221, 0.2);
+          border-radius: 1.5rem;
+        }
+        @media (max-width: 768px) {
+          .nav-glass {
+            background: #A983F6;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: none;
+            box-shadow: none;
+            border-radius: 0;
+          }
+        }
+      `}</style>
+
+      {isHomepage && (
       <div className="bg-[#7C3AED] text-white text-sm py-2">
         <div className="w-full mx-auto overflow-hidden" style={{ position: "relative" }}>
           {promoText ? (
             <div style={{ overflow: "hidden" }}>
-              <style>{`
-                .promo-wrapper{overflow:hidden;width:100%;}
-                .promo-track{display:flex;align-items:center;gap:2.5rem;width:max-content}
-                .promo-content{display:flex;gap:15rem;align-items:center;padding:0;flex-shrink:0}
-                .promo-item{flex-shrink:0;display:inline-block;padding:0 1rem; font-family: 'Nunito', sans-serif; font-size: clamp(14px, 1.2vw, 18px); line-height:1; color: #fff; white-space:nowrap}
-                @keyframes promo-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-1 * var(--marquee-distance))); } }
-                .promo-animate { animation: promo-marquee var(--marquee-duration, 14s) linear infinite; }
-                .nav-glass {
-                  background: linear-gradient(90deg, rgba(157, 111, 221, 0.65) 0%, rgba(168, 132, 244, 0.65) 55%, rgba(139, 92, 246, 0.65) 100%);
-                  backdrop-filter: blur(16px);
-                  -webkit-backdrop-filter: blur(10px);
-                  border: 1px solid rgba(255, 255, 255, 0.4);
-                  box-shadow: 0 8px 32px rgba(157, 111, 221, 0.2);
-                  border-radius: 1.5rem;
-                }
-                @media (max-width: 768px) {
-                  .nav-glass {
-                    background: #A983F6;
-                    backdrop-filter: none;
-                    -webkit-backdrop-filter: none;
-                    border: none;
-                    box-shadow: none;
-                    border-radius: 0;
-                  }
-                }
-              `}</style>
-
               <div className="promo-wrapper">
                 <div ref={trackRef} className="promo-track promo-animate" style={{ ['--marquee-distance' as any]: marqueeVars.distance, ['--marquee-duration' as any]: marqueeVars.duration } as React.CSSProperties}>
                   <div ref={contentRef} className="promo-content" aria-hidden={false}>
@@ -309,6 +352,7 @@ export default function Navbar() {
           ) : null}
         </div>
       </div>
+      )}
 
       <div className="md:fixed md:px-7 md:py-2.5 w-full bg-[#A983F6] md:bg-transparent border-b md:border-none border-purple-400/30">
         <div className="nav-glass w-full mx-auto flex items-center justify-between px-4 h-16 md:h-[72px] text-white relative">

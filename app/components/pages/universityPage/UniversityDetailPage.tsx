@@ -361,7 +361,7 @@ export default function UniversityDetailPage({ id }: UniversityDetailPageProps) 
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] px-4 md:px-10 flex flex-col gap-4 md:gap-5 pt-4 md:pt-18">
+    <div className="min-h-screen bg-[#FFFFFF] px-4 md:px-10 flex flex-col gap-4 md:gap-5 pt-4 md:pt-4">
       {/* Breadcrumb - Hidden on mobile for cleaner look */}
       <div className="hidden md:flex justify-between items-center">
         <div className="flex items-center gap-2 text-sm text-gray-500">

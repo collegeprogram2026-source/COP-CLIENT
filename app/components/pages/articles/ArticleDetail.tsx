@@ -154,7 +154,7 @@ export default function ArticleDetailPage({ slug }: { slug: string }) {
       }}
     >
       {/* ── Breadcrumb ── */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "20px 24px 0" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "20px clamp(16px, 4vw, 24px) 0" }}>
         {/* Back button */}
         <button
           onClick={() => router.back()}
@@ -182,7 +182,7 @@ export default function ArticleDetailPage({ slug }: { slug: string }) {
         </button>
 
         {/* Breadcrumb trail */}
-        <nav style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 28 }}>
+        <nav style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 28, flexWrap: "wrap" }}>
           <Link href="/" style={{ fontFamily: "Inter", fontSize: 13, color: "#6B7280", textDecoration: "none" }}>
             Home
           </Link>
@@ -198,7 +198,7 @@ export default function ArticleDetailPage({ slug }: { slug: string }) {
       </div>
 
       {/* ── Full-width header: badge + title + author ── */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px 0" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px) 0" }}>
 
         {/* Category badge */}
         <span
@@ -221,9 +221,9 @@ export default function ArticleDetailPage({ slug }: { slug: string }) {
         <h1
           style={{
             fontFamily: "Inter",
-            fontSize: 36,
+            fontSize: "clamp(24px, 5vw, 36px)",
             fontWeight: 800,
-            lineHeight: "44px",
+            lineHeight: 1.2,
             color: "#101828",
             margin: "0 0 20px 0",
           }}
@@ -240,6 +240,7 @@ export default function ArticleDetailPage({ slug }: { slug: string }) {
             marginBottom: 24,
             paddingBottom: 20,
             borderBottom: "1px solid #E5E7EB",
+            flexWrap: "wrap",
           }}
         >
           <div style={{ position: "relative", width: 40, height: 40, borderRadius: "50%", overflow: "hidden", flexShrink: 0 }}>
@@ -281,8 +282,8 @@ export default function ArticleDetailPage({ slug }: { slug: string }) {
       </div>
 
       {/* ── Full-width Hero Image ── */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", marginBottom: 40 }}>
-        <div style={{ position: "relative", width: "100%", height: 400, borderRadius: 16, overflow: "hidden" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)", marginBottom: 40 }}>
+        <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", maxHeight: 400, borderRadius: 16, overflow: "hidden" }}>
           <Image
             src={article.heroImage}
             alt={article.title}
@@ -296,17 +297,15 @@ export default function ArticleDetailPage({ slug }: { slug: string }) {
 
       {/* ── Two-column below image: body + sidebar ── */}
       <div
+        className="article-detail-layout"
         style={{
           maxWidth: 1200,
           margin: "0 auto",
-          padding: "0 24px 80px",
-          display: "flex",
-          gap: 40,
-          alignItems: "flex-start",
+          padding: "0 clamp(16px, 4vw, 24px) clamp(48px, 8vw, 80px)",
         }}
       >
         {/* ══ LEFT — Article Body ══ */}
-        <article style={{ flex: 1, minWidth: 0 }}>
+        <article style={{ minWidth: 0 }}>
 
           {/* Article Body */}
           {article.body.map((block, idx) => (
@@ -337,16 +336,8 @@ export default function ArticleDetailPage({ slug }: { slug: string }) {
           </div>
         </article>
 
-        {/* ══ RIGHT — Sticky Sidebar ══ */}
-        <aside
-          style={{
-            width: 220,
-            flexShrink: 0,
-            position: "sticky",
-            top: 24,
-            alignSelf: "flex-start",
-          }}
-        >
+        {/* ══ RIGHT — Sticky Sidebar (lg+ only; on smaller screens it stacks above) ══ */}
+        <aside className="article-detail-sidebar">
           {/* Table of Contents */}
           <div
             style={{
@@ -457,17 +448,17 @@ export default function ArticleDetailPage({ slug }: { slug: string }) {
         style={{
           width: "100%",
           background: "#F5F3FF",
-          paddingTop: 56,
-          paddingBottom: 64,
+          paddingTop: "clamp(36px, 6vw, 56px)",
+          paddingBottom: "clamp(40px, 7vw, 64px)",
         }}
       >
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)" }}>
           {/* Header row */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6, gap: 12, flexWrap: "wrap" }}>
             <h2
               style={{
                 fontFamily: "Inter",
-                fontSize: 28,
+                fontSize: "clamp(20px, 4vw, 28px)",
                 fontWeight: 700,
                 color: "#101828",
                 margin: 0,
@@ -486,23 +477,57 @@ export default function ArticleDetailPage({ slug }: { slug: string }) {
                 display: "flex",
                 alignItems: "center",
                 gap: 4,
+                whiteSpace: "nowrap",
               }}
             >
               View All Articles &#8594;
             </Link>
           </div>
-          <p style={{ fontFamily: "Inter", fontSize: 15, color: "#6B7280", margin: "0 0 32px 0" }}>
+          <p style={{ fontFamily: "Inter", fontSize: "clamp(13px, 3vw, 15px)", color: "#6B7280", margin: "0 0 clamp(20px, 4vw, 32px) 0" }}>
             Explore more with our curated expert insights.
           </p>
 
           {/* Cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+          <div className="article-detail-related-grid">
             {RELATED_ARTICLES.map((a) => (
               <RelatedCard key={a.slug} article={a} />
             ))}
           </div>
         </div>
       </div>
+
+      {/* Layout CSS: stack on mobile/tablet, 2-col on lg+ */}
+      <style jsx>{`
+        .article-detail-layout {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 32px;
+          align-items: flex-start;
+        }
+        .article-detail-sidebar {
+          min-width: 0;
+        }
+        .article-detail-related-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        @media (min-width: 640px) {
+          .article-detail-related-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        }
+        @media (min-width: 1024px) {
+          .article-detail-layout {
+            grid-template-columns: 1fr 240px;
+            gap: 40px;
+          }
+          .article-detail-sidebar {
+            position: sticky;
+            top: 24px;
+            align-self: flex-start;
+          }
+          .article-detail-related-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        }
+      `}</style>
     </div>
   );
 }
@@ -533,9 +558,9 @@ function ArticleBodyBlock({ block }: { block: ArticleBlock }) {
           id={block.id}
           style={{
             fontFamily: "Inter",
-            fontSize: 22,
+            fontSize: "clamp(18px, 4vw, 22px)",
             fontWeight: 700,
-            lineHeight: "30px",
+            lineHeight: 1.35,
             color: "#101828",
             margin: "32px 0 14px 0",
             scrollMarginTop: 80,
@@ -569,17 +594,17 @@ function ArticleBodyBlock({ block }: { block: ArticleBlock }) {
           style={{
             background: "linear-gradient(135deg, #4F39F6 0%, #7C3AED 100%)",
             borderRadius: 14,
-            padding: "28px 32px",
+            padding: "clamp(20px, 4vw, 28px) clamp(20px, 4vw, 32px)",
             margin: "28px 0",
           }}
         >
           <p
             style={{
               fontFamily: "Inter",
-              fontSize: 17,
+              fontSize: "clamp(15px, 3.2vw, 17px)",
               fontWeight: 600,
               fontStyle: "italic",
-              lineHeight: "28px",
+              lineHeight: 1.55,
               color: "#FFFFFF",
               margin: 0,
               textAlign: "center",
@@ -597,7 +622,7 @@ function ArticleBodyBlock({ block }: { block: ArticleBlock }) {
             background: "#F9FAFB",
             border: "1px solid #E5E7EB",
             borderRadius: 14,
-            padding: "22px 24px",
+            padding: "clamp(16px, 3.5vw, 22px) clamp(16px, 3.5vw, 24px)",
             margin: "24px 0",
           }}
         >
@@ -724,7 +749,7 @@ function RelatedCard({
       }}
     >
       {/* Image + badge */}
-      <div style={{ position: "relative", width: "100%", height: 160, flexShrink: 0 }}>
+      <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", flexShrink: 0 }}>
         <Image
           src="/Blogs.png"
           alt={article.title}

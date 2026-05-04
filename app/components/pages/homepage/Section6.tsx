@@ -152,13 +152,14 @@ export default function Section6({ section }: Section6Props) {
           <button
             className="hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
             style={{
-              width: 293,
-              height: 56,
+              minWidth: 240,
+              maxWidth: '90vw',
+              minHeight: 52,
               borderRadius: 14,
               background: 'linear-gradient(135deg,#4F39F6 0%,#9810FA 100%)',
               color: '#FFFFFF',
               fontWeight: 600,
-              fontSize: 16,
+              fontSize: 'clamp(14px, 3.2vw, 16px)',
               lineHeight: '24px',
               display: 'inline-flex',
               alignItems: 'center',
@@ -166,8 +167,9 @@ export default function Section6({ section }: Section6Props) {
               gap: 10,
               boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
               border: 'none',
-              padding: '0 20px',
-              cursor: 'pointer'
+              padding: '12px 24px',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
             }}
           >
             <span>Browse All {totalPrograms !== null ? `${totalPrograms}+` : "2000+"} Programs</span>

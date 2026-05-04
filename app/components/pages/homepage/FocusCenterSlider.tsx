@@ -154,8 +154,8 @@ export default function FocusCenterSlider({
                 filter: isActive ? "none" : "blur(1.5px)",
                 transform: isActive ? "scale(1)" : "scale(0.93)",
                 boxShadow: isActive
-                  ? "0 8px 32px rgba(107,70,255,0.18)"
-                  : "0 2px 8px rgba(0,0,0,0.06)",
+                  ? "0 10px 20px -5px rgba(0,0,0,0.1), 0 8px 8px -5px rgba(0,0,0,0.04)"
+                  : "0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03)",
                 transition: animated ? "all 0.45s cubic-bezier(0.4,0,0.2,1)" : "none",
                 cursor: isActive ? "default" : "pointer",
               }}

@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { SectionContent, DegreeType, Course, Specialization } from "@/app/lib/types";
-import { IconArrowLeft, IconZoom } from '@tabler/icons-react';
+import { IconArrowLeft, IconZoom, IconSearch, IconBuildingBank, IconBookmark } from '@tabler/icons-react';
 import SectionRenderer from "@/app/components/SectionRenderer";
 import SidebarFilters from "./SidebarFilters";
 import ProgramCard from "./ProgramCard";
@@ -233,36 +233,36 @@ export default function ExploreProgramsPage({
   };
 
   return (
-    <main className="min-h-screen bg-[#F9FAFB] pt-0 md:pt-7">
+    <main className="min-h-screen bg-[#F9FAFB] lg:pt-8">
       {/* Hero / Header Section */}
       <div className="bg-white border-b border-gray-100">
-        <div className="max-w-[87vw] mx-auto py-3 md:py-8">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-8 py-5 md:py-8">
           {(isSpecializationView || isUniversityView) ? (
             <button
               onClick={handleBack}
-              className="flex items-center cursor-pointer text-xl font-bold text-purple-600 mb-4 hover:text-purple-700 transition-colors"
+              className="inline-flex items-center gap-1 cursor-pointer text-sm md:text-base font-semibold text-purple-600 mb-3 md:mb-4 hover:text-purple-700 transition-colors"
             >
-              <IconArrowLeft stroke={2} size={25} />
+              <IconArrowLeft stroke={2.5} className="w-5 h-5" />
               {isUniversityView ? "Back to Specializations" : "Back to Programs"}
             </button>
           ) : (
             <Link
               href="/"
-              className="flex items-center cursor-pointer text-xl font-bold text-purple-600 mb-4 hover:text-purple-700 transition-colors"
+              className="inline-flex items-center gap-1 cursor-pointer text-sm md:text-base font-semibold text-purple-600 mb-3 md:mb-4 hover:text-purple-700 transition-colors"
             >
-              <IconArrowLeft stroke={2} size={25} />
+              <IconArrowLeft stroke={2.5} className="w-5 h-5" />
               Back to Home
             </Link>
           )}
 
-          <h1 className="text-3xl font-black text-gray-900 mb-2 tracking-tight">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-2 tracking-tight leading-tight">
             {isUniversityView
               ? `Universities for ${specializations.find(s => s._id === selectedSpecializationId)?.name || "Specialization"}`
               : isSpecializationView
                 ? "Explore By Specializations"
                 : "Explore Programs"}
           </h1>
-          <p className="text-lg text-gray-500 font-medium">
+          <p className="text-sm md:text-base text-gray-500 font-medium max-w-2xl">
             {isUniversityView
               ? "Browse through top universities offering your chosen specialization"
               : isSpecializationView
@@ -272,8 +272,8 @@ export default function ExploreProgramsPage({
         </div>
       </div>
 
-      <div className="max-w-[90vw] mx-auto px-4 py-12">
-        <div className="flex flex-col lg:flex-row gap-10">
+      <div className="max-w-[1280px] mx-auto px-4 md:px-8 py-8 md:py-12">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
           {/* Filters Sidebar */}
           <SidebarFilters
             degreeTypes={degreeTypes}
@@ -292,8 +292,7 @@ export default function ExploreProgramsPage({
           />
 
           {/* Main Content */}
-          <div className="flex-1 space-y-8">
-            {/* Search Bar */}
+          <div className="flex-1 space-y-6 md:space-y-8 min-w-0">
             {/* Search Bar */}
             <div className="relative">
               <input
@@ -307,30 +306,23 @@ export default function ExploreProgramsPage({
                 }
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-14 pl-14 pr-6 rounded-2xl border border-[#D1D5DC] bg-white shadow-sm outline-none focus:border-purple-300 transition-all text-lg placeholder:font-semibold"
+                className="w-full h-12 md:h-14 pl-12 md:pl-14 pr-5 rounded-2xl border border-gray-200 bg-white shadow-sm outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all text-sm md:text-base placeholder:text-gray-400 placeholder:font-medium"
               />
-              <IconZoom className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
+              <IconSearch className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 w-5 h-5 md:w-5 md:h-5 text-gray-400" stroke={2} />
             </div>
 
             {/* Grid */}
-            <div className={`grid grid-cols-1 ${isUniversityView ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-2 xl:grid-cols-3"} gap-6`}>
+            <div className={`grid grid-cols-1 ${isUniversityView ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2 xl:grid-cols-3"} gap-4 md:gap-6`}>
               {isUniversityView ? (
                 // Universities View
                 isLoadingProviders ? (
                   <>
-                    {[...Array(4)].map((_, i) => (
-                      <div key={i} className="bg-white rounded-2xl p-5 border border-[#E5E7EB] shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col items-center text-center gap-4 animate-pulse w-full">
-                        {/* Logo Skeleton */}
-                        <div className="h-20 w-32 bg-gray-100 rounded-xl mb-1"></div>
-                        
-                        {/* Title Skeleton */}
-                        <div className="h-10 w-3/4 bg-gray-100 rounded-lg min-h-[2.5rem]"></div>
-                        
-                        {/* Link Skeleton */}
-                        <div className="h-5 w-28 bg-gray-100 rounded-md"></div>
-                        
-                        {/* Button Skeleton */}
-                        <div className="w-full mt-1 h-[46px] bg-gray-100 rounded-xl"></div>
+                    {[...Array(6)].map((_, i) => (
+                      <div key={i} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex flex-col items-center text-center gap-4 animate-pulse w-full">
+                        <div className="h-20 w-32 bg-gray-100 rounded-xl" />
+                        <div className="h-5 w-3/4 bg-gray-100 rounded" />
+                        <div className="h-4 w-24 bg-gray-100 rounded" />
+                        <div className="w-full h-11 bg-gray-100 rounded-xl" />
                       </div>
                     ))}
                   </>
@@ -345,37 +337,71 @@ export default function ExploreProgramsPage({
                     />
                   ))
                 ) : (
-                  <div className="col-span-full py-20 text-center bg-white rounded-3xl border border-dashed border-gray-200">
-                    <p className="text-xl font-bold text-gray-400">
+                  <div className="col-span-full py-16 md:py-20 px-6 text-center bg-white rounded-2xl border border-dashed border-gray-200">
+                    <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gray-50 text-gray-400 flex items-center justify-center">
+                      <IconBuildingBank className="w-7 h-7" stroke={1.8} />
+                    </div>
+                    <h3 className="text-base md:text-lg font-bold text-gray-700 mb-1">
+                      {searchQuery ? "No matching universities" : "No universities yet"}
+                    </h3>
+                    <p className="text-sm text-gray-500 font-medium">
                       {searchQuery
-                        ? `No universities matching "${searchQuery}"`
-                        : "No universities found for this specialization yet."}
+                        ? `We couldn't find any universities matching "${searchQuery}".`
+                        : "We're still adding universities for this specialization."}
                     </p>
                   </div>
                 )
               ) : !isSpecializationView ? (
                 // Courses View
-                filteredCourses.map((course) => (
-                  <ProgramCard
-                    key={course._id}
-                    title={course.name}
-                    subtitle={(typeof course.degreeTypeId === 'string' ? '' : course.degreeTypeId?.name) || 'Program'}
-                    degreeType={typeof course.degreeTypeId === 'string' ? '' : course.degreeTypeId?.name}
-                    count={specializations.filter(s => (typeof s.courseId === 'string' ? s.courseId : s.courseId?._id) === course._id).length}
-                    onClick={() => updateQueryParams({ course: course.slug || course._id, spec: null })}
-                  />
-                ))
+                filteredCourses.length > 0 ? (
+                  filteredCourses.map((course) => (
+                    <ProgramCard
+                      key={course._id}
+                      title={course.name}
+                      subtitle={(typeof course.degreeTypeId === 'string' ? '' : course.degreeTypeId?.name) || 'Program'}
+                      degreeType={typeof course.degreeTypeId === 'string' ? '' : course.degreeTypeId?.name}
+                      count={specializations.filter(s => (typeof s.courseId === 'string' ? s.courseId : s.courseId?._id) === course._id).length}
+                      onClick={() => updateQueryParams({ course: course.slug || course._id, spec: null })}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-full py-16 md:py-20 px-6 text-center bg-white rounded-2xl border border-dashed border-gray-200">
+                    <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gray-50 text-gray-400 flex items-center justify-center">
+                      <IconBookmark className="w-7 h-7" stroke={1.8} />
+                    </div>
+                    <h3 className="text-base md:text-lg font-bold text-gray-700 mb-1">No matching programs</h3>
+                    <p className="text-sm text-gray-500 font-medium">
+                      {searchQuery
+                        ? `Try adjusting your search or filters.`
+                        : "No programs available for this category yet."}
+                    </p>
+                  </div>
+                )
               ) : (
                 // Specializations View
-                filteredSpecializations.map((spec) => (
-                  <ProgramCard
-                    key={spec._id}
-                    variant="specialization"
-                    title={spec.name}
-                    count={spec.providerCount}
-                    onClick={() => handleSpecializationClick(spec._id)}
-                  />
-                ))
+                filteredSpecializations.length > 0 ? (
+                  filteredSpecializations.map((spec) => (
+                    <ProgramCard
+                      key={spec._id}
+                      variant="specialization"
+                      title={spec.name}
+                      count={spec.providerCount}
+                      onClick={() => handleSpecializationClick(spec._id)}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-full py-16 md:py-20 px-6 text-center bg-white rounded-2xl border border-dashed border-gray-200">
+                    <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gray-50 text-gray-400 flex items-center justify-center">
+                      <IconBookmark className="w-7 h-7" stroke={1.8} />
+                    </div>
+                    <h3 className="text-base md:text-lg font-bold text-gray-700 mb-1">No matching specializations</h3>
+                    <p className="text-sm text-gray-500 font-medium">
+                      {searchQuery
+                        ? `Try adjusting your search.`
+                        : "No specializations available yet."}
+                    </p>
+                  </div>
+                )
               )}
             </div>
 

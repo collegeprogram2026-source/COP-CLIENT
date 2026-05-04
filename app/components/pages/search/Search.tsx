@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Search as SearchIcon, TrendingUp, Sparkles, ArrowLeft } from "lucide-react";
 
@@ -21,18 +21,33 @@ const IN_DEMAND_SPECIALIZATIONS = [
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+type ProviderItem = { name: string; slug: string };
+type CourseItem = { name: string; slug: string; id: string };
+type TrendingItem = { title: string; slug: string; id: string };
+type SpecializationItem = { name: string; slug: string; id: string };
+
 export default function SearchPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
-  const [trendingCourses, setTrendingCourses] = useState<{ title: string; slug: string }[]>([]);
-  const [providers, setProviders] = useState<{ name: string; slug: string }[]>([]);
+  const [trendingCourses, setTrendingCourses] = useState<TrendingItem[]>([]);
+  const [providers, setProviders] = useState<ProviderItem[]>([]);
+  const [courses, setCourses] = useState<CourseItem[]>([]);
+  const [specializations, setSpecializations] = useState<SpecializationItem[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const suggestionRef = useRef<HTMLDivElement>(null);
+  const didAutoSearch = useRef(false);
 
   useEffect(() => {
     setSelectedIndex(-1);
   }, [query]);
+
+  // Pre-fill from `?q=` and auto-trigger once data is loaded
+  useEffect(() => {
+    const initial = searchParams.get("q");
+    if (initial && !query) setQuery(initial);
+  }, [searchParams]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,32 +65,31 @@ export default function SearchPage() {
     const matches = new Set<string>();
 
     providers.forEach((p) => {
-      if (p.name.toLowerCase().includes(lowerQuery)) {
-        matches.add(p.name);
-      }
+      if (p.name.toLowerCase().includes(lowerQuery)) matches.add(p.name);
     });
-
+    courses.forEach((c) => {
+      if (c.name.toLowerCase().includes(lowerQuery)) matches.add(c.name);
+    });
     trendingCourses.forEach((c) => {
-      if (c.title.toLowerCase().includes(lowerQuery)) {
-        matches.add(c.title);
-      }
+      if (c.title.toLowerCase().includes(lowerQuery)) matches.add(c.title);
     });
-
+    specializations.forEach((s) => {
+      if (s.name.toLowerCase().includes(lowerQuery)) matches.add(s.name);
+    });
     IN_DEMAND_SPECIALIZATIONS.forEach((s) => {
-      if (s.toLowerCase().includes(lowerQuery)) {
-        matches.add(s);
-      }
+      if (s.toLowerCase().includes(lowerQuery)) matches.add(s);
     });
 
-    return Array.from(matches).slice(0, 5);
-  }, [query, trendingCourses, providers]);
+    return Array.from(matches).slice(0, 8);
+  }, [query, trendingCourses, providers, courses, specializations]);
 
   const handleSuggestionClick = (suggestion: string) => {
     setQuery(suggestion);
     setShowSuggestions(false);
+    handleSearch(suggestion);
   };
 
-  // Fetch trending courses and providers from backend
+  // Fetch trending courses, providers, courses, and specializations from backend
   useEffect(() => {
     const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -83,11 +97,17 @@ export default function SearchPage() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          const courses = data
+          const trending = data
             .slice(0, 8)
-            .map((p: any) => ({ title: p.title || p.name || "", slug: p.slug || "" }))
+            .map((p: any) => ({
+              title: p.title || p.name || "",
+              slug: p.slug || "",
+              // Prefer the parent Course id; fall back to provider-course id
+              // (the course-detail endpoint resolves either).
+              id: p.courseId?._id || p.courseId || p._id || "",
+            }))
             .filter((c) => c.title);
-          if (courses.length > 0) setTrendingCourses(courses);
+          if (trending.length > 0) setTrendingCourses(trending);
         }
       })
       .catch(() => {/* no fallback */ });
@@ -96,8 +116,42 @@ export default function SearchPage() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (Array.isArray(data)) {
-          const provs = data.map((p: any) => ({ name: p.name || "", slug: p.slug || "" })).filter((p: any) => p.name);
+          const provs = data
+            .map((p: any) => ({ name: p.name || "", slug: p.slug || "" }))
+            .filter((p) => p.name && p.slug);
           setProviders(provs);
+        }
+      })
+      .catch(() => {/* no fallback */ });
+
+    fetch(`${apiBase}/api/public/courses`, { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const mapped = data
+            .map((c: any) => ({
+              name: c.name || "",
+              slug: c.slug || "",
+              id: c._id || c.id || "",
+            }))
+            .filter((c) => c.name && (c.id || c.slug));
+          setCourses(mapped);
+        }
+      })
+      .catch(() => {/* no fallback */ });
+
+    fetch(`${apiBase}/api/public/specializations`, { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const mapped = data
+            .map((s: any) => ({
+              name: s.name || "",
+              slug: s.slug || "",
+              id: s._id || s.id || "",
+            }))
+            .filter((s) => s.name);
+          setSpecializations(mapped);
         }
       })
       .catch(() => {/* no fallback */ });
@@ -106,23 +160,69 @@ export default function SearchPage() {
   const handleSearch = (searchQuery?: string) => {
     const q = (searchQuery ?? query).trim();
     if (!q) return;
+    const lower = q.toLowerCase();
 
-    const matchedProvider = providers.find(p => p.name.toLowerCase() === q.toLowerCase());
-    if (matchedProvider && matchedProvider.slug) {
-      router.push(`/universities/${matchedProvider.slug}`);
+    // 1. Provider — exact, then partial
+    const provider =
+      providers.find((p) => p.name.toLowerCase() === lower) ||
+      providers.find((p) => p.name.toLowerCase().includes(lower));
+    if (provider?.slug) {
+      router.push(`/universities/${provider.slug}`);
       return;
     }
 
+    // 2. Course — exact, then partial. Course-detail accepts id OR slug.
+    const course =
+      courses.find((c) => c.name.toLowerCase() === lower) ||
+      courses.find((c) => c.name.toLowerCase().includes(lower));
+    if (course && (course.id || course.slug)) {
+      router.push(`/course-detail?id=${course.id || course.slug}`);
+      return;
+    }
+
+    // 3. Trending provider-course (course-detail endpoint resolves these too)
+    const trending =
+      trendingCourses.find((t) => t.title.toLowerCase() === lower) ||
+      trendingCourses.find((t) => t.title.toLowerCase().includes(lower));
+    if (trending && (trending.id || trending.slug)) {
+      router.push(`/course-detail?id=${trending.id || trending.slug}`);
+      return;
+    }
+
+    // 4. Specialization — route to explore-programs filtered by spec id
+    const spec =
+      specializations.find((s) => s.name.toLowerCase() === lower) ||
+      specializations.find((s) => s.name.toLowerCase().includes(lower));
+    if (spec?.id) {
+      router.push(`/explore-programs?spec=${spec.id}`);
+      return;
+    }
+
+    // 5. Fallback: free-text search inside explore-programs
     router.push(`/explore-programs?course=${encodeURIComponent(q)}`);
   };
 
-  const handleTrendingClick = (course: { title: string; slug: string }) => {
-    if (course.slug) {
-      router.push(`/online-courses/${course.slug}`);
-    } else {
-      router.push(`/online-courses?search=${encodeURIComponent(course.title)}`);
+  const handleTrendingClick = (course: TrendingItem) => {
+    // Course-detail resolves provider-course id OR slug as well, so prefer id and fall back to slug
+    const target = course.id || course.slug;
+    if (target) {
+      router.push(`/course-detail?id=${target}`);
+      return;
     }
+    router.push(`/explore-programs?course=${encodeURIComponent(course.title)}`);
   };
+
+  // Auto-search if `?q=` was provided AND we now have data (or a provider match) to resolve it.
+  useEffect(() => {
+    if (didAutoSearch.current) return;
+    const initial = searchParams.get("q");
+    if (!initial) return;
+    const ready = providers.length > 0 || courses.length > 0;
+    if (!ready) return;
+    didAutoSearch.current = true;
+    handleSearch(initial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [providers, courses, searchParams]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowDown") {

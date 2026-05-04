@@ -148,7 +148,7 @@ export default function Section9({ section }: Section9Props) {
     : DEFAULT_ARTICLES;
 
   return (
-    <section style={{ width: "100%", backgroundColor: "#FFFFFF", paddingTop: "clamp(32px,6vw,64px)", paddingBottom: "clamp(32px,6vw,64px)" }}>
+    <section style={{ width: "100%", paddingTop: "clamp(32px,6vw,64px)", paddingBottom: "clamp(32px,6vw,64px)" }}>
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* Pill */}
@@ -158,14 +158,16 @@ export default function Section9({ section }: Section9Props) {
               background: "#EEF2FF",
               color: "#4F39F6",
               fontFamily: "Inter",
-              fontSize: 14,
+              fontSize: "clamp(11px, 2.6vw, 14px)",
               fontWeight: 700,
               lineHeight: "20px",
               letterSpacing: "0.7px",
               textTransform: "uppercase",
-              width: 253,
-              height: 48,
-              display: "flex",
+              padding: "10px 22px",
+              minHeight: 44,
+              maxWidth: "100%",
+              whiteSpace: "nowrap",
+              display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 9999,
@@ -208,45 +210,60 @@ export default function Section9({ section }: Section9Props) {
         </p>
 
         {/* Mobile: focus-center slider */}
-        <FocusCenterSlider className="mt-8 mb-8">
+        <FocusCenterSlider className="mt-8 mb-8" cardWidth={280}>
           {articles.map((article, idx) => (
             <div
               key={`m9-${idx}`}
-              className="rounded-3xl"
-              style={{ width: '100%', minHeight: 300, border: '1px solid #E5E7EB', backgroundColor: '#fff', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
+              className="bg-[#FFFFFF] flex flex-col h-full overflow-hidden"
+              style={{ minHeight: 360, borderRadius: 20 }}
             >
-              <div style={{ position: 'relative', width: '100%', height: 140, flexShrink: 0 }}>
+              <div style={{ position: 'relative', width: '100%', height: 160, flexShrink: 0 }}>
                 <Image src="/Blogs.png" alt={article.title} fill sizes="280px" style={{ objectFit: 'cover' }} />
-                <span style={{ position: 'absolute', top: 10, left: 10, background: 'linear-gradient(135deg,#4F39F6 0%,#9810FA 100%)', color: '#fff', fontFamily: 'Inter', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 9999 }}>{article.category}</span>
+                <span style={{
+                  position: 'absolute',
+                  top: 12,
+                  left: 12,
+                  background: 'rgba(79, 57, 246, 0.9)',
+                  backdropFilter: 'blur(8px)',
+                  color: '#fff',
+                  fontFamily: 'Inter',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  padding: '4px 12px',
+                  borderRadius: 9999,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>{article.category}</span>
               </div>
-              <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
-                <span style={{ fontFamily: 'Inter', fontSize: 12, color: '#6B7280' }}>{article.date} · {article.readTime}</span>
-                <h3 style={{ fontFamily: 'Inter', fontSize: 15, fontWeight: 700, color: '#101828', lineHeight: '21px', margin: 0, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{article.title}</h3>
+              <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
+                <div style={{ fontFamily: 'Inter', fontSize: 11, color: '#64748B', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                  {article.date} · {article.readTime}
+                </div>
+                <h3 style={{ fontFamily: 'Inter', fontSize: 16, fontWeight: 700, color: '#101828', lineHeight: '22px', margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{article.title}</h3>
                 <p style={{ fontFamily: 'Inter', fontSize: 13, color: '#6B7280', lineHeight: '19px', margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{article.description}</p>
-                <Link href={`/articles/${article.slug}`} className="hover:opacity-70 transition-opacity duration-200" style={{ marginTop: 'auto', fontFamily: 'Inter', fontSize: 13, fontWeight: 600, color: '#4F39F6', textDecoration: 'none', cursor: 'pointer' }}>Read More →</Link>
+                <Link href={`/articles/${article.slug}`} className="hover:opacity-70 transition-opacity duration-200 mt-auto pt-2" style={{ fontFamily: 'Inter', fontSize: 13, fontWeight: 700, color: '#4F39F6', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>Read More <span style={{ fontSize: 16 }}>→</span></Link>
               </div>
             </div>
           ))}
         </FocusCenterSlider>
 
-        {/* Desktop: Cards Grid — 4 columns */}
+        {/* Desktop: Cards Grid — 2 cols on tablet, 4 cols on desktop */}
         <div
-          className="hidden md:grid"
+          className="hidden md:grid md:grid-cols-2 lg:grid-cols-4"
           style={{
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "24px",
+            gap: "clamp(16px, 2.5vw, 24px)",
             marginBottom: "48px",
           }}
         >
           {articles.map((article, idx) => (
             <div
               key={idx}
-              className="rounded-3xl"
+              className="rounded-xl sha"
               style={{
                 background: "#FFFFFF",
                 border: "1px solid #E5E7EB",
                 overflow: "hidden",
-                boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
                 display: "flex",
                 flexDirection: "column",
               }}
@@ -395,21 +412,24 @@ export default function Section9({ section }: Section9Props) {
             href="/articles"
             className="hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
             style={{
-              width: "240px",
-              height: "56px",
+              minWidth: 220,
+              maxWidth: "90vw",
+              minHeight: 52,
+              padding: "12px 24px",
               borderRadius: "14px",
               background: "linear-gradient(135deg, #4F39F6 0%, #9810FA 100%)",
               boxShadow: "0 4px 4px rgba(0,0,0,0.25)",
               fontFamily: "Inter",
-              fontSize: "16px",
+              fontSize: "clamp(14px, 3.2vw, 16px)",
               fontWeight: 600,
               color: "#FFFFFF",
               textDecoration: "none",
-              display: "flex",
+              display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
               gap: "8px",
               cursor: "pointer",
+              whiteSpace: "nowrap",
             }}
           >
             View All Articles &#8594;

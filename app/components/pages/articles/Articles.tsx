@@ -2,18 +2,24 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 // ─── Dummy Data (replace with CMS fetch later) ────────────────────────────────
 
-const CATEGORIES = [
-  { label: "MBA", icon: "/Icon (4).png" },
-  { label: "Technology", icon: "/Icon (5).png" },
-  { label: "Business Strategy", icon: "/Icon (6).png" },
-  { label: "Marketing", icon: "/Icon (7).png" },
-  { label: "Leadership", icon: "/Icon (8).png" },
-  { label: "Data Science", icon: "/Icon (9).png" },
-];
+// Default icons mapped by category name (case-insensitive match).
+// Anything unmapped uses the fallback icon.
+const CATEGORY_ICON_MAP: Record<string, string> = {
+  "career guide": "/Icon (4).png",
+  "technology": "/Icon (5).png",
+  "business strategy": "/Icon (6).png",
+  "marketing": "/Icon (7).png",
+  "leadership": "/Icon (8).png",
+  "data science": "/Icon (9).png",
+  "study tips": "/Icon (5).png",
+  "admission guide": "/Icon (6).png",
+  "mba": "/Icon (4).png",
+};
+const FALLBACK_ICON = "/Icon (4).png";
 
 const ALL_ARTICLES = [
   {
@@ -168,18 +174,47 @@ interface ArticlesPageProps {
 }
 
 const ARTICLES_PER_PAGE = 6;
+const ALL_LABEL = "All";
 
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function ArticlesPage({ cmsArticles, pageTitle, pageSubtitle }: ArticlesPageProps = {}) {
-  const [activeCategory, setActiveCategory] = useState("MBA");
+  const sourceArticles: ArticleData[] = cmsArticles && cmsArticles.length > 0 ? cmsArticles : ALL_ARTICLES;
+
+  // Build the sidebar categories dynamically from the article data so every
+  // entry actually filters to at least one article.
+  const categories = useMemo(() => {
+    const seen = new Set<string>();
+    const list: { label: string; icon: string; count: number }[] = [
+      { label: ALL_LABEL, icon: FALLBACK_ICON, count: sourceArticles.length },
+    ];
+    for (const a of sourceArticles) {
+      const key = a.category;
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      const icon = CATEGORY_ICON_MAP[key.toLowerCase()] || FALLBACK_ICON;
+      const count = sourceArticles.filter((x) => x.category === key).length;
+      list.push({ label: key, icon, count });
+    }
+    return list;
+  }, [sourceArticles]);
+
+  const [activeCategory, setActiveCategory] = useState(ALL_LABEL);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const articles: ArticleData[] = cmsArticles && cmsArticles.length > 0 ? cmsArticles : ALL_ARTICLES;
-  const totalPages = Math.ceil(articles.length / ARTICLES_PER_PAGE);
-  const pageArticles = articles.slice(
-    (currentPage - 1) * ARTICLES_PER_PAGE,
-    currentPage * ARTICLES_PER_PAGE
+  const filteredArticles = useMemo(
+    () =>
+      activeCategory === ALL_LABEL
+        ? sourceArticles
+        : sourceArticles.filter((a) => a.category === activeCategory),
+    [sourceArticles, activeCategory]
+  );
+
+  const totalPages = Math.max(1, Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE));
+  const safePage = Math.min(currentPage, totalPages);
+  const pageArticles = filteredArticles.slice(
+    (safePage - 1) * ARTICLES_PER_PAGE,
+    safePage * ARTICLES_PER_PAGE
   );
 
   const handlePageChange = (page: number) => {
@@ -187,6 +222,11 @@ export default function ArticlesPage({ cmsArticles, pageTitle, pageSubtitle }: A
       setCurrentPage(page);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+  };
+
+  const onSelectCategory = (label: string) => {
+    setActiveCategory(label);
+    setCurrentPage(1);
   };
 
   return (
@@ -203,19 +243,20 @@ export default function ArticlesPage({ cmsArticles, pageTitle, pageSubtitle }: A
         style={{
           width: "100%",
           backgroundColor: "#FFFFFF",
-          paddingTop: 40,
-          paddingBottom: 24,
+          paddingTop: "clamp(24px, 4vw, 40px)",
+          paddingBottom: "clamp(16px, 3vw, 24px)",
           textAlign: "center",
         }}
       >
         <h1
           style={{
             fontFamily: "Inter",
-            fontSize: 36,
+            fontSize: "clamp(24px, 5.5vw, 36px)",
             fontWeight: 700,
-            lineHeight: "40px",
+            lineHeight: 1.2,
             color: "#101828",
             margin: "0 0 8px 0",
+            padding: "0 16px",
           }}
         >
           {pageTitle || "Latest Blogs & Resources"}
@@ -223,11 +264,12 @@ export default function ArticlesPage({ cmsArticles, pageTitle, pageSubtitle }: A
         <p
           style={{
             fontFamily: "Inter",
-            fontSize: 20,
+            fontSize: "clamp(14px, 3.5vw, 20px)",
             fontWeight: 400,
-            lineHeight: "28px",
+            lineHeight: 1.5,
             color: "#4A5565",
             margin: 0,
+            padding: "0 16px",
           }}
         >
           {pageSubtitle || "Expert insights on education and career growth"}
@@ -239,11 +281,11 @@ export default function ArticlesPage({ cmsArticles, pageTitle, pageSubtitle }: A
         style={{
           maxWidth: 1200,
           margin: "0 auto",
-          padding: "0 24px",
+          padding: "0 clamp(16px, 4vw, 24px)",
           marginBottom: 24,
         }}
       >
-        <nav style={{ display: "flex", alignItems: "center", gap: 6 }}>
+        <nav style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
           <Link
             href="/"
             style={{
@@ -283,140 +325,248 @@ export default function ArticlesPage({ cmsArticles, pageTitle, pageSubtitle }: A
         </nav>
       </div>
 
-      {/* ── Main Content: Sidebar + Grid ── */}
+      {/* ── Mobile/Tablet: horizontal chip strip (lg+ uses sidebar instead) ── */}
       <div
+        className="lg:hidden"
         style={{
           maxWidth: 1200,
           margin: "0 auto",
-          padding: "0 24px 80px",
-          display: "flex",
-          gap: 28,
-          alignItems: "flex-start",
+          padding: "0 clamp(16px, 4vw, 24px)",
+          marginBottom: 20,
         }}
       >
-        {/* ── Left Sidebar ── */}
-        <aside
+        <div
           style={{
-            width: 200,
-            flexShrink: 0,
+            display: "flex",
+            gap: 8,
+            overflowX: "auto",
+            paddingBottom: 4,
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
+          className="no-scrollbar"
         >
-          <div
-            style={{
-              border: "1px solid #E5E7EB",
-              borderRadius: 16,
-              padding: "20px 16px",
-              background: "#FFFFFF",
-              boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
-            }}
-          >
-            <p
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat.label;
+            return (
+              <button
+                key={cat.label}
+                onClick={() => onSelectCategory(cat.label)}
+                style={{
+                  flexShrink: 0,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "8px 14px",
+                  borderRadius: 9999,
+                  border: isActive ? "none" : "1px solid #E5E7EB",
+                  cursor: "pointer",
+                  background: isActive
+                    ? "linear-gradient(135deg, #4F39F6 0%, #9810FA 100%)"
+                    : "#FFFFFF",
+                  fontFamily: "Inter",
+                  fontSize: 13,
+                  fontWeight: isActive ? 600 : 500,
+                  color: isActive ? "#FFFFFF" : "#374151",
+                  whiteSpace: "nowrap",
+                  transition: "background 0.15s",
+                }}
+              >
+                <Image src={cat.icon} alt="" width={16} height={16} />
+                <span>{cat.label}</span>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 600,
+                    opacity: 0.85,
+                    background: isActive ? "rgba(255,255,255,0.2)" : "#F3F4F6",
+                    padding: "1px 7px",
+                    borderRadius: 9999,
+                  }}
+                >
+                  {cat.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Main Content: Sidebar + Grid ── */}
+      <div
+        className="articles-main"
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "0 clamp(16px, 4vw, 24px) clamp(48px, 8vw, 80px)",
+        }}
+      >
+        <div className="articles-layout">
+          {/* ── Left Sidebar (lg+ only) ── */}
+          <aside className="articles-sidebar hidden lg:block">
+            <div
               style={{
-                fontFamily: "Inter",
-                fontSize: 18,
-                fontWeight: 700,
-                color: "#101828",
-                lineHeight: "28px",
-                margin: "0 0 16px 0",
+                border: "1px solid #E5E7EB",
+                borderRadius: 16,
+                padding: "20px 16px",
+                background: "#FFFFFF",
+                boxShadow: "0 1px 6px rgba(0,0,0,0.06)",
+                position: "sticky",
+                top: 24,
               }}
             >
-              Explore by Category
-            </p>
-            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 4 }}>
-              {CATEGORIES.map((cat) => {
-                const isActive = activeCategory === cat.label;
-                return (
-                  <li key={cat.label}>
-                    <button
-                      onClick={() => {
-                        setActiveCategory(cat.label);
-                        setCurrentPage(1);
-                      }}
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 10,
-                        padding: "10px 12px",
-                        borderRadius: 10,
-                        border: "none",
-                        cursor: "pointer",
-                        background: isActive
-                          ? "linear-gradient(135deg, #4F39F6 0%, #9810FA 100%)"
-                          : "transparent",
-                        transition: "background 0.15s",
-                      }}
-                    >
-                      <span style={{ display: "inline-flex", width: 20, height: 20 }}>
-                        <Image src={cat.icon} alt={`${cat.label} icon`} width={20} height={20} />
-                      </span>
-                      <span
+              <p
+                style={{
+                  fontFamily: "Inter",
+                  fontSize: 18,
+                  fontWeight: 700,
+                  color: "#101828",
+                  lineHeight: "28px",
+                  margin: "0 0 16px 0",
+                }}
+              >
+                Explore by Category
+              </p>
+              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 4 }}>
+                {categories.map((cat) => {
+                  const isActive = activeCategory === cat.label;
+                  return (
+                    <li key={cat.label}>
+                      <button
+                        onClick={() => onSelectCategory(cat.label)}
                         style={{
-                          fontFamily: "Inter",
-                          fontSize: 13,
-                          fontWeight: isActive ? 600 : 400,
-                          color: isActive ? "#FFFFFF" : "#374151",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 10,
+                          padding: "10px 12px",
+                          borderRadius: 10,
+                          border: "none",
+                          cursor: "pointer",
+                          background: isActive
+                            ? "linear-gradient(135deg, #4F39F6 0%, #9810FA 100%)"
+                            : "transparent",
+                          transition: "background 0.15s",
                         }}
                       >
-                        {cat.label}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </aside>
+                        <span style={{ display: "inline-flex", width: 20, height: 20, flexShrink: 0 }}>
+                          <Image src={cat.icon} alt={`${cat.label} icon`} width={20} height={20} />
+                        </span>
+                        <span
+                          style={{
+                            flex: 1,
+                            textAlign: "left",
+                            fontFamily: "Inter",
+                            fontSize: 13,
+                            fontWeight: isActive ? 600 : 400,
+                            color: isActive ? "#FFFFFF" : "#374151",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {cat.label}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 600,
+                            color: isActive ? "#FFFFFF" : "#6B7280",
+                            background: isActive ? "rgba(255,255,255,0.2)" : "#F3F4F6",
+                            padding: "1px 7px",
+                            borderRadius: 9999,
+                          }}
+                        >
+                          {cat.count}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </aside>
 
-        {/* ── Articles Grid ── */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: 24,
-              marginBottom: 48,
-            }}
-          >
-            {pageArticles.map((article, idx) => (
-              <ArticleCard key={idx} article={article} />
-            ))}
-          </div>
+          {/* ── Articles Grid ── */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {pageArticles.length === 0 ? (
+              <div
+                style={{
+                  border: "1px dashed #E5E7EB",
+                  borderRadius: 16,
+                  padding: "48px 24px",
+                  textAlign: "center",
+                  color: "#6B7280",
+                  fontFamily: "Inter",
+                  fontSize: 14,
+                }}
+              >
+                No articles found in <strong>{activeCategory}</strong>.
+              </div>
+            ) : (
+              <div className="articles-grid">
+                {pageArticles.map((article, idx) => (
+                  <ArticleCard key={`${article.slug}-${idx}`} article={article} />
+                ))}
+              </div>
+            )}
 
-          {/* ── Pagination ── */}
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 6 }}>
-            {/* Prev */}
-            <PaginationBtn
-              label="‹"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              active={false}
-            />
-
-            {/* Page numbers */}
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <PaginationBtn
-                key={page}
-                label={String(page)}
-                onClick={() => handlePageChange(page)}
-                disabled={false}
-                active={page === currentPage}
-              />
-            ))}
-
-            {/* Next */}
-            <PaginationBtn
-              label="›"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              active={false}
-            />
+            {/* ── Pagination ── */}
+            {totalPages > 1 && (
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 6, marginTop: 32, flexWrap: "wrap" }}>
+                <PaginationBtn
+                  label="‹"
+                  onClick={() => handlePageChange(safePage - 1)}
+                  disabled={safePage === 1}
+                  active={false}
+                />
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <PaginationBtn
+                    key={page}
+                    label={String(page)}
+                    onClick={() => handlePageChange(page)}
+                    disabled={false}
+                    active={page === safePage}
+                  />
+                ))}
+                <PaginationBtn
+                  label="›"
+                  onClick={() => handlePageChange(safePage + 1)}
+                  disabled={safePage === totalPages}
+                  active={false}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Local CSS for layout breakpoints + scrollbar hide */}
+      <style jsx>{`
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .articles-layout {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 28px;
+          align-items: flex-start;
+        }
+        .articles-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+          margin-bottom: 16px;
+        }
+        @media (min-width: 640px) {
+          .articles-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        }
+        @media (min-width: 1024px) {
+          .articles-layout { grid-template-columns: 220px 1fr; gap: 32px; }
+          .articles-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        }
+        @media (min-width: 1200px) {
+          .articles-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+      `}</style>
     </div>
   );
 }
@@ -450,12 +600,12 @@ function ArticleCard({
       }}
     >
       {/* Image + category badge */}
-      <div style={{ position: "relative", width: "100%", height: 180, flexShrink: 0 }}>
+      <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", flexShrink: 0 }}>
         <Image
           src={article.image}
           alt={article.title}
           fill
-          sizes="(max-width: 768px) 100vw, 33vw"
+          sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
           style={{ objectFit: "cover" }}
         />
         <span
@@ -478,9 +628,9 @@ function ArticleCard({
       </div>
 
       {/* Card body */}
-      <div style={{ padding: "16px 20px 20px", display: "flex", flexDirection: "column", flex: 1 }}>
+      <div style={{ padding: "16px 18px 18px", display: "flex", flexDirection: "column", flex: 1 }}>
         {/* Date + read time */}
-        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10, flexWrap: "wrap" }}>
           <span
             style={{
               display: "flex",
@@ -521,9 +671,9 @@ function ArticleCard({
         <h3
           style={{
             fontFamily: "Inter",
-            fontSize: 16,
+            fontSize: "clamp(15px, 2.2vw, 16px)",
             fontWeight: 700,
-            lineHeight: "22px",
+            lineHeight: 1.35,
             color: "#101828",
             margin: "0 0 8px 0",
             display: "-webkit-box",
@@ -555,8 +705,8 @@ function ArticleCard({
         </p>
 
         {/* Footer: Author + Read link */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontFamily: "Inter", fontSize: 13, fontWeight: 400, color: "#6B7280" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          <span style={{ fontFamily: "Inter", fontSize: 13, fontWeight: 400, color: "#6B7280", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
             By{" "}
             <strong style={{ color: "#101828", fontWeight: 600 }}>{article.author}</strong>
           </span>
@@ -571,6 +721,7 @@ function ArticleCard({
               display: "flex",
               alignItems: "center",
               gap: 4,
+              flexShrink: 0,
             }}
           >
             Read &#8594;
@@ -599,8 +750,9 @@ function PaginationBtn({
       onClick={onClick}
       disabled={disabled}
       style={{
-        width: 36,
+        minWidth: 36,
         height: 36,
+        padding: "0 10px",
         borderRadius: 8,
         border: active ? "none" : "1px solid #E5E7EB",
         background: active

@@ -27,12 +27,10 @@ export default function ProgramSliderGrid({
         ))}
       </FocusCenterSlider>
 
-      {/* Desktop grid */}
+      {/* Desktop grid: 2 cols on tablet, 4 cols on desktop */}
       <div
-        className="hidden md:grid"
+        className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-5 lg:gap-6"
         style={{
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: 24,
           opacity: isAnimating ? 0 : 1,
           transform: isAnimating ? 'translateY(10px)' : 'translateY(0)',
           transition: 'opacity 0.4s ease, transform 0.4s ease'

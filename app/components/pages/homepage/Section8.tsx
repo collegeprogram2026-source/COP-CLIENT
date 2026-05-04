@@ -267,7 +267,7 @@ export default function Section8({ section }: Section8Props) {
                     flex: `0 0 ${100 / totalDots}%`,
                     display: "grid",
                     gridTemplateColumns: "repeat(4, 1fr)",
-                    gap: "24px",
+                    gap: "clamp(12px, 1.8vw, 24px)",
                     padding: "10px"
                   }}
                 >
@@ -278,7 +278,7 @@ export default function Section8({ section }: Section8Props) {
                         background: "#FFFFFF",
                         border: "1px solid #E5E7EB",
                         borderRadius: "16px",
-                        padding: "24px",
+                        padding: "clamp(16px, 2vw, 24px)",
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-between",
@@ -362,10 +362,10 @@ export default function Section8({ section }: Section8Props) {
                                   fontWeight: 400,
                                   color: "#6B7280",
                                   lineHeight: "16px",
-                                  maxWidth: "150px",
                                   whiteSpace: "nowrap",
                                   overflow: "hidden",
-                                  textOverflow: "ellipsis"
+                                  textOverflow: "ellipsis",
+                                  minWidth: 0,
                                 }}
                               >
                                 {card.degree}

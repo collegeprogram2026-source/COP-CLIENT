@@ -5,19 +5,16 @@ import Link from "next/link";
 
 export default function Footer() {
   const usefulLinks = [
-    { label: "Courses", href: "#" },
-    { label: "Top Universities", href: "#" },
-    { label: "Blogs", href: "#" },
-    { label: "Compare Universities", href: "#" },
-    { label: "Pricing Plan", href: "#" },
+    { label: "Courses", href: "/explore-programs" },
+    { label: "Top Universities", href: "/universities" },
+    { label: "Blogs", href: "/articles" },
+    { label: "Compare Universities", href: "/compareUniversities" },
   ];
 
   const toolLinks = [
     { label: "Time Commitment Estimator", href: "#" },
     { label: "Eligibility Checker", href: "#" },
     { label: "ROI Calculator", href: "#" },
-    { label: "Time Commitment Estimator", href: "#" },
-    { label: "Eligibility Checker", href: "#" },
   ];
 
   return (
@@ -53,18 +50,18 @@ export default function Footer() {
           {/* Social Media */}
           <div className="mb-10">
             <h3 className="font-bold text-white text-lg mb-4">Social Media Links</h3>
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-6">
               <Link href="#" aria-label="LinkedIn">
-                <img src="/LinkedIn.png" alt="LinkedIn" className="w-7 h-7 opacity-80 hover:opacity-100 transition" />
+                <img src="/linkedin.png" alt="LinkedIn" className="w-9 h-9 opacity-80 hover:opacity-100 transition" />
               </Link>
               <Link href="#" aria-label="Facebook">
-                <img src="/Facebook.png" alt="Facebook" className="w-7 h-7 opacity-80 hover:opacity-100 transition" />
+                <img src="/facebook.png" alt="Facebook" className="w-9 h-9 opacity-80 hover:opacity-100 transition" />
               </Link>
               <Link href="#" aria-label="Instagram">
-                <img src="/Instagram.png" alt="Instagram" className="w-7 h-7 opacity-80 hover:opacity-100 transition" />
+                <img src="/instagram.png" alt="Instagram" className="w-9 h-9 opacity-80 hover:opacity-100 transition" />
               </Link>
               <Link href="#" aria-label="Email">
-                <img src="/Gmail.png" alt="Gmail" className="w-7 h-7 opacity-80 hover:opacity-100 transition" />
+                <img src="/gmail.png" alt="Gmail" className="w-9 h-9 opacity-80 hover:opacity-100 transition" />
               </Link>
             </div>
           </div>
@@ -161,18 +158,18 @@ export default function Footer() {
 
           <div>
             <h3 className="font-bold text-white text-base mb-5">Social Media Links</h3>
-            <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-5 flex-wrap">
               <Link href="#" aria-label="LinkedIn">
-                <img src="/LinkedIn.png" alt="LinkedIn" className="w-5 h-5" />
+                <img src="/linkedin.png" alt="LinkedIn" className="w-7 h-7 opacity-80 hover:opacity-100 transition" />
               </Link>
               <Link href="#" aria-label="Facebook">
-                <img src="/Facebook.png" alt="Facebook" className="w-5 h-5" />
+                <img src="/facebook.png" alt="Facebook" className="w-7 h-7 opacity-80 hover:opacity-100 transition" />
               </Link>
               <Link href="#" aria-label="Instagram">
-                <img src="/Instagram.png" alt="Instagram" className="w-5 h-5" />
+                <img src="/instagram.png" alt="Instagram" className="w-7 h-7 opacity-80 hover:opacity-100 transition" />
               </Link>
               <Link href="#" aria-label="Email">
-                <img src="/Gmail.png" alt="Gmail" className="w-5 h-5" />
+                <img src="/gmail.png" alt="Gmail" className="w-7 h-7 opacity-80 hover:opacity-100 transition" />
               </Link>
             </div>
           </div>

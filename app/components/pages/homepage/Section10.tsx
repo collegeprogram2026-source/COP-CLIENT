@@ -97,14 +97,16 @@ export default function Section10({ section, questionsSection }: Section10Props)
             background: "#EEF2FF",
             color: "#4F39F6",
             fontFamily: "Inter, Arial, Helvetica, sans-serif",
-            fontSize: 14,
+            fontSize: "clamp(11px, 2.6vw, 14px)",
             fontWeight: 700,
             lineHeight: "20px",
             letterSpacing: "0.7px",
             textTransform: "uppercase",
-            width: 253,
-            height: 48,
-            display: "flex",
+            padding: "10px 22px",
+            minHeight: 44,
+            maxWidth: "100%",
+            whiteSpace: "nowrap",
+            display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
             borderRadius: 9999,
@@ -228,28 +230,31 @@ export default function Section10({ section, questionsSection }: Section10Props)
 
         {/* View More Questions Button — only shown when CMS has >4 questions */}
         {hasMore && (
-        <div style={{ width: "100%", display: "flex", justifyContent: "flex-end", marginTop: 24 }}>
+        <div style={{ width: "100%", display: "flex", justifyContent: "center", marginTop: 24 }} className="sm:justify-end">
           <button
             className="hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
             onClick={() => setShowAll((prev) => !prev)}
             style={{
-              width: 227,
-              height: 48,
+              minWidth: 200,
+              maxWidth: "90vw",
+              minHeight: 48,
+              padding: "12px 24px",
               borderRadius: 10,
               background: "linear-gradient(to right, #9810FA, #8200DB)",
               boxShadow:
                 "0px 2px 4px -2px rgba(0,0,0,0.10), 0px 4px 6px -1px rgba(0,0,0,0.10)",
               fontFamily: "Inter, Arial, Helvetica, sans-serif",
               fontWeight: 600,
-              fontSize: 18,
+              fontSize: "clamp(15px, 3.5vw, 18px)",
               lineHeight: "24px",
               letterSpacing: "0px",
               color: "#FFFFFF",
               border: "none",
               cursor: "pointer",
-              display: "flex",
+              display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
+              whiteSpace: "nowrap",
             }}
           >
             {showAll ? "Show Less" : "View More Questions"}

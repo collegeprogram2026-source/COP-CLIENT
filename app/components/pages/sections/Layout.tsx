@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       {!isAuthPage && <Navbar />}
-      <main className={`flex-1 ${!isAuthPage ? "lg:pt-10" : ""}`}>{children}</main>
+      <main className={`flex-1 ${!isAuthPage ? "md:pt-24" : ""}`}>{children}</main>
       {!isAuthPage && <Footer />}
     </>
   );

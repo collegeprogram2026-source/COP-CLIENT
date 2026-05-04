@@ -39,6 +39,11 @@ function formatFees(amount: number) {
   return `Rs ${amount.toLocaleString("en-IN")}`;
 }
 
+function isUrl(v?: string | null) {
+  if (!v) return false;
+  return v.startsWith("/") || v.startsWith("http");
+}
+
 export default function CourseCard({
   course,
   isActive = true,
@@ -78,9 +83,9 @@ export default function CourseCard({
             flexShrink: 0,
           }}
         >
-          {!isEmpty && (course.icon || course.thumbnail) ? (
+          {!isEmpty && (isUrl(course.icon) || isUrl(course.thumbnail)) ? (
             <Image
-              src={course.icon || course.thumbnail || ""}
+              src={(isUrl(course.icon) ? course.icon : course.thumbnail) || ""}
               alt={course.name}
               fill
               className="object-cover"
@@ -239,9 +244,9 @@ export default function CourseCard({
     <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
       {/* Thumbnail */}
       <div className="relative w-full h-52 md:h-60 bg-gray-100">
-        {course.icon || course.thumbnail ? (
+        {isUrl(course.icon) || isUrl(course.thumbnail) ? (
           <Image
-            src={course.icon || course.thumbnail || ""}
+            src={(isUrl(course.icon) ? course.icon : course.thumbnail) || ""}
             alt={course.name}
             fill
             className="object-cover"
@@ -258,7 +263,7 @@ export default function CourseCard({
         )}
 
         {/* Trending badge — top right (only when we have a real thumbnail, fallback image has badge baked in) */}
-        {course.isTrending && (course.icon || course.thumbnail) && (
+        {course.isTrending && (isUrl(course.icon) || isUrl(course.thumbnail)) && (
           <TrendingBadge className="absolute top-3 right-3" />
         )}
       </div>

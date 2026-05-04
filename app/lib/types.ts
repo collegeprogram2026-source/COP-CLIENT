@@ -163,6 +163,44 @@ export interface Course {
   name: string;
   slug: string;
   degreeTypeId: string | DegreeType;
+  approvals?: string[];
+  highlights?: {
+    title?: string;
+    description?: string;
+    icon?: string;
+    _id?: string;
+  }[];
+  eligibilityCriteria?: {
+    title?: string;
+    points?: string[];
+    _id?: string;
+  }[];
+  curriculum?: {
+    semester?: string;
+    subjects?: string[];
+    _id?: string;
+  }[];
+  careerRoles?: string[];
+  careerStats?: {
+    salaryGrowth?: { year?: string; value?: number; _id?: string }[];
+    placementPercentage?: number;
+    highCTC?: string;
+    avgCTC?: string;
+    hiringPartners?: string;
+  };
+  faqs?: {
+    question?: string;
+    answer?: string;
+    _id?: string;
+  }[];
+  contentBlocks?: any[];
+  description?: string;
+  shortDescription?: string;
+  duration?: string;
+  feeStarting?: number;
+  icon?: string;
+  universities?: (string | Provider)[];
+  isTrending?: boolean;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

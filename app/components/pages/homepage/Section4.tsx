@@ -149,11 +149,12 @@ export default function Section4({ section }: Section4Props) {
         <div className="flex justify-center mb-6">
           <div
             style={{
-              width: "253px",
-              height: "48px",
+              maxWidth: "100%",
+              minHeight: "44px",
+              padding: "10px 20px",
               backgroundColor: "#EEF2FF",
               borderRadius: 9999,
-              display: "flex",
+              display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -162,14 +163,15 @@ export default function Section4({ section }: Section4Props) {
               style={{
                 fontFamily: "Inter",
                 fontWeight: 700,
-                fontSize: "14px",
+                fontSize: "clamp(11px, 2.6vw, 14px)",
                 lineHeight: "20px",
                 letterSpacing: "0.7px",
                 color: "#4F39F6",
                 textTransform: "uppercase",
                 whiteSpace: "nowrap",
-                padding: "0 12px",
                 textAlign: "center",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
               }}
             >
               {badge}

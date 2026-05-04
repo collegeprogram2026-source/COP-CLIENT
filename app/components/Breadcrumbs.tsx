@@ -13,7 +13,7 @@ interface BreadcrumbsProps {
 
 export const Breadcrumbs = ({ items, className = "" }: BreadcrumbsProps) => {
   return (
-    <nav className={`text-md font-semibold text-gray-400 ${className}`}>
+    <nav className={`text-md font-semibold text-gray-500 ${className}`}>
       {items.map((crumb, index) => (
         <React.Fragment key={index}>
           {crumb.href ? (
