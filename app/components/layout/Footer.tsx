@@ -6,6 +6,7 @@ import Link from "next/link";
 export default function Footer() {
   const usefulLinks = [
     { label: "Courses", href: "/explore-programs" },
+    { label: "Online Courses", href: "/online-courses" },
     { label: "Top Universities", href: "/universities" },
     { label: "Blogs", href: "/articles" },
     { label: "Compare Universities", href: "/compareUniversities" },
@@ -18,13 +19,13 @@ export default function Footer() {
 
   return (
     <footer className="w-full text-white" style={{ background: "#0D1B2E" }}>
-      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pt-8 sm:pt-10 md:pt-12 pb-0">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pt-4 sm:pt-6 md:pt-8 pb-0">
 
         {/* Mobile layout */}
         <div className="md:hidden pb-10">
           {/* Logo & Description */}
           <div className="mb-8">
-            <img src="/logo.svg" alt="CollegeProgram logo" className="h-16 w-auto object-contain mb-6" />
+            <img src="/Logo.png" alt="CollegeProgram logo" className="h-16 w-auto object-contain mb-6" />
             <p className="text-gray-300 text-[15px] leading-relaxed">
               Discover a world of knowledge and opportunities
               with our online education platform pursue a new
@@ -37,12 +38,12 @@ export default function Footer() {
             <div className="flex items-start gap-3">
               <img src="/SVG.png" alt="Location icon" className="w-5 h-5 mt-1 flex-shrink-0" />
               <span className="text-gray-300 text-[15px] leading-relaxed">
-                C/54 Northwest Freeway,<br />Houston, USA 485
+                Hanuman Path, 94, New Sanganer Rd, opp. Metro pillar no,<br />Shyam Nagar, Jaipur, Rajasthan 302019
               </span>
             </div>
             <div className="flex items-center gap-3">
               <img src="/phone.png" alt="Phone icon" className="w-5 h-5 flex-shrink-0" />
-              <span className="text-gray-300 text-[15px]">+152 534-468-854</span>
+              <span className="text-gray-300 text-[15px]">+91 9024357040</span>
             </div>
           </div>
 
@@ -102,9 +103,9 @@ export default function Footer() {
 
         {/* Desktop layout */}
         <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-10 lg:gap-12 xl:gap-14 pb-8 sm:pb-10 md:pb-12">
-          <div className="flex flex-col">
-            <div className="flex items-start gap-3 mb-3">
-              <img src="/logo.svg" alt="CollegeProgram logo" className="h-16 w-auto object-contain" />
+          <div className="flex flex-col -mt-2">
+            <div className="flex items-start gap-3 mb-2">
+              <img src="/Logo.png" alt="CollegeProgram logo" className="h-16 w-auto object-contain" />
             </div>
             <p className="text-gray-300 text-sm leading-6 mb-3">
               Discover a world of knowledge and opportunities
@@ -114,12 +115,12 @@ export default function Footer() {
             <div className="flex items-start gap-3 mb-3">
               <img src="/SVG.png" alt="Location icon" className="w-5 h-5 mt-0.5 flex-shrink-0" />
               <span className="text-gray-300 text-sm">
-                C/54 Northwest Freeway,<br />Houston, USA 485
+                Hanuman Path, 94, New Sanganer Rd, opp. Metro pillar no,<br />Shyam Nagar, Jaipur, Rajasthan 302019
               </span>
             </div>
             <div className="flex items-center gap-3">
               <img src="/phone.png" alt="Phone icon" className="w-5 h-5 flex-shrink-0" />
-              <span className="text-gray-300 text-sm">+152 534-468-854</span>
+              <span className="text-gray-300 text-sm">+91 9024357040</span>
             </div>
           </div>
 

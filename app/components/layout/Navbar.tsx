@@ -162,6 +162,15 @@ export default function Navbar() {
     setIsLoggedIn(!!token);
     setIsMenuOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMenuOpen]);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [marqueeVars, setMarqueeVars] = useState<{ distance: string; duration: string }>({ distance: '0px', duration: '14s' });
@@ -357,7 +366,7 @@ export default function Navbar() {
       <div className="md:fixed md:px-7 md:py-2.5 w-full bg-[#A983F6] md:bg-transparent border-b md:border-none border-purple-400/30">
         <div className="nav-glass w-full mx-auto flex items-center justify-between px-4 h-16 md:h-[72px] text-white relative">
           <Link href="/" className="flex items-center gap-1 flex-shrink-0">
-            <img src="/logo.svg" alt="CollegeProgram logo" className="h-16 md:h-16 w-auto object-contain" />
+            <img src="/Logo.png" alt="CollegeProgram logo" className="h-16 md:h-16 w-auto object-contain" />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -410,6 +419,15 @@ export default function Navbar() {
                 })}
               </div>
             </div>
+
+            <Link
+              href="/online-courses"
+              className={`font-semibold text-[13px] leading-[19.5px] transition px-3 py-2 rounded-lg ${pathname.startsWith('/online-courses') ? 'bg-white/25 text-white shadow-sm' : 'text-white hover:bg-white/10'
+                }`}
+              style={{ fontFamily: "'Nunito', sans-serif" }}
+            >
+              Online Courses
+            </Link>
 
             <Link
               href="/universities"
@@ -551,7 +569,7 @@ export default function Navbar() {
           {/* Header */}
           <div className="px-6 py-5 flex items-center justify-between border-b border-purple-100 bg-[#A983F6] backdrop-blur-sm sticky top-0 z-10">
             <div className="flex flex-col">
-              <img src="/logo.svg" alt="Logo" className="h-14 w-auto" />
+              <img src="/Logo.png" alt="Logo" className="h-14 w-auto" />
             </div>
             <button
               onClick={() => setIsMenuOpen(false)}
@@ -563,7 +581,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto px-6 py-8">
+          <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-8">
             {/* Search */}
             <div className="mb-10 relative">
               <div className="relative group">
@@ -641,6 +659,11 @@ export default function Navbar() {
                     {
                       label: 'Top Universities', href: '/universities', icon: (
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                      )
+                    },
+                    {
+                      label: 'Online Courses', href: '/online-courses', icon: (
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                       )
                     },
                     {

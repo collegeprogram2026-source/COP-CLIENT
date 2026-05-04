@@ -139,7 +139,7 @@ const SignupForm = () => {
                 <div className="mb-8">
                     <Link href="/">
                         <img
-                            src="/logoDark.svg"
+                            src="/Logo.png"
                             alt="CollegeProgram Logo"
                             className="h-26 w-auto mx-auto"
                         />

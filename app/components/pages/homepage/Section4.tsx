@@ -94,14 +94,12 @@ export default function Section4({ section }: Section4Props) {
     { name: "Dr. Priya Sharma", cmsKey: "Dr. Priya sharma", image: "/Image (Dr. Priya Sharma).png", rating: 4.9, reviewCount: 1250 },
     { name: "Rahul Mehta", cmsKey: "Rahul Mehta", image: "/Image (Rahul Mehta).png", rating: 4.9, reviewCount: 1250 },
     { name: "Anita Desai", cmsKey: "Anita Desai", image: "/Image (Anita Desai).png", rating: 5.0, reviewCount: 1250 },
-    { name: "Vikram Singh", cmsKey: "Vikram Singh", image: "/Image (Dr. Priya Sharma).png", rating: 4.8, reviewCount: 980 },
   ];
 
   const FALLBACK_LINES = [
     ["Senior Education Counselor", "MBA & Management Programs", "12 years experience", "3500+ students guided"],
     ["Career Guidance Expert", "Tech & Data Science", "10 years experience", "2800+ students guided"],
     ["Study Abroad Specialist", "International Programs", "15 years experience", "4200+ students guided"],
-    ["Online Education Expert", "Engineering & Technology", "8 years experience", "2100+ students guided"],
   ];
 
   const counselors: Counselor[] = COUNSELOR_DEFS.map((def, idx) => {

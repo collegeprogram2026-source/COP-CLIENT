@@ -293,7 +293,7 @@ export default function Section3Client({ courseGroups }: Props) {
       {/* View All CTA */}
       <div className="mt-12 flex justify-center">
         <Link
-          href={`/explore-programs?degreeType=${activeTab}`}
+          href="/online-courses"
           className="text-white font-semibold transition-all duration-200 inline-flex items-center justify-center hover:opacity-90 hover:scale-[1.02]"
           style={{
             minWidth: "220px",

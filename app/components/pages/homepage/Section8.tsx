@@ -606,19 +606,6 @@ function ReviewModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
             <p style={{ fontFamily: "Inter", fontSize: 15, color: "#667085", marginBottom: 36, lineHeight: "1.5" }}>We value your feedback. Tell us about your learning journey.</p>
 
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-              {/* Provider Selection */}
-              {/* Custom Provider Selection */}
-              <div>
-                <label style={{ display: "block", fontSize: 14, fontWeight: 600, color: "#344054", marginBottom: 8 }}>University</label>
-                <CustomDropdown
-                  options={providers.map(p => ({ label: p.name, value: p._id }))}
-                  value={formData.providerId}
-                  onChange={(val) => setFormData({ ...formData, providerId: val })}
-                  placeholder="Select University"
-                />
-              </div>
-
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label style={{ display: "block", fontSize: 14, fontWeight: 600, color: "#344054", marginBottom: 8 }}>Name</label>
@@ -658,6 +645,18 @@ function ReviewModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                     }}
                   />
                 </div>
+              </div>
+
+              {/* Provider Selection */}
+              {/* Custom Provider Selection */}
+              <div>
+                <label style={{ display: "block", fontSize: 14, fontWeight: 600, color: "#344054", marginBottom: 8 }}>University</label>
+                <CustomDropdown
+                  options={providers.map(p => ({ label: p.name, value: p._id }))}
+                  value={formData.providerId}
+                  onChange={(val) => setFormData({ ...formData, providerId: val })}
+                  placeholder="Select University"
+                />
               </div>
 
               <div>

@@ -1120,7 +1120,7 @@ export default async function CourseDetailPage({
 
       {/* Bottom CTA */}
       <section className="max-w-[1280px] mx-auto px-4 md:px-8 pb-16 md:pb-20">
-        <div className="relative bg-gradient-to-br from-[#7C3AED] via-[#6366F1] to-[#4F46E5] rounded-3xl p-8 md:p-14 lg:p-16 text-center overflow-hidden shadow-xl">
+        <div className="relative bg-gradient-to-br from-[#9810FA] to-[#4F39F6] rounded-3xl p-8 md:p-14 lg:p-16 text-center overflow-hidden shadow-xl">
           <div className="absolute top-0 right-0 w-72 h-72 md:w-96 md:h-96 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full -ml-32 -mb-32 blur-3xl" />
           <div className="relative z-10">

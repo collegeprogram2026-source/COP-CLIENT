@@ -118,7 +118,7 @@ const LoginForm = () => {
                 <div className="mb-6">
                     <Link href="/">
                         <img
-                            src="/logoDark.svg"
+                            src="/Logo.png"
                             alt="CollegeProgram Logo"
                             className="h-26 mx-auto"
                         />
