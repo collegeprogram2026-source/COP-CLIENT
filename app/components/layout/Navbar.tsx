@@ -51,6 +51,7 @@ export default function Navbar() {
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [degreeTypes, setDegreeTypes] = useState<{ label: string; href: string; icon: React.ReactNode }[]>([]);
   const [trendingCourses, setTrendingCourses] = useState<{ title: string; slug: string; id: string }[]>([]);
@@ -161,6 +162,19 @@ export default function Navbar() {
     const token = localStorage.getItem('studentToken');
     setIsLoggedIn(!!token);
     setIsMenuOpen(false);
+
+    if (token) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/public/student/profile`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data) setUserData(data);
+        })
+        .catch(() => { });
+    } else {
+      setUserData(null);
+    }
   }, [pathname]);
 
   useEffect(() => {
@@ -516,14 +530,22 @@ export default function Navbar() {
             {isClient && isLoggedIn ? (
               <Link
                 href="/profile"
-                className={`hidden sm:flex rounded-full w-9 h-9 border overflow-hidden cursor-pointer transition items-center justify-center ${pathname.startsWith('/profile')
-                  ? 'bg-white/40 border-white text-white shadow-sm'
-                  : 'bg-white/20 hover:bg-white/30 border-white/50 text-white'
+                className={`hidden sm:flex rounded-full w-10 h-10 border-2 overflow-hidden cursor-pointer transition-all duration-300 items-center justify-center p-0.5 ${pathname.startsWith('/profile')
+                  ? 'bg-white/40 border-white shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105'
+                  : 'bg-white/10 border-white/30 hover:border-white/60 hover:bg-white/20 hover:scale-105'
                   }`}
               >
-                <svg className="w-5 h-5 text-current" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  {userData?.profilePhoto ? (
+                    <img src={userData.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-white/10">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
               </Link>
             ) : (
               <Link
@@ -705,11 +727,19 @@ export default function Navbar() {
             {isClient && isLoggedIn ? (
               <Link
                 href="/profile"
-                className="flex items-center justify-center gap-2 w-full py-3 bg-white text-[#A983F6] rounded-2xl font-bold text-sm hover:bg-purple-50 transition-all active:scale-95 shadow-lg"
+                className="flex items-center justify-center gap-3 w-full py-3.5 bg-white text-[#7C3AED] rounded-2xl font-bold text-sm hover:bg-purple-50 transition-all active:scale-95 shadow-md border border-purple-100"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
+                {userData?.profilePhoto ? (
+                  <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-purple-200 shadow-sm flex-shrink-0">
+                    <img src={userData.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-[#7C3AED]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                )}
                 Account Dashboard
               </Link>
             ) : (

@@ -19,6 +19,7 @@ const dummyUser = {
   currentEducation: "",
   occupation: "",
   company: "",
+  profilePhoto: "",
 };
 
 type UserData = typeof dummyUser;
@@ -243,6 +244,7 @@ export default function ProfilePage() {
             currentEducation: data.currentEducation || dummyUser.currentEducation,
             occupation: data.occupation || dummyUser.occupation,
             company: data.currentCompanyOrUniversity || dummyUser.company,
+            profilePhoto: data.profilePhoto || dummyUser.profilePhoto,
           });
           setHasPassword(Boolean(data.hasPassword));
         }
@@ -312,6 +314,63 @@ export default function ProfilePage() {
     }
   };
 
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const token = localStorage.getItem('studentToken');
+    if (!token) return;
+
+    const toastId = toast.loading("Uploading photo...");
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/public/student/uploads/image`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const success = await handleUpdateProfile({ 
+          profilePhoto: data.url,
+          // @ts-ignore
+          profilePhotoPublicId: data.publicId 
+        } as any);
+
+        if (success) {
+          toast.success("Photo updated!", { id: toastId });
+        } else {
+          toast.error("Failed to save photo.", { id: toastId });
+        }
+      } else {
+        toast.error("Upload failed.", { id: toastId });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred.", { id: toastId });
+    }
+  };
+
+  const handlePhotoRemove = async () => {
+    const toastId = toast.loading("Removing photo...");
+    const success = await handleUpdateProfile({ 
+      profilePhoto: "",
+      // @ts-ignore
+      profilePhotoPublicId: "" 
+    } as any);
+
+    if (success) {
+      toast.success("Photo removed", { id: toastId });
+    } else {
+      toast.error("Failed to remove photo", { id: toastId });
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('studentToken');
     toast.success("Logged out successfully", { position: 'bottom-right' });
@@ -337,8 +396,51 @@ export default function ProfilePage() {
               </button>
 
               {/* Avatar Circle */}
-              <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center mb-5 shadow-xl ring-8 ring-white/10 transition-transform hover:scale-105 duration-300">
-                <UserIcon className="w-12 h-12 text-[#7C3AED]" />
+              <div className="relative mb-5 group">
+                <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center shadow-xl ring-8 ring-white/10 transition-transform group-hover:scale-105 duration-300 overflow-hidden">
+                  {userData.profilePhoto ? (
+                    <img
+                      src={userData.profilePhoto}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <UserIcon className="w-12 h-12 text-[#7C3AED]" />
+                  )}
+                </div>
+
+                {/* Edit Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20 rounded-full">
+                  <label className="cursor-pointer p-2 bg-white/90 rounded-full shadow-sm hover:bg-white transition-colors">
+                    <PencilIcon className="w-4 h-4 text-[#7C3AED]" />
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handlePhotoUpload}
+                    />
+                  </label>
+                  {userData.profilePhoto && (
+                    <button
+                      onClick={handlePhotoRemove}
+                      className="ml-2 cursor-pointer p-2 bg-red-50/90 rounded-full shadow-sm hover:bg-white transition-colors"
+                      title="Remove Photo"
+                    >
+                      <TrashIcon className="w-4 h-4 text-red-500" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Small indicator for mobile or when not hovered */}
+                <label className="md:hidden absolute bottom-0 right-0 bg-[#7C3AED] text-white p-1.5 rounded-full cursor-pointer shadow-lg border-2 border-white">
+                  <PencilIcon className="w-3 h-3" />
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                  />
+                </label>
               </div>
 
               <h2 className="font-bold text-lg md:text-xl leading-tight mb-1 tracking-tight">
