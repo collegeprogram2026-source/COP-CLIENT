@@ -7,18 +7,18 @@ import { useRouter } from "next/navigation";
 
 // ── Dummy data ────────────────────────────────────────────────────────────────
 const dummyUser = {
-  firstName: "-",
-  lastName: "-",
-  idNo: "-",
-  dateOfBirth: "-",
-  email: "-",
-  phone: "-",
-  city: "-",
-  state: "-",
-  country: "-",
-  currentEducation: "-",
-  occupation: "-",
-  company: "-",
+  firstName: "",
+  lastName: "",
+  idNo: "",
+  dateOfBirth: "",
+  email: "",
+  phone: "",
+  city: "",
+  state: "",
+  country: "",
+  currentEducation: "",
+  occupation: "",
+  company: "",
 };
 
 type UserData = typeof dummyUser;
@@ -342,7 +342,7 @@ export default function ProfilePage() {
               </div>
 
               <h2 className="font-bold text-lg md:text-xl leading-tight mb-1 tracking-tight">
-                {userData.firstName} {userData.lastName}
+                {userData.firstName || userData.lastName ? `${userData.firstName} ${userData.lastName}`.trim() : "Your Name"}
               </h2>
             </div>
 
@@ -504,14 +504,14 @@ function PersonalInfoPanel({ userData, onUpdate }: { userData: UserData, onUpdat
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="flex items-center gap-2 bg-[#6C3FC5] hover:bg-[#5A2EA6] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 bg-gradient-to-br from-[#9810FA] to-[#4F39F6] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors disabled:opacity-50 cursor-pointer hover:brightness-90"
             >
               <PencilIcon className="w-4 h-4" />
               {isSaving ? "Saving..." : "Save"}
             </button>
             <button
               onClick={handleCancel}
-              className="flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 text-sm font-semibold px-4 py-2 rounded-xl border border-gray-300 transition-colors"
+              className="flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 text-sm font-semibold px-4 py-2 rounded-xl border border-gray-300 transition-colors cursor-pointer"
             >
               <XIcon className="w-4 h-4" />
               Cancel
@@ -520,7 +520,7 @@ function PersonalInfoPanel({ userData, onUpdate }: { userData: UserData, onUpdat
         ) : (
           <button
             onClick={() => setEditMode(true)}
-            className="flex items-center gap-2 bg-gradient-to-br from-[#9810FA] to-[#4F39F6]  text-white text-sm font-bold px-4 py-2 rounded-xl transition-colors cursor-pointer hover:opacity-90"
+            className="flex items-center gap-2 bg-gradient-to-br from-[#9810FA] to-[#4F39F6]  text-white text-sm font-bold px-4 py-2 rounded-xl transition-colors cursor-pointer hover:brightness-90"
           >
             <PencilIcon className="w-4 h-4" />
             Edit Profile
@@ -533,8 +533,8 @@ function PersonalInfoPanel({ userData, onUpdate }: { userData: UserData, onUpdat
       {/* Basic Information */}
       <Section icon={<UserIcon className="w-5 h-5 text-[#6C3FC5]" />} title="Basic Information">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <Field label="First Name" value={data.firstName} editMode={editMode} onChange={(v) => handleChange("firstName", v)} />
-          <Field label="Last Name" value={data.lastName} editMode={editMode} onChange={(v) => handleChange("lastName", v)} />
+          <Field label="First Name" value={data.firstName} editMode={editMode} onChange={(v) => handleChange("firstName", v)} placeholder="Enter your first name" />
+          <Field label="Last Name" value={data.lastName} editMode={editMode} onChange={(v) => handleChange("lastName", v)} placeholder="Enter your last name" />
         </div>
         <div className="mt-6">
           <Field
@@ -558,6 +558,7 @@ function PersonalInfoPanel({ userData, onUpdate }: { userData: UserData, onUpdat
             editMode={editMode}
             onChange={(v) => handleChange("email", v)}
             viewPrefix={<EnvelopeIcon className="w-4 h-4 text-gray-400" />}
+            placeholder="e.g. john@example.com"
           />
           <Field
             label="Phone Number"
@@ -565,6 +566,7 @@ function PersonalInfoPanel({ userData, onUpdate }: { userData: UserData, onUpdat
             editMode={editMode}
             onChange={(v) => handleChange("phone", v)}
             viewPrefix={<PhoneIcon className="w-4 h-4 text-gray-400" />}
+            placeholder="e.g. +91 98765 43210"
           />
         </div>
       </Section>
@@ -574,9 +576,9 @@ function PersonalInfoPanel({ userData, onUpdate }: { userData: UserData, onUpdat
       {/* Location */}
       <Section icon={<MapPinIcon className="w-5 h-5 text-[#6C3FC5]" />} title="Location">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <Field label="City" value={data.city} editMode={editMode} onChange={(v) => handleChange("city", v)} />
-          <Field label="State" value={data.state} editMode={editMode} onChange={(v) => handleChange("state", v)} />
-          <Field label="Country" value={data.country} editMode={editMode} onChange={(v) => handleChange("country", v)} />
+          <Field label="City" value={data.city} editMode={editMode} onChange={(v) => handleChange("city", v)} placeholder="e.g. Mumbai" />
+          <Field label="State" value={data.state} editMode={editMode} onChange={(v) => handleChange("state", v)} placeholder="e.g. Maharashtra" />
+          <Field label="Country" value={data.country} editMode={editMode} onChange={(v) => handleChange("country", v)} placeholder="e.g. India" />
         </div>
       </Section>
 
@@ -585,11 +587,11 @@ function PersonalInfoPanel({ userData, onUpdate }: { userData: UserData, onUpdat
       {/* Professional Information */}
       <Section icon={<BriefcaseIcon className="w-5 h-5 text-[#6C3FC5]" />} title="Professional Information">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <Field label="Current Education" value={data.currentEducation} editMode={editMode} onChange={(v) => handleChange("currentEducation", v)} />
-          <Field label="Occupation" value={data.occupation} editMode={editMode} onChange={(v) => handleChange("occupation", v)} />
+          <Field label="Current Education" value={data.currentEducation} editMode={editMode} onChange={(v) => handleChange("currentEducation", v)} placeholder="e.g. B.Tech in Computer Science" />
+          <Field label="Occupation" value={data.occupation} editMode={editMode} onChange={(v) => handleChange("occupation", v)} placeholder="e.g. Software Engineer" />
         </div>
         <div className="mt-6">
-          <Field label="Company" value={data.company} editMode={editMode} onChange={(v) => handleChange("company", v)} />
+          <Field label="Company" value={data.company} editMode={editMode} onChange={(v) => handleChange("company", v)} placeholder="e.g. Google, IIT Delhi" />
         </div>
       </Section>
     </div>
@@ -633,6 +635,8 @@ function Field({
   viewPrefix?: React.ReactNode;
   placeholder?: string;
 }) {
+  const isEmpty = !value || value.trim() === "";
+
   return (
     <div>
       <p className="text-xs text-gray-400 font-medium mb-1">{label}</p>
@@ -640,14 +644,16 @@ function Field({
         <input
           type="text"
           value={value}
-          placeholder={placeholder ?? ""}
+          placeholder={placeholder ?? `Enter ${label.toLowerCase()}`}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 font-medium outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white"
+          className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 font-medium outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white placeholder:text-gray-300"
         />
       ) : (
         <div className="flex items-center gap-1.5">
           {viewPrefix && <span className="flex-shrink-0">{viewPrefix}</span>}
-          <p className="text-sm font-semibold text-gray-800">{value}</p>
+          <p className={`text-sm font-semibold ${isEmpty ? "text-gray-300 italic" : "text-gray-800"}`}>
+            {isEmpty ? "Not provided" : value}
+          </p>
         </div>
       )}
     </div>
