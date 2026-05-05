@@ -378,25 +378,7 @@ export default function Section8({ section }: Section8Props) {
                             </div>
                           </div>
 
-                          {/* LinkedIn icon */}
-                          <div
-                            style={{
-                              width: 28,
-                              height: 28,
-                              background: "#0077B5",
-                              borderRadius: "4px",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              flexShrink: 0,
-                            }}
-                          >
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-                              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                              <rect x="2" y="9" width="4" height="12" />
-                              <circle cx="4" cy="4" r="2" />
-                            </svg>
-                          </div>
+
                         </div>
 
                         {/* University */}

@@ -25,7 +25,7 @@ export default function Footer() {
         <div className="md:hidden pb-10">
           {/* Logo & Description */}
           <div className="mb-8">
-            <img src="/Logo.png" alt="CollegeProgram logo" className="h-16 w-auto object-contain mb-6" />
+            <img src="/logo.png" alt="CollegeProgram logo" className="h-16 w-auto object-contain mb-6" />
             <p className="text-gray-300 text-[15px] leading-relaxed">
               Discover a world of knowledge and opportunities
               with our online education platform pursue a new
@@ -104,9 +104,7 @@ export default function Footer() {
         {/* Desktop layout */}
         <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-10 lg:gap-12 xl:gap-14 pb-8 sm:pb-10 md:pb-12">
           <div className="flex flex-col -mt-2">
-            <div className="flex items-start gap-3 mb-2">
-              <img src="/Logo.png" alt="CollegeProgram logo" className="h-16 w-auto object-contain" />
-            </div>
+            <img src="/logo.png" alt="CollegeProgram logo" className="h-16 w-auto object-contain object-left mb-2 -ml-3" />
             <p className="text-gray-300 text-sm leading-6 mb-3">
               Discover a world of knowledge and opportunities
               with our online education platform pursue a new
