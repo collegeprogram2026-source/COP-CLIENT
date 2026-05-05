@@ -190,16 +190,18 @@ export default function Footer() {
   }, []);
 
   const usefulLinks = [
-    { label: "Courses", href: "/explore-programs" },
-    { label: "Online Courses", href: "online-courses" },
-    { label: "Top Universities", href: "universities" },
-    { label: "Blogs", href: "articles" },
-    { label: "Compare Universities", href: "compareUniversities" },
+    { label: "Explore Programs", href: "/explore-programs" },
+    { label: "Online Courses", href: "/online-courses" },
+    { label: "Top Universities", href: "/universities" },
+    { label: "Terms & Conditions", href: "/terms-and-conditions" },
+    { label: "Privacy Policy", href: "/our-policy" },
   ];
 
   const toolLinks = [
-    { label: "Compare Universities", href: "compareUniversities" },
-    { label: "Talk to Expert", href: "#talk-to-expert" },
+    { label: "Compare Universities", href: "/compareUniversities" },
+    { label: "Blogs", href: "/articles" },
+    { label: "FAQs", href: "/faqs" },
+    { label: "Talk to Experts", href: "/talk-to-experts" },
   ];
 
   const ChevronIcon = () => (
@@ -262,7 +264,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-lg mb-8 leading-tight">Tools for making informed Choices</h3>
+            <h3 className="font-bold text-lg mb-8 leading-tight">Resources</h3>
             <ul className="space-y-4">
               {toolLinks.map((link, i) => (
                 <li key={i}>
