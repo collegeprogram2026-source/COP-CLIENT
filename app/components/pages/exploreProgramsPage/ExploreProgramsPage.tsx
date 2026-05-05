@@ -233,7 +233,7 @@ export default function ExploreProgramsPage({
   };
 
   return (
-    <main className="min-h-screen bg-[#F9FAFB] lg:pt-8">
+    <main className="min-h-screen bg-[#F9FAFB]">
       {/* Hero / Header Section */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 py-5 md:py-8">

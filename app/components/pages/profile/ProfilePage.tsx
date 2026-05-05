@@ -114,6 +114,23 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
+function RibbonIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75l-4.5-2.25-4.5 2.25V5.25A2.25 2.25 0 019.75 3h4.5a2.25 2.25 0 012.25 2.25v13.5z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9a3 3 0 100-6 3 3 0 000 6z" />
+    </svg>
+  );
+}
+
+function ArrowRightIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+    </svg>
+  );
+}
+
 function EyeIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
@@ -169,6 +186,7 @@ export default function ProfilePage() {
   const [activeNav, setActiveNav] = useState<NavKey>("profile");
 
   const [userData, setUserData] = useState<UserData>(dummyUser);
+  const [hasPassword, setHasPassword] = useState<boolean>(true);
   const [shortlisted, setShortlisted] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isShortlistLoading, setIsShortlistLoading] = useState(false);
@@ -226,6 +244,7 @@ export default function ProfilePage() {
             occupation: data.occupation || dummyUser.occupation,
             company: data.currentCompanyOrUniversity || dummyUser.company,
           });
+          setHasPassword(Boolean(data.hasPassword));
         }
       } catch (err) {
         console.error("Failed to fetch profile", err);
@@ -392,7 +411,13 @@ export default function ProfilePage() {
               onRemove={handleRemoveShortlist}
             />
           )}
-          {activeNav === "settings" && <SettingsPanel userData={userData} />}
+          {activeNav === "settings" && (
+            <SettingsPanel
+              userData={userData}
+              hasPassword={hasPassword}
+              onPasswordSet={() => setHasPassword(true)}
+            />
+          )}
 
           {/* Help card (Mobile only) */}
           <div className="mt-8 md:hidden bg-[#5A2EA6] rounded-3xl p-6 text-white flex flex-col items-center text-center shadow-xl shadow-purple-900/10">
@@ -710,6 +735,7 @@ function ShortlistedPanel({
   isLoading: boolean,
   onRemove: (id: string) => void
 }) {
+  const router = useRouter();
   const [search, setSearch] = useState("");
 
   const filtered = list.filter((u) =>
@@ -719,17 +745,17 @@ function ShortlistedPanel({
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 flex flex-col items-center justify-center gap-4">
-        <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
+      <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-12 flex flex-col items-center justify-center gap-4">
+        <div className="w-8 h-8 border-4 border-[#6C3FC5] border-t-transparent rounded-full animate-spin" />
         <p className="text-gray-500 font-medium">Loading your shortlist...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       {/* Search + Filter bar */}
-      <div className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-4 py-2.5 shadow-sm">
+      <div className="flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-5 py-3 shadow-sm">
         <SearchBarIcon className="w-5 h-5 text-gray-400 flex-shrink-0" />
         <input
           type="text"
@@ -738,93 +764,96 @@ function ShortlistedPanel({
           placeholder="Search shortlisted universities..."
           className="flex-1 text-sm text-gray-700 outline-none placeholder-gray-400 bg-transparent"
         />
-        <FilterIcon className="w-5 h-5 text-gray-400 flex-shrink-0" />
+        <FilterIcon className="w-5 h-5 text-gray-400 flex-shrink-0 cursor-pointer" />
       </div>
 
       {/* University Cards */}
       {filtered.length === 0 && (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 text-center text-gray-400 text-sm">
+        <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-10 text-center text-gray-400 text-sm font-medium">
           {search ? "No matches found for your search." : "No shortlisted universities found."}
         </div>
       )}
 
       {filtered.map((uni) => {
         const initials = uni.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
-        const colors = ["bg-purple-600", "bg-orange-400", "bg-red-500", "bg-blue-500", "bg-teal-500"];
-        const color = colors[uni.name.length % colors.length];
 
         return (
-          <div key={uni.providerId} className="bg-white rounded-[32px] md:rounded-2xl border border-gray-100 shadow-sm p-5 relative group hover:shadow-md transition-shadow">
+          <div key={uni.providerId} className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm p-5 md:p-6 relative group transition-all hover:shadow-xl hover:shadow-purple-500/5">
             {/* Remove button */}
             <button
               onClick={() => onRemove(uni.providerId)}
-              className="absolute top-4 right-4 text-gray-300 hover:text-red-500 transition-colors p-1"
+              className="absolute top-6 right-6 text-gray-300 hover:text-gray-600 transition-colors p-1"
               aria-label="Remove"
             >
-              <TrashIcon className="w-4 h-4" />
+              <XIcon className="w-5 h-5" />
             </button>
 
-            {/* Top row: avatar + name/meta */}
-            <div className="flex items-start gap-4 mb-4">
-              <div className={`${color} w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner`}>
-                {uni.logo ? (
-                  <img src={uni.logo} alt={uni.name} className="w-8 h-8 object-contain brightness-0 invert" />
-                ) : (
-                  <span className="text-white text-sm font-extrabold">{initials}</span>
-                )}
+            {/* Top section: Logo + Title + Meta */}
+            <div className="flex items-start gap-5 mb-6">
+              {/* Logo Container */}
+              <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br from-[#9810FA] to-[#4F39F6] flex items-center justify-center flex-shrink-0 shadow-lg shadow-purple-500/20">
+                <span className="text-white text-lg md:text-xl font-black tracking-tight">{initials}</span>
               </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-gray-900 text-base leading-tight group-hover:text-purple-700 transition-colors">{uni.name}</h3>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
-                  <span className="flex items-center gap-1 text-xs text-gray-500">
-                    <PinIcon className="w-3.5 h-3.5 text-gray-400" />
+
+              {/* Info Column */}
+              <div className="flex-1 pt-0.5">
+                <h3 className="font-extrabold text-gray-900 text-base md:text-lg leading-tight mb-1.5 group-hover:text-[#6C3FC5] transition-colors">
+                  {uni.name}
+                </h3>
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                  <span className="flex items-center gap-1.5 text-xs md:text-sm text-gray-500 font-medium">
+                    <PinIcon className="w-4 h-4 text-gray-400" />
                     {uni.states?.[0] || "Online"}
                   </span>
-                  <span className="flex items-center gap-1 text-xs text-gray-500">
-                    <StarIcon className="w-3.5 h-3.5 text-yellow-400" />
-                    {uni.rating || "4.2"}
+                  <span className="flex items-center gap-1.5 text-xs md:text-sm text-gray-900 font-bold">
+                    <StarIcon className="w-4 h-4 text-[#FDC700]" />
+                    {uni.rating || "4.8"}
                   </span>
-                  <span className="text-xs text-gray-400 font-medium">
-                    {uni.approvals?.map((a: any) => a.name).join(" | ")}
+                  <span className="flex items-center gap-1.5 text-xs md:text-sm text-gray-500 font-medium">
+                    <RibbonIcon className="w-4 h-4 text-[#6C3FC5]" />
+                    {uni.approvals?.map((a: any) => a.name).join(" | ") || "NAAC A+ | UGC | AICTE"}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Info strip */}
-            <div className="bg-gray-50/80 rounded-xl px-4 py-3 grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+            {/* Info Grid (Light colored boxes) */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
               <InfoCell
-                icon={<GraduationCapIcon className="w-4 h-4 text-purple-500" />}
-                label="Primary Program"
-                value={uni.courses?.[0]?.title || "Multi-Program"}
+                icon={<GraduationCapIcon className="w-4 h-4 text-[#6C3FC5]" />}
+                label="Program"
+                value={uni.courses?.[0]?.title || "MBA"}
               />
               <InfoCell
-                icon={<ClockIcon className="w-4 h-4 text-purple-500" />}
+                icon={<ClockIcon className="w-4 h-4 text-[#6C3FC5]" />}
                 label="Duration"
                 value={uni.minimumDuration || "24 Months"}
               />
               <InfoCell
-                icon={<RupeeIcon className="w-4 h-4 text-purple-500" />}
-                label="Starting Fee"
-                value={uni.startingFee ? `₹${uni.startingFee.toLocaleString()}` : "Contact for Fees"}
+                icon={<RupeeIcon className="w-4 h-4 text-[#6C3FC5]" />}
+                label="Total Fees"
+                value={uni.startingFee ? `₹${uni.startingFee.toLocaleString()}` : "₹1,20,000"}
               />
               <InfoCell
-                icon={<CalIcon className="w-4 h-4 text-purple-500" />}
-                label="Admissions"
-                value="Ongoing"
+                icon={<CalIcon className="w-4 h-4 text-[#6C3FC5]" />}
+                label="Start Date"
+                value="April 2026"
               />
             </div>
 
-            {/* Action buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3">
               <Link
-                href={`/universities/${uni.name.toLowerCase().replace(/\s+/g, '-')}`} // Fallback slug if providerId not mapping to slug
-                className="flex items-center justify-center gap-1.5 border border-[#6C3FC5] text-[#6C3FC5] hover:bg-purple-50 text-xs font-bold px-5 py-2.5 rounded-xl transition-colors"
+                href={`/universities/${uni.name.toLowerCase().replace(/\s+/g, '-')}`}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-[#9810FA] to-[#4F39F6] text-white text-xs font-bold px-6 py-3 rounded-xl transition-all hover:opacity-90 shadow-lg shadow-purple-500/20"
               >
-                View Details <span className="text-base leading-none">→</span>
+                View Details <ArrowRightIcon className="w-3 h-3" />
               </Link>
-              <button className="flex items-center justify-center gap-1.5 bg-[#6C3FC5] hover:bg-[#5A2EA6] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-colors shadow-lg shadow-purple-200">
-                Compare Programs
+              <button
+                onClick={() => router.push(`/compareUniversities?ids=${uni.providerId}`)}
+                className="w-full sm:w-auto flex items-center justify-center border-2 border-[#6C3FC5] text-[#6C3FC5] hover:bg-purple-50 text-xs font-bold px-6 py-3 rounded-xl transition-all cursor-pointer"
+              >
+                Compare
               </button>
             </div>
           </div>
@@ -909,23 +938,31 @@ function InfoCell({
   value: string;
 }) {
   return (
-    <div className="flex flex-col gap-0.5">
-      <div className="flex items-center gap-1 text-xs text-gray-400 font-medium">
+    <div className="bg-[#F5F3FF] rounded-xl p-3 flex flex-col gap-1 border border-[#E9E4FF]">
+      <div className="flex items-center gap-1.5 text-[9px] md:text-[11px] text-gray-500 font-bold uppercase tracking-wider">
         {icon}
         {label}
       </div>
-      <p className="text-xs font-bold text-gray-800">{value}</p>
+      <p className="text-xs md:text-sm font-black text-gray-900">{value}</p>
     </div>
   );
 }
 
 type SettingsTab = "account" | "security";
 
-function SettingsPanel({ userData }: { userData: UserData }) {
+function SettingsPanel({
+  userData,
+  hasPassword,
+  onPasswordSet,
+}: {
+  userData: UserData;
+  hasPassword: boolean;
+  onPasswordSet: () => void;
+}) {
   const [activeTab, setActiveTab] = useState<SettingsTab>("account");
 
   return (
-    <div className="bg-white rounded-[32px] md:rounded-2xl shadow-xl shadow-black/5 border border-gray-100 p-6 md:p-8">
+    <div className="bg-white rounded-xl md:rounded-xl shadow-xl shadow-black/5 border border-gray-100 p-6 md:p-8">
       {/* Header */}
       <h1 className="text-xl font-extrabold text-gray-900 mb-5">Settings</h1>
 
@@ -958,13 +995,21 @@ function SettingsPanel({ userData }: { userData: UserData }) {
       )}
 
       {/* Security Tab */}
-      {activeTab === "security" && <SecurityTab />}
+      {activeTab === "security" && (
+        <SecurityTab hasPassword={hasPassword} onPasswordSet={onPasswordSet} />
+      )}
     </div>
   );
 }
 
 // ── Security Tab ──────────────────────────────────────────────────────────────
-function SecurityTab() {
+function SecurityTab({
+  hasPassword,
+  onPasswordSet,
+}: {
+  hasPassword: boolean;
+  onPasswordSet: () => void;
+}) {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [currentPw, setCurrentPw] = useState("");
@@ -975,6 +1020,7 @@ function SecurityTab() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [isSettingPassword, setIsSettingPassword] = useState(false);
 
   const handleChangePassword = async () => {
     if (!currentPw || !newPw) {
@@ -1023,6 +1069,52 @@ function SecurityTab() {
     }
   };
 
+  const handleSetPassword = async () => {
+    if (!newPw) {
+      toast.error("New password is required");
+      return;
+    }
+    if (newPw !== confirmPw) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    if (newPw.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
+    setIsSettingPassword(true);
+    const token = localStorage.getItem('studentToken');
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/public/student/password/set`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          newPassword: newPw,
+          confirmPassword: confirmPw,
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success(data.message || "Password set successfully");
+        setNewPw("");
+        setConfirmPw("");
+        onPasswordSet();
+      } else {
+        toast.error(data.error || "Failed to set password");
+      }
+    } catch (err) {
+      toast.error("An error occurred while setting password");
+    } finally {
+      setIsSettingPassword(false);
+    }
+  };
+
   const handleDeleteAccount = async (password: string) => {
     setIsDeleting(true);
     const token = localStorage.getItem('studentToken');
@@ -1053,75 +1145,126 @@ function SecurityTab() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Change Password */}
-      <div>
-        <h2 className="font-bold text-gray-900 text-base mb-5">Change Password</h2>
+      {/* Password section — Set vs Change depending on whether user has one */}
+      {hasPassword ? (
+        <div>
+          <h2 className="font-bold text-gray-900 text-base mb-5">Change Password</h2>
 
-        <div className="flex flex-col gap-4">
-          {/* Current Password */}
-          <div>
-            <p className="text-xs text-gray-500 font-medium mb-1.5">Current Password</p>
-            <div className="relative">
+          <div className="flex flex-col gap-4">
+            {/* Current Password */}
+            <div>
+              <p className="text-xs text-gray-500 font-medium mb-1.5">Current Password</p>
+              <div className="relative">
+                <input
+                  type={showCurrent ? "text" : "password"}
+                  value={currentPw}
+                  onChange={(e) => setCurrentPw(e.target.value)}
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm text-gray-800 outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrent((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  tabIndex={-1}
+                >
+                  {showCurrent ? <EyeOffIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* New Password */}
+            <div>
+              <p className="text-xs text-gray-500 font-medium mb-1.5">New Password</p>
+              <div className="relative">
+                <input
+                  type={showNew ? "text" : "password"}
+                  value={newPw}
+                  onChange={(e) => setNewPw(e.target.value)}
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm text-gray-800 outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNew((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  tabIndex={-1}
+                >
+                  {showNew ? <EyeOffIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Confirm New Password */}
+            <div>
+              <p className="text-xs text-gray-500 font-medium mb-1.5">Confirm New Password</p>
               <input
-                type={showCurrent ? "text" : "password"}
-                value={currentPw}
-                onChange={(e) => setCurrentPw(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm text-gray-800 outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white"
+                type="password"
+                value={confirmPw}
+                onChange={(e) => setConfirmPw(e.target.value)}
+                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white"
               />
-              <button
-                type="button"
-                onClick={() => setShowCurrent((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                tabIndex={-1}
-              >
-                {showCurrent ? <EyeOffIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />}
-              </button>
             </div>
           </div>
 
-          {/* New Password */}
-          <div>
-            <p className="text-xs text-gray-500 font-medium mb-1.5">New Password</p>
-            <div className="relative">
-              <input
-                type={showNew ? "text" : "password"}
-                value={newPw}
-                onChange={(e) => setNewPw(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm text-gray-800 outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white"
-              />
-              <button
-                type="button"
-                onClick={() => setShowNew((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                tabIndex={-1}
-              >
-                {showNew ? <EyeOffIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />}
-              </button>
-            </div>
-          </div>
-
-          {/* Confirm New Password */}
-          <div>
-            <p className="text-xs text-gray-500 font-medium mb-1.5">Confirm New Password</p>
-            <input
-              type="password"
-              value={confirmPw}
-              onChange={(e) => setConfirmPw(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white"
-            />
-          </div>
+          <button
+            onClick={handleChangePassword}
+            disabled={isChangingPassword}
+            className="mt-5 flex items-center gap-2 bg-[#6C3FC5] hover:bg-[#5A2EA6] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors disabled:opacity-50"
+          >
+            <LockIcon className="w-4 h-4" />
+            {isChangingPassword ? "Updating..." : "Change Password"}
+          </button>
         </div>
+      ) : (
+        <div>
+          <h2 className="font-bold text-gray-900 text-base mb-2">Set Password</h2>
+          <p className="text-xs text-gray-500 mb-5 leading-relaxed">
+            You signed in with Google and don&apos;t have a password yet. Set one to also be able to sign in with email and password.
+          </p>
 
-        {/* Change Password Button */}
-        <button
-          onClick={handleChangePassword}
-          disabled={isChangingPassword}
-          className="mt-5 flex items-center gap-2 bg-[#6C3FC5] hover:bg-[#5A2EA6] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors disabled:opacity-50"
-        >
-          <LockIcon className="w-4 h-4" />
-          {isChangingPassword ? "Updating..." : "Change Password"}
-        </button>
-      </div>
+          <div className="flex flex-col gap-4">
+            {/* New Password */}
+            <div>
+              <p className="text-xs text-gray-500 font-medium mb-1.5">New Password</p>
+              <div className="relative">
+                <input
+                  type={showNew ? "text" : "password"}
+                  value={newPw}
+                  onChange={(e) => setNewPw(e.target.value)}
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm text-gray-800 outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNew((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  tabIndex={-1}
+                >
+                  {showNew ? <EyeOffIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Confirm New Password */}
+            <div>
+              <p className="text-xs text-gray-500 font-medium mb-1.5">Confirm New Password</p>
+              <input
+                type="password"
+                value={confirmPw}
+                onChange={(e) => setConfirmPw(e.target.value)}
+                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white"
+              />
+            </div>
+          </div>
+
+          <button
+            onClick={handleSetPassword}
+            disabled={isSettingPassword}
+            className="mt-5 flex items-center gap-2 bg-[#6C3FC5] hover:bg-[#5A2EA6] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors disabled:opacity-50"
+          >
+            <LockIcon className="w-4 h-4" />
+            {isSettingPassword ? "Setting..." : "Set Password"}
+          </button>
+        </div>
+      )}
 
       {/* Divider */}
       <hr className="border-red-200" />

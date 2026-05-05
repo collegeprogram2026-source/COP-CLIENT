@@ -201,16 +201,16 @@ export default function Section8({ section }: Section8Props) {
                 style={{ width: '100%', minHeight: 280, borderRadius: 16, border: '1px solid #E5E7EB', backgroundColor: '#fff', padding: '20px 18px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
               >
                 <div>
-                  <div style={{ fontFamily: 'Georgia,serif', fontSize: 48, lineHeight: 1, color: '#E5E7EB', marginBottom: 6, userSelect: 'none' }}>&ldquo;</div>
-                  <p style={{ fontFamily: 'Inter', fontSize: 14, fontWeight: 400, lineHeight: '22px', color: '#374151', margin: 0 }}>{card.quote}</p>
+                  <div style={{ fontFamily: 'Georgia,serif', fontSize: 48, lineHeight: 1, color: '#E5E7EB', marginBottom: 6, userSelect: 'none', textAlign: 'center' }}>&ldquo;</div>
+                  <p style={{ fontFamily: 'Inter', fontSize: 14, fontWeight: 800, lineHeight: '22px', color: '#374151', margin: 0, textAlign: 'center' }}>&ldquo;{card.quote}&rdquo;</p>
                 </div>
                 <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
                   <div style={{ width: 40, height: 40, borderRadius: '50%', overflow: 'hidden', background: '#E5E7EB', flexShrink: 0, position: 'relative' }}>
                     <Image src={card.avatar} alt={card.name} fill sizes="40px" style={{ objectFit: 'cover' }} />
                   </div>
-                  <div>
-                    <div style={{ fontFamily: 'Inter', fontSize: 14, fontWeight: 600, color: '#101828', lineHeight: '20px' }}>{card.name}</div>
-                    <div style={{ fontFamily: 'Inter', fontSize: 12, color: '#6B7280', lineHeight: '17px' }}>{card.degree} · {card.university}</div>
+                  <div style={{ flex: 1, minWidth: 0, width: 0, overflow: 'hidden' }}>
+                    <div style={{ fontFamily: 'Inter', fontSize: 14, fontWeight: 600, color: '#101828', lineHeight: '20px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{card.name}</div>
+                    <div style={{ fontFamily: 'Inter', fontSize: 12, color: '#6B7280', lineHeight: '17px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{card.degree} · {card.university}</div>
                   </div>
                 </div>
               </div>
@@ -296,6 +296,7 @@ export default function Section8({ section }: Section8Props) {
                             color: "#E5E7EB",
                             marginBottom: "8px",
                             userSelect: "none",
+                            textAlign: "center",
                           }}
                         >
                           &ldquo;
@@ -304,20 +305,21 @@ export default function Section8({ section }: Section8Props) {
                           style={{
                             fontFamily: "Inter",
                             fontSize: 14,
-                            fontWeight: 400,
+                            fontWeight: 800,
                             lineHeight: "22px",
                             color: "#374151",
                             margin: 0,
+                            textAlign: "center",
                           }}
                         >
-                          {card.quote}
+                          &ldquo;{card.quote}&rdquo;
                         </p>
                       </div>
 
                       {/* Author row */}
                       <div style={{ marginTop: "20px" }}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1, minWidth: 0 }}>
                             {/* Avatar */}
                             <div
                               style={{
@@ -343,7 +345,7 @@ export default function Section8({ section }: Section8Props) {
                               />
                             </div>
                             {/* Name + Degree */}
-                            <div>
+                            <div style={{ flex: 1, minWidth: 0, width: 0, overflow: 'hidden' }}>
                               <div
                                 style={{
                                   fontFamily: "Inter",
@@ -351,6 +353,9 @@ export default function Section8({ section }: Section8Props) {
                                   fontWeight: 600,
                                   color: "#101828",
                                   lineHeight: "20px",
+                                  whiteSpace: "nowrap",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
                                 }}
                               >
                                 {card.name}
