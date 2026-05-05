@@ -1,9 +1,194 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { IconMapPin, IconMail, IconPhone } from '@tabler/icons-react';
+
+// ---------- Types ----------
+interface FooterItem {
+  label: string;
+  href: string;
+}
+
+interface DegreeSection {
+  title: string;
+  items: FooterItem[];
+}
+
+interface ProviderCourseSummary {
+  degreeType: { name: string; slug: string; order: number };
+  courses: {
+    _id: string;
+    courseId?: string;
+    name: string;
+    slug: string;
+    providerName?: string;
+  }[];
+}
+
+interface ProviderListItem {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
+// ---------- Fallback mock data ----------
+const FALLBACK_DEGREE_SECTIONS: DegreeSection[] = [
+  {
+    title: "Popular PG Programs",
+    items: [
+      { label: "Online MBA", href: "/course-detail?id=online-mba" },
+      { label: "Online MCA", href: "/course-detail?id=online-mca" },
+      { label: "Dual MBA", href: "/course-detail?id=dual-mba" },
+      { label: "Online BBA + MBA", href: "/course-detail?id=online-bba-mba" },
+    ],
+  },
+  {
+    title: "Trending UG Programs",
+    items: [
+      { label: "Online BBA", href: "/course-detail?id=online-bba" },
+      { label: "Online BCA", href: "/course-detail?id=online-bca" },
+      { label: "Online BA", href: "/course-detail?id=online-ba" },
+      { label: "Distance BJourn", href: "/course-detail?id=distance-bjourn" },
+    ],
+  },
+  {
+    title: "Doctorate Programs",
+    items: [
+      { label: "Online DBA", href: "/course-detail?id=online-dba" },
+      { label: "Global DBA", href: "/course-detail?id=global-dba" },
+      { label: "DNP", href: "/course-detail?id=dnp" },
+      { label: "EdD", href: "/course-detail?id=edd" },
+    ],
+  },
+  {
+    title: "Executive Programs",
+    items: [
+      { label: "Executive MBA", href: "/course-detail?id=executive-mba" },
+      { label: "Executive DBA", href: "/course-detail?id=executive-dba" },
+      { label: "Executive PGDM", href: "/course-detail?id=executive-pgdm" },
+      { label: "Executive PGCM", href: "/course-detail?id=executive-pgcm" },
+    ],
+  },
+  {
+    title: "In Demand MBA Specializations",
+    items: [
+      { label: "HR Management", href: "/course-detail?id=hr-management" },
+      { label: "Marketing Management", href: "/course-detail?id=marketing-management" },
+      { label: "Finance Management", href: "/course-detail?id=finance-management" },
+      { label: "Fintech Management", href: "/course-detail?id=fintech-management" },
+    ],
+  },
+  {
+    title: "In Demand MCA Specializations",
+    items: [
+      { label: "Artificial Intelligence", href: "/course-detail?id=artificial-intelligence" },
+      { label: "Cyber Security", href: "/course-detail?id=cyber-security" },
+      { label: "Cloud Computing", href: "/course-detail?id=cloud-computing" },
+      { label: "Data Science and Analytics", href: "/course-detail?id=data-science-analytics" },
+    ],
+  },
+  {
+    title: "Top Certification Programs",
+    items: [
+      { label: "PGCM", href: "/course-detail?id=pgcm" },
+      { label: "Certificate In UX & UX", href: "/course-detail?id=certificate-ux" },
+      { label: "Certificate In Data Science", href: "/course-detail?id=certificate-data-science" },
+      { label: "Certificate in Project Management", href: "/course-detail?id=certificate-project-management" },
+    ],
+  },
+];
+
+const FALLBACK_UNIVERSITIES: FooterItem[] = [
+  { label: "Amity Online University", href: "/universities/amity-online-university" },
+  { label: "Manipal Online", href: "/universities/manipal-online" },
+  { label: "Jain University Online", href: "/universities/jain-university-online" },
+  { label: "Sharda Online University", href: "/universities/sharda-online-university" },
+];
+
+const ITEMS_LIMIT = 4;
+
+// ---------- Section title mapping for degree type slugs ----------
+const DEGREE_TITLE_MAP: Record<string, string> = {
+  "post-graduate": "Popular PG Programs",
+  "under-graduate": "Trending UG Programs",
+  "doctorate": "Doctorate Programs",
+  "executive": "Executive Programs",
+  "mba-specializations": "In Demand MBA Specializations",
+  "mca-specializations": "In Demand MCA Specializations",
+  "certification": "Top Certification Programs",
+};
+
+function getDegreeTitle(degreeType: { name: string; slug: string }): string {
+  return DEGREE_TITLE_MAP[degreeType.slug] || `${degreeType.name} Programs`;
+}
+
 export default function Footer() {
+  const [degreeSections, setDegreeSections] = useState<DegreeSection[]>(FALLBACK_DEGREE_SECTIONS);
+  const [universities, setUniversities] = useState<FooterItem[]>(FALLBACK_UNIVERSITIES);
+
+  useEffect(() => {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+    // Fetch provider-courses home-summary (courses grouped by degree type)
+    const fetchCourses = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/api/public/provider-courses/home-summary`);
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data: ProviderCourseSummary[] = await res.json();
+
+        if (data && data.length > 0) {
+          const sections: DegreeSection[] = data.map((group) => ({
+            title: getDegreeTitle(group.degreeType),
+            items: group.courses.slice(0, ITEMS_LIMIT).map((course) => ({
+              label: course.name,
+              href: `/course-detail?id=${course.slug || course.courseId || course._id}`,
+            })),
+          }));
+
+          // Pad to exactly 7 sections using fallback data if needed
+          const merged = sections.slice(0, 7);
+          if (merged.length < 7) {
+            const existingTitles = new Set(merged.map((s) => s.title));
+            for (const fallback of FALLBACK_DEGREE_SECTIONS) {
+              if (merged.length >= 7) break;
+              if (!existingTitles.has(fallback.title)) {
+                merged.push(fallback);
+              }
+            }
+          }
+          setDegreeSections(merged);
+        }
+      } catch (err) {
+        console.warn("Footer: Using fallback course data", err);
+        // Keep fallback data (already set as default state)
+      }
+    };
+
+    // Fetch providers (trending universities)
+    const fetchProviders = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/api/public/providers`);
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data: ProviderListItem[] = await res.json();
+
+        if (data && data.length > 0) {
+          const items: FooterItem[] = data.slice(0, ITEMS_LIMIT).map((p) => ({
+            label: p.name,
+            href: `/universities/${p.slug}`,
+          }));
+          setUniversities(items);
+        }
+      } catch (err) {
+        console.warn("Footer: Using fallback university data", err);
+        // Keep fallback data (already set as default state)
+      }
+    };
+
+    fetchCourses();
+    fetchProviders();
+  }, []);
+
   const usefulLinks = [
     { label: "Courses", href: "/explore-programs" },
     { label: "Online Courses", href: "online-courses" },
@@ -17,87 +202,16 @@ export default function Footer() {
     { label: "Talk to Expert", href: "#talk-to-expert" },
   ];
 
-  const pgPrograms = [
-    { label: "Online MBA", href: "#" },
-    { label: "Online MCA", href: "#" },
-    { label: "Dual MBA", href: "#" },
-    { label: "Online BBA + MBA", href: "#" },
-    { label: "1-Year Online MBA", href: "#" },
-  ];
-
-  const ugPrograms = [
-    { label: "Online BBA", href: "#" },
-    { label: "Online BCA", href: "#" },
-    { label: "Online BBA", href: "#" },
-    { label: "Online BA", href: "#" },
-    { label: "Distance BJourn", href: "#" },
-  ];
-
-  const doctoratePrograms = [
-    { label: "Online DBA", href: "#" },
-    { label: "Global DBA", href: "#" },
-    { label: "DNP", href: "#" },
-    { label: "EdD", href: "#" },
-    { label: "MSA + DBA", href: "#" },
-  ];
-
-  const executivePrograms = [
-    { label: "Executive MBA", href: "#" },
-    { label: "Executive DBA", href: "#" },
-    { label: "Executive PGDM", href: "#" },
-    { label: "Executive PGDM", href: "#" },
-    { label: "Executive PGCM", href: "#" },
-  ];
-
-  const trendingUniversities = [
-    { label: "Amity Online University", href: "#" },
-    { label: "Manipal Online", href: "#" },
-    { label: "Online Manipal", href: "#" },
-    { label: "Jain University Online", href: "#" },
-    { label: "Sharda Online University", href: "#" },
-    { label: "Chandigarh University", href: "#" },
-    { label: "LPU Online", href: "#" },
-    { label: "DY Patil Vidyapeeth Online", href: "#" },
-    { label: "GP Jindal University", href: "#" },
-  ];
-
-  const mbaSpecializations = [
-    { label: "HR Management", href: "#" },
-    { label: "Marketing Management", href: "#" },
-    { label: "Finance Management", href: "#" },
-    { label: "Fintech Management", href: "#" },
-    { label: "International Business", href: "#" },
-    { label: "Project Management", href: "#" },
-    { label: "Logistic and Supply Chain", href: "#" },
-    { label: "Healthcare Management", href: "#" },
-  ];
-
-  const mcaSpecializations = [
-    { label: "Artificial Intelligence", href: "#" },
-    { label: "Cyber Security", href: "#" },
-    { label: "Cloud Computing", href: "#" },
-    { label: "Data Science and Analytics", href: "#" },
-    { label: "Computer Science and IT", href: "#" },
-    { label: "Full Stack Development", href: "#" },
-    { label: "Block Chain", href: "#" },
-  ];
-
-  const certificationPrograms = [
-    { label: "PGCM", href: "#" },
-    { label: "Certificate In UX & UX", href: "#" },
-    { label: "Certificate In Data Science", href: "#" },
-    { label: "Certificate in Project Management", href: "#" },
-    { label: "Certificate in Tech Mining & NLP", href: "#" },
-    { label: "Certificate in Big Data Analytics", href: "#" },
-    { label: "Certificate in Financial Analytics", href: "#" },
-    { label: "Certificate in Financial Analytics", href: "#" },
-  ];
-
   const ChevronIcon = () => (
     <svg className="w-2.5 h-2.5 text-[#6366F1] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
     </svg>
   );
+
+  // Split the 7 degree sections into two rows of 4 (row1) and 3 (row2)
+  // Row 2 also includes "Trending Online Universities" as the first column
+  const row1Sections = degreeSections.slice(0, 4);
+  const row2Sections = degreeSections.slice(4, 7);
 
   return (
     <footer className="relative w-full text-white bg-[#0D1B2E] overflow-hidden">
@@ -118,7 +232,7 @@ export default function Footer() {
             </p>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <IconMapPin stroke={2} color="#7C3AED" />
+                <IconMapPin stroke={2} color="#7C3AED" size={34} />
                 <span className="text-gray-400 text-sm">Hanuman Path, 94, New Sanganer Rd, opp. Metro pillar no,<br />Shyam Nagar, Jaipur, Rajasthan 302019</span>
               </div>
               <div className="flex items-center gap-3">
@@ -178,25 +292,24 @@ export default function Footer() {
           </div>
         </div>
         <div
-          className="absolute inset-0 opacity-10 pointer-events-none bg-cover bg-center"
+          className="absolute inset-0 opacity-5 pointer-events-none bg-cover bg-center"
           style={{ backgroundImage: "url('/footerBg.png')" }}
         />
         <div className="border-t border-gray-800 mb-16" />
 
-        {/* Middle Program Sections */}
+        {/* Middle Program Sections — Row 1: first 4 degree type sections */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          <FooterList title="Popular PG Programs" items={pgPrograms} />
-          <FooterList title="Trending UG Programs" items={ugPrograms} />
-          <FooterList title="Doctorate Programs" items={doctoratePrograms} />
-          <FooterList title="Executive Programs" items={executivePrograms} />
+          {row1Sections.map((section, i) => (
+            <FooterList key={`row1-${i}`} title={section.title} items={section.items} />
+          ))}
         </div>
 
-        {/* Lower Specialization Sections */}
+        {/* Lower Sections — Row 2: Trending Universities + remaining degree type sections */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          <FooterList title="Trending Online Universities" items={trendingUniversities} />
-          <FooterList title="In Demand MBA Specializations" items={mbaSpecializations} />
-          <FooterList title="In Demand MCA Specializations" items={mcaSpecializations} />
-          <FooterList title="Top Certification Programs" items={certificationPrograms} />
+          <FooterList title="Trending Online Universities" items={universities} />
+          {row2Sections.map((section, i) => (
+            <FooterList key={`row2-${i}`} title={section.title} items={section.items} />
+          ))}
         </div>
 
       </div>
@@ -205,7 +318,14 @@ export default function Footer() {
       <div className="relative z-10 w-full border-t border-gray-800/50 pt-10 pb-10">
         <div className="flex flex-col items-center text-center max-w-6xl mx-auto px-6">
           <p className="text-gray-300 text-xs font-bold mb-6">
-            Disclaimer: Terms and Conditions / Our Policy
+            Disclaimer:{" "}
+            <Link href="/terms-and-conditions" className="underline underline-offset-2 hover:text-white transition-colors">
+              Terms and Conditions
+            </Link>
+            {" / "}
+            <Link href="/our-policy" className="underline underline-offset-2 hover:text-white transition-colors">
+              Our Policy
+            </Link>
           </p>
           <p className="text-gray-500 text-[11px] leading-relaxed mb-10 px-4 md:px-10">
             CollegeSathi aims to provide unbiased and precise information to aspirants, along with comparative guidance on universities and their programs. The content on the website, including rankings, is for general informational and educational purposes only and should not be considered a substitute for official information provided by academic partners. While we make every effort to keep the information accurate and up to date, CollegeSathi does not guarantee the completeness or reliability of the content and is not responsible for any errors, omissions, or results stemming from its use.
@@ -214,7 +334,7 @@ export default function Footer() {
           <div className="flex flex-col items-center gap-1 text-[11px] text-gray-500">
             <p>© 2026 CollegeProgram.2026. All Rights Reserved</p>
             <p className="flex items-center gap-2">
-              Design & Developed by 
+              Design & Developed by
               <Link href="https://www.supercx.co/" target="_blank" rel="noopener noreferrer">
                 <img src="/supercxLogo.png" alt="SuperCX" className="h-6 w-auto hover:opacity-80 transition-opacity" />
               </Link>
