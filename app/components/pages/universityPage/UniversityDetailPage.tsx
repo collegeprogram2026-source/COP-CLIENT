@@ -400,7 +400,7 @@ export default function UniversityDetailPage({ id }: UniversityDetailPageProps) 
         {/* Background campus image with overlay */}
         <div className="absolute inset-0">
           <Image
-            src={provider.galleryImages?.[0] || "https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=2070&auto=format&fit=crop"}
+            src={provider.coverImage || provider.galleryImages?.[0] || "https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=2070&auto=format&fit=crop"}
             alt={provider.name}
             fill
             className="object-cover"
@@ -1208,7 +1208,7 @@ export default function UniversityDetailPage({ id }: UniversityDetailPageProps) 
                 </div>
                 <p className="text-[#64748B] text-sm">Have questions? Our counselors can help you choose the right program.</p>
                 <Link href="/talk-to-experts" className="bg-[#7C3AED] text-white px-6 py-2 rounded-lg font-bold text-xs hover:bg-purple-700  transition-colors w-full cursor-pointer">
-                  Request a Callback
+                  Talk to Expert
                 </Link>
               </div>
 

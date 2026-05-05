@@ -19,6 +19,7 @@ export default function UniversityPage({ sections, providers }: UniversityPagePr
   const [allowedProviderIds, setAllowedProviderIds] = useState<string[] | null>(null);
   const [filteredProviders, setFilteredProviders] = useState<Provider[]>(providers);
   const [selectedSort, setSelectedSort] = useState<string | null>(null);
+  const [animKey, setAnimKey] = useState(0);
 
   // Load selection and shortlist from localStorage/API on mount
   useEffect(() => {
@@ -108,6 +109,7 @@ export default function UniversityPage({ sections, providers }: UniversityPagePr
     }
 
     setFilteredProviders(filtered);
+    setAnimKey(k => k + 1);
   }, [searchTerm, allowedProviderIds, providers, selectedSort]);
 
   const handleFilterByCourse = (providerIds: string[] | null) => {
@@ -149,15 +151,20 @@ export default function UniversityPage({ sections, providers }: UniversityPagePr
           {/* Results Grid */}
           <div className="flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-              {filteredProviders.map((uni) => (
-                <UniversityCard
-                  key={uni._id}
-                  university={uni}
-                  isCompare={selectedToCompare.includes(uni._id)}
-                  onToggleCompare={() => handleToggleCompare(uni._id)}
-                  isShortlisted={shortlistedIds.includes(uni._id)}
-                  onToggleShortlist={() => handleToggleShortlist(uni._id)}
-                />
+              {filteredProviders.map((uni, index) => (
+                <div
+                  key={`${uni._id}-${animKey}`}
+                  className="animate-sort-in"
+                  style={{ animationDelay: `${index * 40}ms` }}
+                >
+                  <UniversityCard
+                    university={uni}
+                    isCompare={selectedToCompare.includes(uni._id)}
+                    onToggleCompare={() => handleToggleCompare(uni._id)}
+                    isShortlisted={shortlistedIds.includes(uni._id)}
+                    onToggleShortlist={() => handleToggleShortlist(uni._id)}
+                  />
+                </div>
               ))}
 
               {/* Placeholder cards if no providers yet to match screenshot exactly */}

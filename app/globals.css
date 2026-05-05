@@ -32,6 +32,15 @@ body {
   animation: bounce-slow 4s ease-in-out infinite;
 }
 
+@keyframes sort-in {
+  0% { opacity: 0; transform: translateY(20px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-sort-in {
+  animation: sort-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* Scrollbar hide utility */
 .scrollbar-hide::-webkit-scrollbar,
 .no-scrollbar::-webkit-scrollbar {

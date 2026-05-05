@@ -80,7 +80,7 @@ export default function UniversityCard({
       {/* Banner & Badges */}
       <Link href={`/universities/${university.slug}`} className="block relative h-48 sm:h-40 overflow-hidden">
         <img
-          src={university.galleryImages?.[0] || "/default-university.jpg"}
+          src={university.coverImage || university.galleryImages?.[0] || "/default-university.jpg"}
           alt={university.name || "University"}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
