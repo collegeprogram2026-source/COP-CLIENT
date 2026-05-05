@@ -249,11 +249,10 @@ export default function Section4({ section }: Section4Props) {
             <div className="flex justify-center mt-8 mb-12">
               <button
                 onClick={() => setSliderPage(p => p < maxPage ? p + 1 : 0)}
+                className="bg-gradient-to-br from-[#4F39F6] to-[#9810FA] rounded-xl"
                 style={{
                   height: 48,
                   padding: '0 32px',
-                  borderRadius: 10,
-                  background: 'linear-gradient(to right, #9810FA, #8200DB)',
                   color: '#FFFFFF',
                   fontFamily: 'Inter',
                   fontWeight: 600,

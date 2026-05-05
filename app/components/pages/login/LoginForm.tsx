@@ -197,7 +197,7 @@ const LoginForm = () => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className={`w-full py-2.5 text-white font-bold rounded-xl shadow-lg transform transition-all ${isLoading
+                        className={`w-full py-2.5 text-white font-bold rounded-xl shadow-lg transform transition-all cursor-pointer hover:brightness-80 ${isLoading
                             ? 'bg-gray-400 cursor-not-allowed'
                             : 'bg-[#9810FA] shadow-purple-500/30 hover:shadow-purple-500/40 hover:-translate-y-0.5 active:translate-y-0'
                             }`}
@@ -220,7 +220,7 @@ const LoginForm = () => {
                         type="button"
                         onClick={() => handleGoogleLogin()}
                         disabled={isLoading}
-                        className="w-full py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl flex items-center justify-center gap-3 hover:bg-gray-50 transition-all"
+                        className="w-full py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl flex items-center justify-center gap-3 hover:bg-gray-50 transition-all cursor-pointer shadow"
                     >
                         <svg className="w-5 h-5" viewBox="0 0 24 24">
                             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -234,7 +234,7 @@ const LoginForm = () => {
 
                 {/* Footer */}
                 <p className="mt-6 text-center text-gray-600">
-                    Don't have an account? <Link href="/signup" className="font-bold text-purple-600 hover:text-purple-700">Sign up</Link>
+                    Don't have an account? <Link href="/signup" className="font-bold text-purple-600 hover:text-purple-700 hover:underline">Sign up</Link>
                 </p>
 
                 <div className="mt-8 text-center text-xs text-gray-400">
