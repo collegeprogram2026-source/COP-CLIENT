@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 };
 
 import { Toaster } from "react-hot-toast";
+import SmoothScroll from "./components/providers/SmoothScroll";
 
 export default function RootLayout({
   children,
@@ -22,9 +23,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <OAuthProvider>
-          <Layout>
-            {children}
-          </Layout>
+          <SmoothScroll>
+            <Layout>
+              {children}
+            </Layout>
+          </SmoothScroll>
           <Toaster position="top-center" />
         </OAuthProvider>
       </body>

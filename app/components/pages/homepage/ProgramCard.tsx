@@ -164,7 +164,7 @@ export default function ProgramCard({ program: p, variant = "desktop", showTrend
 
   // Desktop variant
   return (
-    <div style={{ background: '#fff', width: '100%', borderRadius: 24, border: '1px solid #E5E7EB', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 6px 18px rgba(16,24,40,0.06)' }}>
+    <div style={{ background: '#fff', width: '100%', height: 540, borderRadius: 24, border: '1px solid #E5E7EB', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 6px 18px rgba(16,24,40,0.06)' }}>
       {/* Card image area */}
       <div style={{ height: 170, position: 'relative', borderTopLeftRadius: 20, borderTopRightRadius: 20, overflow: 'hidden', background: 'linear-gradient(180deg, #F3E8FF 0%, #EEF2FF 100%)' }}>
         {p.thumbnail ? (
@@ -228,22 +228,22 @@ export default function ProgramCard({ program: p, variant = "desktop", showTrend
         )}
 
         {/* Certifications/Badges */}
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', maxHeight: 32, overflow: 'hidden' }}>
           {(p.certifications && p.certifications.length > 0 ? p.certifications : ['UGC', 'NAAC A+']).map((badge, i) => (
-            <span key={i} style={{ background: '#EFF6FF', color: '#2563EB', border: '1px solid #BFDBFE', padding: '4px 10px', borderRadius: 8, fontSize: 12, fontWeight: 600 }}>
+            <span key={i} style={{ background: '#EFF6FF', color: '#2563EB', border: '1px solid #BFDBFE', padding: '4px 10px', borderRadius: 8, fontSize: 12, fontWeight: 600, whiteSpace: 'nowrap' }}>
               {badge}
             </span>
           ))}
         </div>
 
         {/* Features Checklist */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 4 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 4, maxHeight: 100, overflow: 'hidden' }}>
           {(p.features && p.features.length > 0 ? p.features.slice(0, 3) : ['Job Assistance', 'Flexible Learning', 'Industry Projects']).map((feature, i) => (
             <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-              <div className="p-1" style={{ borderRadius: '50%', backgroundColor: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div className="p-1" style={{ borderRadius: '50%', backgroundColor: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <CheckCircle2 size={12} color="#16A34A" />
               </div>
-              <div style={{ fontSize: 14, color: '#334155', fontWeight: 500 }}>{feature}</div>
+              <div style={{ fontSize: 14, color: '#334155', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{feature}</div>
             </div>
           ))}
         </div>

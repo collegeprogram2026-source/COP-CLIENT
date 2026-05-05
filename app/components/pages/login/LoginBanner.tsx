@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckCircle2, GraduationCap, Award, Users, TrendingUp } from 'lucide-react';
+import { IconCircleCheckFilled } from '@tabler/icons-react';
 
 const LoginBanner = () => {
     const features = [
@@ -19,23 +20,23 @@ const LoginBanner = () => {
     ];
 
     return (
-        <div className="relative hidden lg:flex flex-col w-1/2 min-h-screen bg-[#9810FA] text-white p-24 overflow-hidden">
+        <div className="relative hidden lg:flex flex-col w-1/2 min-h-screen bg-[#FFFFFF] text-white p-24 overflow-hidden">
             {/* Background Image / Gradient Overlay */}
             <div
                 className="absolute inset-0 z-0"
                 style={{
-                    backgroundImage: 'url("https://images.unsplash.com/photo-1523050335102-c325091423ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80")',
+                    backgroundImage: 'url(/authCover.png)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
             >
-                <div className="absolute inset-0 bg-[#9810FA]/80 backdrop-blur-[2px]"></div>
+                <div className="absolute inset-0 z-10 bg-gradient-to-br from-[#59168BF2] via-[#6E11B0E5] to-[#312C85F2] opacity-90"></div>
             </div>
 
             {/* Content */}
-            <div className="relative z-10 flex flex-col h-full">
+            <div className="relative z-20 flex flex-col h-full text-[#FFFFFF]">
                 <div className="mb-12">
-                    <h1 className="text-4xl font-extrabold mb-4 leading-tight">
+                    <h1 className="text-4xl font-bold mb-4 leading-tight font-inter">
                         Transform Your Future <br />
                         with Quality Education
                     </h1>
@@ -47,7 +48,7 @@ const LoginBanner = () => {
                 <ul className="space-y-4 mb-12">
                     {features.map((feature, index) => (
                         <li key={index} className="flex items-center gap-3">
-                            <CheckCircle2 className="w-5 h-5 text-green-400 fill-green-400/20" />
+                            <IconCircleCheckFilled color='#00C950' />
                             <span className="text-white/90">{feature}</span>
                         </li>
                     ))}
