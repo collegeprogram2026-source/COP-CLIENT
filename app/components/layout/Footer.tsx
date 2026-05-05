@@ -358,7 +358,10 @@ function FooterList({ title, items }: { title: string; items: { label: string; h
       <ul className="space-y-3">
         {items.map((item, i) => (
           <li key={i}>
-            <Link href={item.href} className="text-gray-400 hover:text-white transition-colors text-[13px]">
+            <Link href={item.href} className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors text-[13px]">
+              <svg className="w-2.5 h-2.5 text-[#6366F1] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
               {item.label}
             </Link>
           </li>
