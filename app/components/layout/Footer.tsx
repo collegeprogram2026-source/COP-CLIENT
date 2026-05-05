@@ -200,7 +200,7 @@ export default function Footer() {
   const toolLinks = [
     { label: "Compare Universities", href: "/compareUniversities" },
     { label: "Blogs", href: "/articles" },
-    { label: "FAQs", href: "/faqs" },
+    { label: "FAQs", href: "/search" },
     { label: "Talk to Experts", href: "/talk-to-experts" },
   ];
 
