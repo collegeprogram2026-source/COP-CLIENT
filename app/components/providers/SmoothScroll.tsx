@@ -10,13 +10,24 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       autoRaf: true,
     });
 
-    // Listen for the scroll event and log the event data
-    lenis.on('scroll', (e) => {
-      console.log(e);
+    // Stop/start Lenis when modals toggle body overflow
+    const observer = new MutationObserver(() => {
+      const isLocked = document.body.style.overflow === 'hidden';
+      if (isLocked) {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['style'],
     });
 
     return () => {
-      lenis.destroy()
+      observer.disconnect();
+      lenis.destroy();
     }
   }, [])
 

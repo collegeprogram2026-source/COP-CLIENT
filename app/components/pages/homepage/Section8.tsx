@@ -2,7 +2,7 @@
 import { IconMessage } from '@tabler/icons-react';
 import { SectionContent } from "@/app/lib/types";
 import { richTextToPlain } from "./tuUtils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import FocusCenterSlider from "./FocusCenterSlider";
 import { getReviews, submitReview, getProviders } from "@/app/lib/api";
@@ -537,7 +537,7 @@ function ReviewModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
   return (
     <AnimatePresence>
       {isOpen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+        <div style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", overflow: "hidden" }}>
           {/* Backdrop with Blur */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -553,6 +553,8 @@ function ReviewModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 10 }}
             className="custom-scrollbar-hide p-6 sm:p-10"
+            data-lenis-prevent
+            onPointerDown={(e) => e.stopPropagation()}
             style={{
               position: "relative",
               background: "#FFFFFF",
@@ -562,6 +564,7 @@ function ReviewModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
               boxShadow: "0 32px 64px -12px rgba(16, 24, 40, 0.2)",
               maxHeight: "90vh",
               overflowY: "auto",
+              overscrollBehavior: "contain",
               scrollbarWidth: "none",
               msOverflowStyle: "none",
             }}
@@ -593,7 +596,7 @@ function ReviewModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
             <p style={{ fontFamily: "Inter", fontSize: 15, color: "#667085", marginBottom: 36, lineHeight: "1.5" }}>We value your feedback. Tell us about your learning journey.</p>
 
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 gap-5">
                 <div>
                   <label style={{ display: "block", fontSize: 14, fontWeight: 600, color: "#344054", marginBottom: 8 }}>Name</label>
                   <input
@@ -763,7 +766,7 @@ function ReviewModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
 function CustomDropdown({ options, value, onChange, placeholder }: { options: { label: string; value: string }[]; value: string; onChange: (val: string) => void; placeholder: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const dropdownRef = useState<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const selectedOption = options.find(o => o.value === value);
   const filteredOptions = options.filter(o => o.label.toLowerCase().includes(search.toLowerCase()));
