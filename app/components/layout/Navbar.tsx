@@ -339,34 +339,34 @@ export default function Navbar() {
       `}</style>
 
       {isHomepage && (
-      <div className="bg-[#7C3AED] text-white text-sm py-2">
-        <div className="w-full mx-auto overflow-hidden" style={{ position: "relative" }}>
-          {promoText ? (
-            <div style={{ overflow: "hidden" }}>
-              <div className="promo-wrapper">
-                <div ref={trackRef} className="promo-track promo-animate" style={{ ['--marquee-distance' as any]: marqueeVars.distance, ['--marquee-duration' as any]: marqueeVars.duration } as React.CSSProperties}>
-                  <div ref={contentRef} className="promo-content" aria-hidden={false}>
-                    {[...Array(8)].map((_, i) => (
-                      <div key={i} className="promo-item">{promoText}</div>
-                    ))}
-                  </div>
-                  <div className="promo-content" aria-hidden={true}>
-                    {[...Array(8)].map((_, i) => (
-                      <div key={i} className="promo-item">{promoText}</div>
-                    ))}
+        <div className="bg-[#7C3AED] text-white text-sm py-2">
+          <div className="w-full mx-auto overflow-hidden" style={{ position: "relative" }}>
+            {promoText ? (
+              <div style={{ overflow: "hidden" }}>
+                <div className="promo-wrapper">
+                  <div ref={trackRef} className="promo-track promo-animate" style={{ ['--marquee-distance' as any]: marqueeVars.distance, ['--marquee-duration' as any]: marqueeVars.duration } as React.CSSProperties}>
+                    <div ref={contentRef} className="promo-content" aria-hidden={false}>
+                      {[...Array(8)].map((_, i) => (
+                        <div key={i} className="promo-item">{promoText}</div>
+                      ))}
+                    </div>
+                    <div className="promo-content" aria-hidden={true}>
+                      {[...Array(8)].map((_, i) => (
+                        <div key={i} className="promo-item">{promoText}</div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ) : null}
+            ) : null}
+          </div>
         </div>
-      </div>
       )}
 
       <div className="md:fixed md:px-7 md:py-2.5 w-full bg-[#A983F6] md:bg-transparent border-b md:border-none border-purple-400/30">
         <div className="nav-glass w-full mx-auto flex items-center justify-between px-4 h-16 md:h-[72px] text-white relative">
           <Link href="/" className="flex items-center gap-1 flex-shrink-0">
-            <img src="/logo.png" alt="CollegeProgram logo" className="h-16 md:h-16 w-auto object-contain" />
+            <img src="/logo.png" alt="CollegeProgram/logo" className="h-16 md:h-16 w-auto object-contain" />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
