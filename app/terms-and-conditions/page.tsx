@@ -9,7 +9,7 @@ const sections = [
     title: "1. Acceptance of Terms",
     content: [
       {
-        text: 'By accessing and using the CollegeProgram website ("Platform"), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you must not use our Platform.',
+        text: 'By accessing and using the CollegeProgram website ("Platform"), a platform operated by Curioquest Academy (UDYAM Registration No. UDYAM-RJ-17-0451532), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you must not use our Platform.',
       },
       {
         text: "These terms apply to all visitors, users, and others who access or use the Platform. By using the Platform, you represent that you are at least 18 years of age or have obtained parental or guardian consent to use the Platform.",
@@ -21,7 +21,7 @@ const sections = [
     title: "2. Description of Services",
     content: [
       {
-        text: "CollegeProgram provides an online education platform that offers information about universities, courses, programs, and related educational services. Our services include but are not limited to:",
+        text: "CollegeProgram, operated by Curioquest Academy, provides an online education platform that offers information about universities, courses, programs, and related educational services. Our services include but are not limited to:",
       },
       {
         list: [
@@ -48,7 +48,7 @@ const sections = [
         text: "You are responsible for safeguarding the password that you use to access the Platform and for any activities or actions under your password. You agree not to disclose your password to any third party.",
       },
       {
-        text: "CollegeProgram reserves the right to suspend or terminate your account if any information provided proves to be inaccurate, not current, or incomplete.",
+        text: "Curioquest Academy reserves the right to suspend or terminate your account if any information provided proves to be inaccurate, not current, or incomplete.",
       },
     ],
   },
@@ -57,13 +57,13 @@ const sections = [
     title: "4. Content & Intellectual Property",
     content: [
       {
-        text: "All content on the Platform, including text, graphics, logos, images, audio clips, video clips, data compilations, and software, is the property of CollegeProgram or its content suppliers and is protected by intellectual property laws.",
+        text: "All content on the Platform, including text, graphics, logos, images, audio clips, video clips, data compilations, and software, is the property of Curioquest Academy or its content suppliers and is protected by intellectual property laws.",
       },
       {
-        text: "You may not reproduce, distribute, modify, create derivative works of, publicly display, or in any way exploit any of the content on our Platform without prior written consent from CollegeProgram.",
+        text: "You may not reproduce, distribute, modify, create derivative works of, publicly display, or in any way exploit any of the content on our Platform without prior written consent from Curioquest Academy.",
       },
       {
-        text: "User-generated content, such as reviews and comments, remains the property of the respective users. However, by posting content on our Platform, you grant CollegeProgram a non-exclusive, worldwide, royalty-free license to use, reproduce, modify, and display such content in connection with our services.",
+        text: "User-generated content, such as reviews and comments, remains the property of the respective users. However, by posting content on our Platform, you grant Curioquest Academy a non-exclusive, worldwide, royalty-free license to use, reproduce, modify, and display such content in connection with our services.",
       },
     ],
   },
@@ -72,7 +72,7 @@ const sections = [
     title: "5. Accuracy of Information",
     content: [
       {
-        text: "While we strive to provide accurate and up-to-date information about universities, courses, fees, and other educational details, CollegeProgram does not guarantee the completeness, reliability, or accuracy of this information.",
+        text: "While we strive to provide accurate and up-to-date information about universities, courses, fees, and other educational details, Curioquest Academy does not guarantee the completeness, reliability, or accuracy of this information.",
       },
       {
         text: "All fee structures, program details, eligibility criteria, and other specifics mentioned on our Platform are sourced from partner universities and are subject to change without prior notice. Users are advised to verify details directly with the respective institutions before making any decisions.",
@@ -87,10 +87,10 @@ const sections = [
     title: "6. Third-Party Links & Services",
     content: [
       {
-        text: "Our Platform may contain links to third-party websites or services that are not owned or controlled by CollegeProgram. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites or services.",
+        text: "Our Platform may contain links to third-party websites or services that are not owned or controlled by Curioquest Academy. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites or services.",
       },
       {
-        text: "CollegeProgram does not endorse or assume any responsibility for any such third-party sites, information, materials, products, or services. If you access any third-party website from our Platform, you do so at your own risk.",
+        text: "Curioquest Academy does not endorse or assume any responsibility for any such third-party sites, information, materials, products, or services. If you access any third-party website from our Platform, you do so at your own risk.",
       },
     ],
   },
@@ -111,13 +111,13 @@ const sections = [
     title: "8. Limitation of Liability",
     content: [
       {
-        text: "To the maximum extent permitted by applicable law, CollegeProgram shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, or other intangible losses.",
+        text: "To the maximum extent permitted by applicable law, Curioquest Academy shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, or other intangible losses.",
       },
       {
-        text: "CollegeProgram is not responsible for any decisions made based on the information provided on the Platform. Users should exercise their own judgment and conduct independent research before making educational or financial decisions.",
+        text: "Curioquest Academy is not responsible for any decisions made based on the information provided on the Platform. Users should exercise their own judgment and conduct independent research before making educational or financial decisions.",
       },
       {
-        text: "In no event shall CollegeProgram's total liability to you for all damages, losses, and causes of action exceed the amount paid by you, if any, for accessing the Platform.",
+        text: "In no event shall Curioquest Academy's total liability to you for all damages, losses, and causes of action exceed the amount paid by you, if any, for accessing the Platform.",
       },
     ],
   },
@@ -146,7 +146,7 @@ const sections = [
     title: "10. Modifications to Terms",
     content: [
       {
-        text: 'CollegeProgram reserves the right to modify or replace these Terms at any time at our sole discretion. We will notify users of any material changes by posting the updated terms on this page and updating the "Last Updated" date.',
+        text: 'Curioquest Academy reserves the right to modify or replace these Terms at any time at our sole discretion. We will notify users of any material changes by posting the updated terms on this page and updating the "Last Updated" date.',
       },
       {
         text: "Your continued use of the Platform after any such changes constitutes your acceptance of the new Terms. If you do not agree to the new terms, please stop using the Platform.",

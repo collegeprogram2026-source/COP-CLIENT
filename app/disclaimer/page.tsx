@@ -9,7 +9,7 @@ const sections = [
     title: "1. General Information Disclaimer",
     content: [
       {
-        text: 'The information provided by CollegeProgram ("we," "us," or "our") on our Platform is for general informational and educational purposes only.',
+        text: 'The information provided by Curioquest Academy ("we," "us," or "our") through its CollegeProgram platform (UDYAM Registration No. UDYAM-RJ-17-0451532) is for general informational and educational purposes only.',
       },
       {
         text: "All information on the Platform is provided in good faith, however, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the Platform.",
@@ -24,7 +24,7 @@ const sections = [
         text: "While we make every effort to keep the information accurate and up-to-date, educational details such as fee structures, program durations, eligibility criteria, and university rankings are sourced from third-party institutions and are subject to change without prior notice.",
       },
       {
-        text: "CollegeProgram does not guarantee that the information on the Platform is error-free or that it reflects the most current changes made by our academic partners. Users are strongly advised to verify all details directly with the respective universities or institutions before making any educational or financial commitments.",
+        text: "Curioquest Academy does not guarantee that the information on the CollegeProgram platform is error-free or that it reflects the most current changes made by our academic partners. Users are strongly advised to verify all details directly with the respective universities or institutions before making any educational or financial commitments.",
       },
     ],
   },
@@ -60,10 +60,10 @@ const sections = [
     title: "5. Limitation of Liability",
     content: [
       {
-        text: "In no event shall CollegeProgram be liable for any special, direct, indirect, consequential, or incidental damages or any damages whatsoever, whether in an action of contract, negligence, or other tort, arising out of or in connection with the use of the Platform or the contents of the Platform.",
+        text: "In no event shall Curioquest Academy be liable for any special, direct, indirect, consequential, or incidental damages or any damages whatsoever, whether in an action of contract, negligence, or other tort, arising out of or in connection with the use of the CollegeProgram platform or its contents.",
       },
       {
-        text: "CollegeProgram reserves the right to make additions, deletions, or modifications to the contents on the Platform at any time without prior notice.",
+        text: "Curioquest Academy reserves the right to make additions, deletions, or modifications to the contents on the Platform at any time without prior notice.",
       },
     ],
   },

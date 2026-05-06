@@ -9,10 +9,10 @@ const sections = [
     title: "1. Introduction",
     content: [
       {
-        text: 'Welcome to CollegeProgram, now known as CollegeProgram Private Limited, registered under the Companies Act 2013, as well as its affiliates and subsidiaries (collectively referred to as "we," "our," or "us"). Our objective is to provide secure and reliable services to students, academicians, educational institutions, partners, and other stakeholders through lawful, fair, and transparent processing of personal data.',
+        text: 'Welcome to CollegeProgram, a platform operated by Curioquest Academy (UDYAM Registration No. UDYAM-RJ-17-0451532), as well as its affiliates and subsidiaries (collectively referred to as "we," "our," or "us"). Our objective is to provide secure and reliable services to students, academicians, educational institutions, partners, and other stakeholders through lawful, fair, and transparent processing of personal data.',
       },
       {
-        text: "At CollegeProgram Private Limited we are committed to protecting and safeguarding the privacy and personal data of all the users.",
+        text: "At Curioquest Academy we are committed to protecting and safeguarding the privacy and personal data of all the users of the CollegeProgram platform.",
       },
       {
         text: 'This Privacy Policy ("Policy") describes the manner in which we collect, receive, access, use, process, store, disclose, transfer, and safeguard personal information obtained through our services. This Policy is designed to ensure transparency in our data handling practices and to affirm our commitment to protecting personal information in accordance with applicable data protection, privacy, and information security laws.',
@@ -48,7 +48,7 @@ const sections = [
     title: "3. Purpose of This Policy",
     content: [
       {
-        text: 'The purpose of this Privacy Policy ("Policy") is to provide users with clear and transparent information regarding the categories of Personal Information collected by CollegeProgram Pvt. Ltd., the manner in which such information is collected, processed, and used, the security measures implemented to protect Personal Information, the circumstances under which such information may be disclosed or shared, and the rights available to individuals whose Personal Information is processed.',
+        text: 'The purpose of this Privacy Policy ("Policy") is to provide users with clear and transparent information regarding the categories of Personal Information collected by Curioquest Academy through its CollegeProgram platform, the manner in which such information is collected, processed, and used, the security measures implemented to protect Personal Information, the circumstances under which such information may be disclosed or shared, and the rights available to individuals whose Personal Information is processed.',
       },
       {
         text: 'This Policy applies to all Personal Information collected through our website, as well as any related applications, services, features, content, or digital platforms (collectively referred to as the "Platform").',
@@ -63,7 +63,7 @@ const sections = [
         text: "This Policy applies to all users and visitors interacting with the Platform, including but not limited to students and prospective applicants, educational institutions, affiliates and business partners, loan, placement, and marketing partners, and any individual accessing or using our services.",
       },
       {
-        text: "This Policy governs the collection, use, storage, processing, and disclosure of personal data by CollegeProgram.",
+        text: "This Policy governs the collection, use, storage, processing, and disclosure of personal data by Curioquest Academy in connection with the CollegeProgram platform.",
       },
     ],
   },
