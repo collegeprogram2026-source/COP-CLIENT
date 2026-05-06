@@ -587,6 +587,7 @@ export default function Navbar() {
         <div
           className={`absolute top-0 right-0 bottom-0 w-[85%] max-w-[340px] bg-[#FDFCFE] shadow-[-20px_0_60px_-15px_rgba(0,0,0,0.3)] flex flex-col transition-transform duration-500 transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}
           style={{ transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)' }}
+          data-lenis-prevent
         >
           {/* Header */}
           <div className="px-6 py-5 flex items-center justify-between border-b border-purple-100 bg-[#A983F6] backdrop-blur-sm sticky top-0 z-10">
@@ -603,7 +604,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-8">
+          <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-8" data-lenis-prevent>
             {/* Search */}
             <div className="mb-10 relative">
               <div className="relative group">
