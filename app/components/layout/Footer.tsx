@@ -333,7 +333,7 @@ export default function Footer() {
             </Link>
           </p>
           <p className="text-gray-500 text-[11px] leading-relaxed mb-10 px-4 md:px-10">
-            CollegeSathi aims to provide unbiased and precise information to aspirants, along with comparative guidance on universities and their programs. The content on the website, including rankings, is for general informational and educational purposes only and should not be considered a substitute for official information provided by academic partners. While we make every effort to keep the information accurate and up to date, CollegeSathi does not guarantee the completeness or reliability of the content and is not responsible for any errors, omissions, or results stemming from its use.
+            CollegeProgram aims to provide unbiased and precise information to aspirants, along with comparative guidance on universities and their programs. The content on the website, including rankings, is for general informational and educational purposes only and should not be considered a substitute for official information provided by academic partners. While we make every effort to keep the information accurate and up to date, CollegeProgram does not guarantee the completeness or reliability of the content and is not responsible for any errors, omissions, or results stemming from its use.
           </p>
 
           <div className="flex flex-col items-center gap-1 text-[11px] text-gray-500">
