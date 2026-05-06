@@ -67,7 +67,7 @@ export default async function TopUniversities({ section }: TopUniversitiesProps)
   const rating = getFieldValue(ratingAliases, "4.8/5");
   trackKey(ratingAliases);
   // Try to fetch providers from API and render their logos in the white box.
-  let universityLogos: Array<[string, any]> = [];
+  let universityLogos: Array<{ name: string; logo: any; slug?: string }> = [];
   try {
     const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
     const res = await fetch(`${apiBase}/api/public/providers`, { cache: "no-store" });
@@ -82,7 +82,11 @@ export default async function TopUniversities({ section }: TopUniversitiesProps)
           const logo = String(p.logo || "").trim();
           return logo.startsWith("http");
         });
-        universityLogos = validProviders.map((p: any) => [p.name || p.slug || p._id, p.logo] as [string, string]);
+        universityLogos = validProviders.map((p: any) => ({
+          name: p.name || p.slug || p._id,
+          logo: p.logo,
+          slug: p.slug,
+        }));
       }
     }
   } catch (e) {
@@ -100,7 +104,8 @@ export default async function TopUniversities({ section }: TopUniversitiesProps)
         const lower = text.toLowerCase();
         return (lower.startsWith("http") && (lower.includes("image") || lower.endsWith(".png") || lower.endsWith(".jpg") || lower.endsWith(".svg")));
       })
-      .slice(0, 7);
+      .slice(0, 7)
+      .map(([k, val]) => ({ name: k, logo: val }));
   }
 
   return (
