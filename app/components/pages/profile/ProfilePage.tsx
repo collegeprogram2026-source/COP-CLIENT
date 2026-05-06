@@ -984,6 +984,17 @@ function DateField({
 
   const isEmpty = !value || value.trim() === "";
 
+  const formatDateForDisplay = (dateStr: string) => {
+    if (!dateStr || dateStr.trim() === "") return "";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
   return (
     <div className="relative" ref={containerRef}>
       <p className="text-xs text-gray-400 font-medium mb-1">{label}</p>
@@ -995,7 +1006,7 @@ function DateField({
             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 font-medium outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white text-left flex items-center justify-between hover:border-gray-300"
           >
             <span className={isEmpty ? "text-gray-300" : "text-gray-800"}>
-              {isEmpty ? (placeholder ?? "Select date") : value}
+              {isEmpty ? (placeholder ?? "Select date") : formatDateForDisplay(value)}
             </span>
             <CalIcon className="w-4 h-4 text-gray-400" />
           </button>
@@ -1024,7 +1035,7 @@ function DateField({
       ) : (
         <div className="flex items-center gap-1.5">
           <p className={`text-sm font-semibold ${isEmpty ? "text-gray-300 italic" : "text-gray-800"}`}>
-            {isEmpty ? "Not provided" : value}
+            {isEmpty ? "Not provided" : formatDateForDisplay(value)}
           </p>
         </div>
       )}
@@ -1078,9 +1089,11 @@ function Calendar({
       d.getFullYear() === viewDate.getFullYear();
   };
 
-  const formatDate = (day: number) => {
+  const getISODate = (day: number) => {
     const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
-    return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+    // Set to noon to avoid timezone shifts during conversion if only date matters
+    d.setHours(12, 0, 0, 0);
+    return d.toISOString();
   };
 
   const currentYear = new Date().getFullYear();
@@ -1134,7 +1147,7 @@ function Calendar({
               return (
                 <button
                   key={day}
-                  onClick={() => onSelect(formatDate(day))}
+                  onClick={() => onSelect(getISODate(day))}
                   className={`
                     w-8 h-8 rounded-lg text-xs font-semibold flex items-center justify-center transition-all
                     ${active
