@@ -1,9 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { getPageContent } from "@/app/lib/api";
+import { SectionContent } from "@/app/lib/types";
+import { CheckCircle, Clock, Star, MessageSquare, } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { IconCalendarEventFilled } from '@tabler/icons-react'
 
 // ── Dummy data ────────────────────────────────────────────────────────────────
 const dummyUser = {
@@ -99,6 +104,22 @@ function CalendarIcon({ className }: { className?: string }) {
   );
 }
 
+function ChevronLeftIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  );
+}
+
+function ChevronRightIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+    </svg>
+  );
+}
+
 function PencilIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
@@ -182,6 +203,111 @@ const navItems: { key: NavKey; label: string; icon: React.ReactNode }[] = [
   { key: "settings", label: "Settings", icon: <SettingsIcon className="w-5 h-5" /> },
 ];
 
+// ── Mentor Card Component ───────────────────────────────────────────────────
+interface Mentor {
+  name: string;
+  role: string;
+  image: string;
+  stats: string;
+  nextAvailable: string;
+  expertise: string[];
+}
+
+function MentorCarouselCard({ mentors }: { mentors: Mentor[] }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (mentors.length <= 1) return;
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % mentors.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [mentors]);
+
+  if (!mentors.length) return null;
+
+  return (
+    <div className="bg-[#FFFFFF] rounded-xl p-6 shadow  border border-[#E5E7EB] flex flex-col gap-5 relative overflow-hidden group min-h-[440px]">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="flex flex-col gap-5"
+        >
+          {/* Top Section */}
+          <div className="flex items-center gap-4">
+            {/* Avatar with Badge */}
+            <div className="relative flex-shrink-0">
+              <div className="w-20 h-20 rounded-full border-4 border-purple-100 overflow-hidden bg-gray-50">
+                <img src={mentors[index].image} alt={mentors[index].name} className="w-full h-full object-cover" />
+              </div>
+              <div className="absolute -bottom-1 -right-1 bg-yellow-400 text-white p-1 rounded-full border-2 border-white shadow-sm">
+                <Star className="w-3 h-3 fill-current" />
+              </div>
+            </div>
+
+            {/* Name and Role */}
+            <div className="flex flex-col gap-1 pt-1">
+              <div className="bg-[#57FFAD] text-[10px] font-bold px-3 py-1 rounded-full self-start mb-1 uppercase tracking-wider font-bold">
+                Expert Mentor
+              </div>
+              <h3 className="font-extrabold text-gray-900  tracking-tight leading-tight">
+                I'm {mentors[index].name}
+              </h3>
+              <p className="text-gray-500 text-xs font-medium">
+                {mentors[index].role}
+              </p>
+            </div>
+          </div>
+
+          {/* Info Rows */}
+          <div className="flex flex-col gap-3 mt-1">
+            <div className="flex items-center gap-3 text-gray-700">
+              <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-4 h-4 text-purple-600" />
+              </div>
+              <span className="text-sm font-semibold">{mentors[index].stats}</span>
+            </div>
+            <div className="flex items-center gap-3 text-gray-700">
+              <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0">
+                <Clock className="w-4 h-4 text-purple-600" />
+              </div>
+              <span className="text-sm font-semibold">
+                Next available: <span className="text-gray-900">{mentors[index].nextAvailable}</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Expertise */}
+          <div className="flex flex-col gap-3">
+            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Expertise</p>
+            <div className="flex flex-wrap gap-2">
+              {mentors[index].expertise.map((exp, i) => (
+                <span key={i} className="bg-purple-50 text-purple-600 text-xs font-bold px-3 py-1.5 rounded-full border border-purple-100/50">
+                  {exp}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="mt-2">
+            <button className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#9810FA] to-[#4F39F6] text-white font-bold py-3 rounded-xl hover:brightness-90 transition-all shadow-lg shadow-purple-200 text-sm cursor-pointer w-full">
+              Book a call
+            </button>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Subtle background decoration */}
+      <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-purple-50 rounded-full blur-3xl opacity-50" />
+    </div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 export default function ProfilePage() {
   const [activeNav, setActiveNav] = useState<NavKey>("profile");
@@ -189,6 +315,7 @@ export default function ProfilePage() {
   const [userData, setUserData] = useState<UserData>(dummyUser);
   const [hasPassword, setHasPassword] = useState<boolean>(true);
   const [shortlisted, setShortlisted] = useState<any[]>([]);
+  const [mentors, setMentors] = useState<Mentor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isShortlistLoading, setIsShortlistLoading] = useState(false);
   const router = useRouter();
@@ -254,8 +381,83 @@ export default function ProfilePage() {
         setIsLoading(false);
       }
     };
+    const fetchMentors = async () => {
+      // Mirrors Section4 (expert_counselors) on the homepage: each counselor is a
+      // single CMS textarea with 5 lines — title, specialty, experience, studentsGuided, nextAvailable.
+      const COUNSELOR_DEFS = [
+        {
+          name: "Dr. Priya Sharma",
+          cmsKey: "Dr. Priya sharma",
+          image: "/Image (Dr. Priya Sharma).png",
+          fallback: ["Senior Education Counselor", "MBA & Management Programs", "12 years experience", "3500+ students guided", "Today, 4:00 PM"],
+        },
+        {
+          name: "Rahul Mehta",
+          cmsKey: "Rahul Mehta",
+          image: "/Image (Rahul Mehta).png",
+          fallback: ["Career Guidance Expert", "Tech & Data Science", "10 years experience", "2800+ students guided", "Tomorrow, 10:00 AM"],
+        },
+        {
+          name: "Anita Desai",
+          cmsKey: "Anita Desai",
+          image: "/Image (Anita Desai).png",
+          fallback: ["Study Abroad Specialist", "International Programs", "15 years experience", "4200+ students guided", "Tomorrow, 2:30 PM"],
+        },
+      ];
+
+      const richTextToPlain = (value: any): string => {
+        if (!value) return "";
+        if (typeof value === "string") return value;
+        if (value.type === "doc" && Array.isArray(value.content)) {
+          return value.content
+            .map((block: any) =>
+              block.type === "paragraph"
+                ? (block.content || []).map((c: any) => c.text || "").join("")
+                : ""
+            )
+            .join("\n");
+        }
+        return String(value);
+      };
+
+      const buildMentors = (values: Record<string, any> = {}): Mentor[] =>
+        COUNSELOR_DEFS.map((def) => {
+          const rawKey = Object.keys(values).find((k) => k.toLowerCase() === def.cmsKey.toLowerCase());
+          const raw = rawKey ? richTextToPlain(values[rawKey]).trim() : "";
+          const lines = raw.split("\n").map((l) => l.trim()).filter(Boolean);
+          const [title, specialty, experience, studentsGuided, nextAvailable] = [0, 1, 2, 3, 4].map(
+            (i) => lines[i] || def.fallback[i]
+          );
+          const expertise = specialty
+            .split(/[,/&|]+/)
+            .map((s) => s.trim())
+            .filter(Boolean);
+          if (experience) expertise.push(experience);
+          return {
+            name: def.name,
+            role: title,
+            image: def.image,
+            stats: studentsGuided,
+            nextAvailable,
+            expertise,
+          };
+        });
+
+      try {
+        const data = await getPageContent("home-page");
+        const section = data?.content?.find((s: any) =>
+          ["expert_counselors", "expert-counselors", "expertCounselors", "ExpertCounselors", "section_4", "section4"].includes(s.sectionApiId)
+        );
+        setMentors(buildMentors(section?.values || {}));
+      } catch (err) {
+        console.error("Failed to fetch mentors", err);
+        setMentors(buildMentors({}));
+      }
+    };
+
     fetchProfile();
     fetchShortlist();
+    fetchMentors();
   }, []);
 
   const handleRemoveShortlist = async (providerId: string) => {
@@ -336,10 +538,10 @@ export default function ProfilePage() {
 
       if (response.ok) {
         const data = await response.json();
-        const success = await handleUpdateProfile({ 
+        const success = await handleUpdateProfile({
           profilePhoto: data.url,
           // @ts-ignore
-          profilePhotoPublicId: data.publicId 
+          profilePhotoPublicId: data.publicId
         } as any);
 
         if (success) {
@@ -358,10 +560,10 @@ export default function ProfilePage() {
 
   const handlePhotoRemove = async () => {
     const toastId = toast.loading("Removing photo...");
-    const success = await handleUpdateProfile({ 
+    const success = await handleUpdateProfile({
       profilePhoto: "",
       // @ts-ignore
-      profilePhotoPublicId: "" 
+      profilePhotoPublicId: ""
     } as any);
 
     if (success) {
@@ -384,7 +586,7 @@ export default function ProfilePage() {
         {/* ── Left Sidebar ──────────────────────────────────────────────── */}
         <aside className="w-full md:w-72 flex-shrink-0 flex flex-col gap-6 px-2 md:px-0 relative pt-5 md:pt-0">
           {/* Profile card */}
-          <div className="bg-white rounded-xl overflow-hidden shadow-2xl shadow-purple-200/40 flex flex-col border border-gray-100/50">
+          <div className="bg-[#FFFFFF] rounded-xl overflow-hidden shadow flex flex-col border border-[#E5E7EB] ">
             {/* Top Section: Purple Background */}
             <div className="bg-[#7C3AED] p-6 pb-8 flex flex-col items-center text-white text-center relative">
               {/* Settings Icon Mobile */}
@@ -488,6 +690,9 @@ export default function ProfilePage() {
             </div>
           </div>
 
+          {/* Mentor Carousel Card */}
+          <MentorCarouselCard mentors={mentors} />
+
           {/* Help card (Desktop only, mobile version moved to bottom of content) */}
           <div className="hidden md:flex bg-gradient-to-br from-[#AD46FF] to-[#4F39F6] rounded-xl p-5  text-white flex-col items-center text-center shadow-lg shadow-purple-900/10">
             <h3 className="font-extrabold text-base leading-tight mb-2">Need Help Deciding?</h3>
@@ -501,6 +706,7 @@ export default function ProfilePage() {
               Talk to an Expert
             </Link>
           </div>
+
         </aside>
 
         {/* ── Main Content ───────────────────────────────────────────────── */}
@@ -639,7 +845,7 @@ function PersonalInfoPanel({ userData, onUpdate }: { userData: UserData, onUpdat
           <Field label="Last Name" value={data.lastName} editMode={editMode} onChange={(v) => handleChange("lastName", v)} placeholder="Enter your last name" />
         </div>
         <div className="mt-6">
-          <Field
+          <DateField
             label="Date of Birth"
             value={data.dateOfBirth}
             editMode={editMode}
@@ -756,6 +962,267 @@ function Field({
           <p className={`text-sm font-semibold ${isEmpty ? "text-gray-300 italic" : "text-gray-800"}`}>
             {isEmpty ? "Not provided" : value}
           </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Date Picker Components ───────────────────────────────────────────────────
+
+function DateField({
+  label,
+  value,
+  editMode,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  editMode: boolean;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  const [showCalendar, setShowCalendar] = useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setShowCalendar(false);
+      }
+    }
+    if (showCalendar) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showCalendar]);
+
+  const isEmpty = !value || value.trim() === "";
+
+  const formatDateForDisplay = (dateStr: string) => {
+    if (!dateStr || dateStr.trim() === "") return "";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  return (
+    <div className="relative" ref={containerRef}>
+      <p className="text-xs text-gray-400 font-medium mb-1">{label}</p>
+      {editMode ? (
+        <>
+          <button
+            type="button"
+            onClick={() => setShowCalendar(!showCalendar)}
+            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 font-medium outline-none focus:border-[#6C3FC5] focus:ring-1 focus:ring-[#6C3FC5] transition-colors bg-white text-left flex items-center justify-between hover:border-gray-300"
+          >
+            <span className={isEmpty ? "text-gray-300" : "text-gray-800"}>
+              {isEmpty ? (placeholder ?? "Select date") : formatDateForDisplay(value)}
+            </span>
+            <CalIcon className="w-4 h-4 text-gray-400" />
+          </button>
+
+          <AnimatePresence>
+            {showCalendar && (
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 5, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                className="absolute left-0 top-full z-[100] mt-1"
+              >
+                <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 min-w-[280px]">
+                  <Calendar
+                    selectedDate={value}
+                    onSelect={(d) => {
+                      onChange(d);
+                      setShowCalendar(false);
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
+      ) : (
+        <div className="flex items-center gap-1.5">
+          <p className={`text-sm font-semibold ${isEmpty ? "text-gray-300 italic" : "text-gray-800"}`}>
+            {isEmpty ? "Not provided" : formatDateForDisplay(value)}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Calendar({
+  selectedDate,
+  onSelect,
+}: {
+  selectedDate: string;
+  onSelect: (date: string) => void;
+}) {
+  const [viewDate, setViewDate] = useState(() => {
+    const d = new Date(selectedDate);
+    return isNaN(d.getTime()) ? new Date() : d;
+  });
+
+  const [viewMode, setViewMode] = useState<"days" | "months" | "years">("days");
+
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const daysInMonth = (month: number, year: number) => new Date(year, month + 1, 0).getDate();
+  const firstDayOfMonth = (month: number, year: number) => new Date(year, month, 1).getDay();
+
+  const handlePrev = () => {
+    if (viewMode === "days") {
+      setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1));
+    } else if (viewMode === "years") {
+      setViewDate(new Date(viewDate.getFullYear() - 12, 0, 1));
+    }
+  };
+
+  const handleNext = () => {
+    if (viewMode === "days") {
+      setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1));
+    } else if (viewMode === "years") {
+      setViewDate(new Date(viewDate.getFullYear() + 12, 0, 1));
+    }
+  };
+
+  const isSelected = (day: number) => {
+    const d = new Date(selectedDate);
+    return !isNaN(d.getTime()) &&
+      d.getDate() === day &&
+      d.getMonth() === viewDate.getMonth() &&
+      d.getFullYear() === viewDate.getFullYear();
+  };
+
+  const getISODate = (day: number) => {
+    const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
+    // Set to noon to avoid timezone shifts during conversion if only date matters
+    d.setHours(12, 0, 0, 0);
+    return d.toISOString();
+  };
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 12 }, (_, i) => {
+    const startYear = Math.floor(viewDate.getFullYear() / 12) * 12;
+    return startYear + i;
+  });
+
+  return (
+    <div className="w-full">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <button
+          onClick={() => {
+            if (viewMode === "days") setViewMode("months");
+            else if (viewMode === "months") setViewMode("years");
+            else setViewMode("days");
+          }}
+          className="text-sm font-bold text-gray-800 hover:text-[#6C3FC5] transition-colors flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-gray-50"
+        >
+          {viewMode === "days" && `${months[viewDate.getMonth()]} ${viewDate.getFullYear()}`}
+          {viewMode === "months" && `${viewDate.getFullYear()}`}
+          {viewMode === "years" && `${years[0]} - ${years[11]}`}
+        </button>
+        <div className="flex items-center gap-1">
+          <button onClick={handlePrev} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors">
+            <ChevronLeftIcon className="w-4 h-4" />
+          </button>
+          <button onClick={handleNext} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors">
+            <ChevronRightIcon className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {viewMode === "days" && (
+        <>
+          <div className="grid grid-cols-7 gap-1 mb-2">
+            {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
+              <div key={d} className="text-[10px] font-bold text-gray-400 text-center uppercase py-1">
+                {d}
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-7 gap-1">
+            {Array.from({ length: firstDayOfMonth(viewDate.getMonth(), viewDate.getFullYear()) }).map((_, i) => (
+              <div key={`empty-${i}`} />
+            ))}
+            {Array.from({ length: daysInMonth(viewDate.getMonth(), viewDate.getFullYear()) }).map((_, i) => {
+              const day = i + 1;
+              const active = isSelected(day);
+              return (
+                <button
+                  key={day}
+                  onClick={() => onSelect(getISODate(day))}
+                  className={`
+                    w-8 h-8 rounded-lg text-xs font-semibold flex items-center justify-center transition-all
+                    ${active
+                      ? "bg-[#6C3FC5] text-white shadow-lg shadow-purple-200 scale-110"
+                      : "text-gray-700 hover:bg-purple-50 hover:text-[#6C3FC5]"
+                    }
+                  `}
+                >
+                  {day}
+                </button>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {viewMode === "months" && (
+        <div className="grid grid-cols-3 gap-2">
+          {months.map((m, i) => (
+            <button
+              key={m}
+              onClick={() => {
+                setViewDate(new Date(viewDate.getFullYear(), i, 1));
+                setViewMode("days");
+              }}
+              className={`
+                py-2 rounded-xl text-xs font-bold transition-all
+                ${viewDate.getMonth() === i
+                  ? "bg-[#6C3FC5] text-white shadow-md"
+                  : "text-gray-700 hover:bg-purple-50 hover:text-[#6C3FC5]"
+                }
+              `}
+            >
+              {m.slice(0, 3)}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {viewMode === "years" && (
+        <div className="grid grid-cols-3 gap-2">
+          {years.map((y) => (
+            <button
+              key={y}
+              onClick={() => {
+                setViewDate(new Date(y, viewDate.getMonth(), 1));
+                setViewMode("months");
+              }}
+              className={`
+                py-2 rounded-xl text-xs font-bold transition-all
+                ${viewDate.getFullYear() === y
+                  ? "bg-[#6C3FC5] text-white shadow-md"
+                  : "text-gray-700 hover:bg-purple-50 hover:text-[#6C3FC5]"
+                }
+              `}
+            >
+              {y}
+            </button>
+          ))}
         </div>
       )}
     </div>
