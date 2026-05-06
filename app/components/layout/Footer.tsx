@@ -219,13 +219,13 @@ export default function Footer() {
     <footer className="relative w-full text-white bg-[#0D1B2E] overflow-hidden">
 
 
-      <div className="relative z-10 w-full px-6 md:px-12 lg:px-20 pt-16 pb-10">
+      <div className="relative z-10 w-full px-6 md:px-12 lg:px-20 pt-8 md:pt-16 pb-10">
 
         {/* Top Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-8">
           <div className="flex flex-col">
             <div className="mb-6">
-              <img src="/logo.png" alt="CollegeProgram logo" className="h-16 w-auto object-contain -ml-2" />
+              <img src="/logo.png" alt="CollegeProgram logo" className="h-16 w-auto block -ml-3" />
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Discover a world of knowledge and opportunities
@@ -297,7 +297,7 @@ export default function Footer() {
           className="absolute inset-0 opacity-5 pointer-events-none bg-cover bg-center"
           style={{ backgroundImage: "url('/footerBg.png')" }}
         />
-        <div className="border-t border-gray-800 mb-16" />
+        <div className="border-t border-gray-800 mb-8" />
 
         {/* Middle Program Sections — Row 1: first 4 degree type sections */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
@@ -307,7 +307,7 @@ export default function Footer() {
         </div>
 
         {/* Lower Sections — Row 2: Trending Universities + remaining degree type sections */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-4">
           <FooterList title="Trending Online Universities" items={universities} />
           {row2Sections.map((section, i) => (
             <FooterList key={`row2-${i}`} title={section.title} items={section.items} />
@@ -317,7 +317,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Disclaimer & Copyright Section */}
-      <div className="relative z-10 w-full border-t border-gray-800/50 pt-10 pb-10">
+      <div className="relative z-10 w-full border-t border-gray-800/50 pt-4 pb-10">
         <div className="flex flex-col items-center text-center max-w-6xl mx-auto px-6">
           <p className="text-gray-300 text-xs font-bold mb-6">
             <Link href="/disclaimer" className="underline underline-offset-2 hover:text-white transition-colors">

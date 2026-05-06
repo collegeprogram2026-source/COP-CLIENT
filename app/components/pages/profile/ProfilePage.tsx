@@ -295,9 +295,9 @@ function MentorCarouselCard({ mentors }: { mentors: Mentor[] }) {
 
           {/* Actions */}
           <div className="mt-2">
-            <button className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#9810FA] to-[#4F39F6] text-white font-bold py-3 rounded-xl hover:brightness-90 transition-all shadow-lg shadow-purple-200 text-sm cursor-pointer w-full">
+            <Link href="/talk-to-experts" className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#9810FA] to-[#4F39F6] text-white font-bold py-3 rounded-xl hover:brightness-90 transition-all shadow-lg shadow-purple-200 text-sm cursor-pointer w-full">
               Book a call
-            </button>
+            </Link>
           </div>
         </motion.div>
       </AnimatePresence>
@@ -693,19 +693,7 @@ export default function ProfilePage() {
           {/* Mentor Carousel Card */}
           <MentorCarouselCard mentors={mentors} />
 
-          {/* Help card (Desktop only, mobile version moved to bottom of content) */}
-          <div className="hidden md:flex bg-gradient-to-br from-[#AD46FF] to-[#4F39F6] rounded-xl p-5  text-white flex-col items-center text-center shadow-lg shadow-purple-900/10">
-            <h3 className="font-extrabold text-base leading-tight mb-2">Need Help Deciding?</h3>
-            <p className="text-xs text-white/80 mb-4 leading-relaxed">
-              Our expert counselors can help you compare and choose the best university for your goals
-            </p>
-            <Link
-              href="/talk-to-experts"
-              className="bg-[#FDC700] text-[#6C3FC5] hover:opacity-90 font-bold text-sm px-5 py-2.5 rounded-full transition-colors"
-            >
-              Talk to an Expert
-            </Link>
-          </div>
+
 
         </aside>
 
@@ -726,20 +714,6 @@ export default function ProfilePage() {
               onPasswordSet={() => setHasPassword(true)}
             />
           )}
-
-          {/* Help card (Mobile only) */}
-          <div className="mt-8 md:hidden bg-[#5A2EA6] rounded-3xl p-6 text-white flex flex-col items-center text-center shadow-xl shadow-purple-900/10">
-            <h3 className="font-extrabold text-lg leading-tight mb-2">Need Help Deciding?</h3>
-            <p className="text-sm text-white/80 mb-4 leading-relaxed">
-              Our expert counselors can help you compare and choose the best university for your goals
-            </p>
-            <Link
-              href="/talk-to-experts"
-              className="w-full bg-white text-[#6C3FC5] font-bold text-sm py-3.5 rounded-2xl transition-colors text-center"
-            >
-              Talk to an Expert
-            </Link>
-          </div>
 
           {/* Logout button (Mobile only) */}
           <button

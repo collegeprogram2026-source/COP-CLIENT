@@ -380,7 +380,7 @@ export default function Navbar() {
       <div className="md:fixed md:px-7 md:py-2.5 w-full bg-[#A983F6] md:bg-transparent border-b md:border-none border-purple-400/30">
         <div className="nav-glass w-full mx-auto flex items-center justify-between px-4 h-16 md:h-[72px] text-white relative">
           <Link href="/" className="flex items-center gap-1 flex-shrink-0">
-            <img src="/logo.png" alt="CollegeProgram/logo" className="h-16 md:h-16 w-auto object-contain" />
+            <img src="/logo.png" alt="CollegeProgram/logo" className="h-16 md:h-16 w-auto object-contain mt-1 md:mt-0" />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
