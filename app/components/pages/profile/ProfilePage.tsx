@@ -382,60 +382,76 @@ export default function ProfilePage() {
       }
     };
     const fetchMentors = async () => {
+      // Mirrors Section4 (expert_counselors) on the homepage: each counselor is a
+      // single CMS textarea with 5 lines — title, specialty, experience, studentsGuided, nextAvailable.
+      const COUNSELOR_DEFS = [
+        {
+          name: "Dr. Priya Sharma",
+          cmsKey: "Dr. Priya sharma",
+          image: "/Image (Dr. Priya Sharma).png",
+          fallback: ["Senior Education Counselor", "MBA & Management Programs", "12 years experience", "3500+ students guided", "Today, 4:00 PM"],
+        },
+        {
+          name: "Rahul Mehta",
+          cmsKey: "Rahul Mehta",
+          image: "/Image (Rahul Mehta).png",
+          fallback: ["Career Guidance Expert", "Tech & Data Science", "10 years experience", "2800+ students guided", "Tomorrow, 10:00 AM"],
+        },
+        {
+          name: "Anita Desai",
+          cmsKey: "Anita Desai",
+          image: "/Image (Anita Desai).png",
+          fallback: ["Study Abroad Specialist", "International Programs", "15 years experience", "4200+ students guided", "Tomorrow, 2:30 PM"],
+        },
+      ];
+
+      const richTextToPlain = (value: any): string => {
+        if (!value) return "";
+        if (typeof value === "string") return value;
+        if (value.type === "doc" && Array.isArray(value.content)) {
+          return value.content
+            .map((block: any) =>
+              block.type === "paragraph"
+                ? (block.content || []).map((c: any) => c.text || "").join("")
+                : ""
+            )
+            .join("\n");
+        }
+        return String(value);
+      };
+
+      const buildMentors = (values: Record<string, any> = {}): Mentor[] =>
+        COUNSELOR_DEFS.map((def) => {
+          const rawKey = Object.keys(values).find((k) => k.toLowerCase() === def.cmsKey.toLowerCase());
+          const raw = rawKey ? richTextToPlain(values[rawKey]).trim() : "";
+          const lines = raw.split("\n").map((l) => l.trim()).filter(Boolean);
+          const [title, specialty, experience, studentsGuided, nextAvailable] = [0, 1, 2, 3, 4].map(
+            (i) => lines[i] || def.fallback[i]
+          );
+          const expertise = specialty
+            .split(/[,/&|]+/)
+            .map((s) => s.trim())
+            .filter(Boolean);
+          if (experience) expertise.push(experience);
+          return {
+            name: def.name,
+            role: title,
+            image: def.image,
+            stats: studentsGuided,
+            nextAvailable,
+            expertise,
+          };
+        });
+
       try {
         const data = await getPageContent("home-page");
-        const section5 = data?.content?.find((s: any) =>
-          ["talk_to_expert_counselors", "talk-to-expert-counselors", "talkToExpertCounselors", "section_5", "section5"].includes(s.sectionApiId)
+        const section = data?.content?.find((s: any) =>
+          ["expert_counselors", "expert-counselors", "expertCounselors", "ExpertCounselors", "section_4", "section4"].includes(s.sectionApiId)
         );
-
-        // If we find mentors in Section 5 or Section 4, use them.
-        // Fallback to Section 4 if Section 5 is just a form.
-        let sectionToUse = section5;
-        if (!sectionToUse?.values?.mentors && !sectionToUse?.values?.counselors) {
-          sectionToUse = data?.content?.find((s: any) =>
-            ["expert_counselors", "expert-counselors", "expertCounselors", "section_4", "section4"].includes(s.sectionApiId)
-          );
-        }
-
-        if (sectionToUse && sectionToUse.values) {
-          const v = sectionToUse.values;
-          // Look for any field that might be an array of mentors
-          const mentorKey = Object.keys(v).find(k => k.toLowerCase().includes("mentor") || k.toLowerCase().includes("counselor"));
-          if (mentorKey && Array.isArray(v[mentorKey])) {
-            const mList = v[mentorKey].map((m: any) => ({
-              name: m.name || m.title || "Expert",
-              role: m.role || m.designation || "Counselor",
-              image: m.image || m.photo || "/Section 5.png",
-              stats: m.stats || "500+ successful admissions",
-              nextAvailable: m.nextAvailable || "Tomorrow, 10:00 AM",
-              expertise: Array.isArray(m.expertise) ? m.expertise : ["MBA Programs", "University Selection"]
-            }));
-            setMentors(mList);
-            return;
-          }
-        }
-
-        // Final fallback if no data found in CMS
-        setMentors([
-          {
-            name: "Aditya",
-            role: "Global Education Consultant",
-            image: "/Image (Rahul Mehta).png", // using an existing image
-            stats: "500+ successful admissions",
-            nextAvailable: "Tomorrow, 10:00 AM",
-            expertise: ["MBA Programs", "University Selection", "Career Guidance"]
-          },
-          {
-            name: "Priya Sharma",
-            role: "Senior Education Counselor",
-            image: "/Image (Dr. Priya Sharma).png",
-            stats: "1200+ successful admissions",
-            nextAvailable: "Today, 4:00 PM",
-            expertise: ["Tech Programs", "Study Abroad", "Career Growth"]
-          }
-        ]);
+        setMentors(buildMentors(section?.values || {}));
       } catch (err) {
         console.error("Failed to fetch mentors", err);
+        setMentors(buildMentors({}));
       }
     };
 

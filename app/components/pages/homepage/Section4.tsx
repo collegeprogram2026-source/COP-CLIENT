@@ -23,6 +23,7 @@ interface Counselor {
   expertise: string;
   experience: string;
   studentsGuided: string;
+  nextAvailable: string;
 }
 
 export default function Section4({ section }: Section4Props) {
@@ -89,7 +90,7 @@ export default function Section4({ section }: Section4Props) {
 
   // Parse counselor data from CMS
   // ── Parse counselor data from 3 named CMS textarea fields ──────────────────
-  // Each field value is 4 lines: title, specialty, experience, studentsGuided
+  // Each field value is 5 lines: title, specialty, experience, studentsGuided, nextAvailable
   const COUNSELOR_DEFS = [
     { name: "Dr. Priya Sharma", cmsKey: "Dr. Priya sharma", image: "/Image (Dr. Priya Sharma).png", rating: 4.9, reviewCount: 1250 },
     { name: "Rahul Mehta", cmsKey: "Rahul Mehta", image: "/Image (Rahul Mehta).png", rating: 4.9, reviewCount: 1250 },
@@ -97,9 +98,9 @@ export default function Section4({ section }: Section4Props) {
   ];
 
   const FALLBACK_LINES = [
-    ["Senior Education Counselor", "MBA & Management Programs", "12 years experience", "3500+ students guided"],
-    ["Career Guidance Expert", "Tech & Data Science", "10 years experience", "2800+ students guided"],
-    ["Study Abroad Specialist", "International Programs", "15 years experience", "4200+ students guided"],
+    ["Senior Education Counselor", "MBA & Management Programs", "12 years experience", "3500+ students guided", "Today, 4:00 PM"],
+    ["Career Guidance Expert", "Tech & Data Science", "10 years experience", "2800+ students guided", "Tomorrow, 10:00 AM"],
+    ["Study Abroad Specialist", "International Programs", "15 years experience", "4200+ students guided", "Tomorrow, 2:30 PM"],
   ];
 
   const counselors: Counselor[] = COUNSELOR_DEFS.map((def, idx) => {
@@ -118,6 +119,7 @@ export default function Section4({ section }: Section4Props) {
       expertise: lines[1] || fb[1],
       experience: lines[2] || fb[2],
       studentsGuided: lines[3] || fb[3],
+      nextAvailable: lines[4] || fb[4],
     };
   });
 
