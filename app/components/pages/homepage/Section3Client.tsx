@@ -86,12 +86,29 @@ export default function Section3Client({ courseGroups }: Props) {
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    setContainerWidth(el.getBoundingClientRect().width);
+
+    const updateWidth = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0) {
+        setContainerWidth(rect.width);
+      } else if (typeof window !== "undefined") {
+        setContainerWidth(window.innerWidth);
+      }
+    };
+
+    updateWidth();
+    const timer = setTimeout(updateWidth, 100);
+
     const obs = new ResizeObserver((entries) => {
-      setContainerWidth(entries[0].contentRect.width);
+      if (entries[0].contentRect.width > 0) {
+        setContainerWidth(entries[0].contentRect.width);
+      }
     });
     obs.observe(el);
-    return () => obs.disconnect();
+    return () => {
+      obs.disconnect();
+      clearTimeout(timer);
+    };
   }, []);
 
   // translatePx derived synchronously — always in sync with offset in the same render

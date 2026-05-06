@@ -30,12 +30,33 @@ export default function FocusCenterSlider({
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    setContainerWidth(el.getBoundingClientRect().width);
+
+    const updateWidth = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0) {
+        setContainerWidth(rect.width);
+      } else if (typeof window !== "undefined") {
+        // Fallback to viewport width if element is not yet laid out
+        setContainerWidth(window.innerWidth);
+      }
+    };
+
+    updateWidth();
+    
+    // Retry once after a short delay just in case of slow layout
+    const timer = setTimeout(updateWidth, 100);
+
     const obs = new ResizeObserver((entries) => {
-      setContainerWidth(entries[0].contentRect.width);
+      if (entries[0].contentRect.width > 0) {
+        setContainerWidth(entries[0].contentRect.width);
+      }
     });
     obs.observe(el);
-    return () => obs.disconnect();
+    
+    return () => {
+      obs.disconnect();
+      clearTimeout(timer);
+    };
   }, []);
 
   // translatePx is a derived value — always in sync with offset in the same render
