@@ -18,13 +18,13 @@ export default function Section5({ section }: Section5Props) {
     return fallback;
   };
 
-  const title      = get(["title", "Title", "Main Title"], "Talk to our expert counselors");
-  const desc       = get(["description", "Description", "subtitle"], "Have questions about programs, admissions, or career paths? Fill out the form and our expert counselors will be in touch directly.");
-  const officeImg  = get(["officeImage", "Office Image", "image"], "/Section 5.png");
-  const indiaAddr   = get(["indiaAddress", "India Address"], "123 Education Hub, Sector 5\nBengaluru, Karnataka\n560001");
-  const indiaPhone  = get(["indiaPhone", "India Phone"], "+91 80 1234 5678");
-  const usaAddr     = get(["usaAddress", "USA Address"], "456 Tech Campus Drive\nSan Francisco, CA\n94105");
-  const usaPhone    = get(["usaPhone", "USA Phone"], "+1 415 123 4567");
+  const title = get(["title", "Title", "Main Title"], "Talk to our expert counselors");
+  const desc = get(["description", "Description", "subtitle"], "Have questions about programs, admissions, or career paths? Fill out the form and our expert counselors will be in touch directly.");
+  const officeImg = get(["officeImage", "Office Image", "image"], "/Section 5.png");
+  const indiaAddr = get(["indiaAddress", "India Address"], "123 Education Hub, Sector 5\nBengaluru, Karnataka\n560001");
+  const indiaPhone = get(["indiaPhone", "India Phone"], "+91 80 1234 5678");
+  const usaAddr = get(["usaAddress", "USA Address"], "456 Tech Campus Drive\nSan Francisco, CA\n94105");
+  const usaPhone = get(["usaPhone", "USA Phone"], "+1 415 123 4567");
 
   // Programs list from CMS or default
   const defaultPrograms = ["MBA & Management Programs", "Tech & Data Science", "International Programs"];
