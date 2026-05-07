@@ -1,6 +1,5 @@
 'use client'
 import { SectionContent } from "@/app/lib/types";
-import { motion } from "framer-motion";
 import Image from "next/image";
 interface HeroProps {
   section: SectionContent;
@@ -110,11 +109,9 @@ export default function Hero({ section }: HeroProps) {
         <div className="max-w-7xl mx-auto">
           <div className="relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12 xl:gap-16">
             {/* Left column: text */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, ease: 'easeOut' }}
+            <div
               className="w-full lg:w-1/2 text-center lg:text-left relative px-4 lg:px-0"
+              style={{ animation: "heroFadeUp 0.55s ease-out both" }}
             >
               {/* Privacy matters pill - text based (match CMS field if present) */}
               {(() => {
@@ -245,7 +242,7 @@ export default function Hero({ section }: HeroProps) {
                   height={1331}
                   priority
                   fetchPriority="high"
-                  sizes="100vw"
+                  sizes="(max-width: 640px) 95vw, 100vw"
                   style={{ width: '100%', height: 'auto', display: 'block' }}
                 />
               </div>
@@ -324,14 +321,12 @@ export default function Hero({ section }: HeroProps) {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
             {/* Right column: image + decorative circle + overlays — hidden on mobile */}
-            <motion.div
-              initial={{ opacity: 0, x: 32 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-              className="hidden lg:flex w-full lg:w-1/2 items-start justify-center relative" style={{ paddingLeft: "0", paddingRight: "clamp(0px, 2vw, 32px)", minHeight: "400px" }}>
+            <div
+              className="hidden lg:flex w-full lg:w-1/2 items-start justify-center relative"
+              style={{ paddingLeft: "0", paddingRight: "clamp(0px, 2vw, 32px)", minHeight: "400px", animation: "heroFadeRight 0.6s ease-out 0.1s both" }}>
               {/* Decorative purple circle - responsive */}
               {/* <motion.div initial={{ scale: 0.85 }} className="absolute rounded-full bg-gradient-to-br from-purple-300 to-purple-600 opacity-30 -z-10" style={{
                 width: "clamp(300px, 50vw, 600px)",
@@ -349,7 +344,7 @@ export default function Hero({ section }: HeroProps) {
                 height={1331}
                 priority
                 fetchPriority="high"
-                sizes="(max-width: 1024px) 100vw, 548px"
+                sizes="(max-width: 640px) 95vw, (max-width: 1024px) 50vw, 548px"
                 className="relative z-10 rounded-2xl object-cover"
                 style={{
                   boxShadow: "none",
@@ -446,7 +441,7 @@ export default function Hero({ section }: HeroProps) {
                   </div>
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
 
           {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}

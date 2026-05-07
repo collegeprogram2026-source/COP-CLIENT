@@ -8,7 +8,7 @@ import { SectionContent } from "@/app/lib/types";
 
 // Below-the-fold sections — split into separate chunks so they don't bloat
 // the initial homepage bundle. Still SSRed for SEO.
-const Section8 = dynamic(() => import("./Section8"));
+const Section8 = dynamic(() => import("./Section8"), { ssr: false });
 const Section9 = dynamic(() => import("./Section9"));
 const Section10 = dynamic(() => import("./Section10"));
 

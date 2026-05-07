@@ -23,6 +23,19 @@
     "react-dom": "19.2.3",
     "react-hot-toast": "^2.6.0"
   },
+  "browserslist": {
+    "production": [
+      "Chrome >= 91",
+      "Firefox >= 90",
+      "Safari >= 15",
+      "Edge >= 91"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
