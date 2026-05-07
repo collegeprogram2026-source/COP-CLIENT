@@ -1,6 +1,8 @@
 import { getDegreeTypes, getCourses } from "@/app/lib/api";
 import OnlineCoursesPage from "@/app/components/pages/onlineCoursesPage";
 
+export const revalidate = 300;
+
 export const metadata = {
   title: "All Online Courses | COP-CMS",
   description: "Browse all available online degree programs across different categories like PG, UG, and more.",

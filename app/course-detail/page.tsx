@@ -1,7 +1,64 @@
 import React from "react";
+import type { Metadata } from "next";
 import { getCourseDetail } from "@/app/lib/api";
 import Link from "next/link";
 import { ProviderCourse, Course } from "@/app/lib/types";
+import { JsonLd, courseSchema, breadcrumbSchema } from "@/app/lib/jsonld";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://cop-client-nine.vercel.app";
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ id?: string }>;
+}): Promise<Metadata> {
+  const { id } = await searchParams;
+  if (!id) return { title: "Course not found" };
+
+  try {
+    const data = await getCourseDetail(id);
+    const course = data?.course;
+    if (!course) return { title: "Course not found" };
+
+    const provider =
+      data?.programs?.[0]?.providerId &&
+      typeof data.programs[0].providerId !== "string"
+        ? data.programs[0].providerId
+        : null;
+
+    const title = `${course.name}${provider?.name ? ` at ${provider.name}` : ""} — Fees, Duration & Admissions`;
+    const description =
+      course.shortDescription ||
+      course.description ||
+      `Explore the ${course.name} program${provider?.name ? ` at ${provider.name}` : ""}: fees, duration, eligibility, and admissions.`;
+    const canonical = `${SITE_URL}/course-detail?id=${id}`;
+    const ogImage =
+      course.thumbnail || provider?.coverImage || provider?.logo || "/logo.webp";
+
+    return {
+      title,
+      description,
+      alternates: { canonical },
+      openGraph: {
+        type: "website",
+        url: canonical,
+        title,
+        description,
+        siteName: "CollegeProgram",
+        images: [{ url: ogImage, alt: course.name }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: [ogImage],
+      },
+    };
+  } catch {
+    return { title: "Course not found" };
+  }
+}
 
 import { Breadcrumbs, Breadcrumb } from "@/app/components/Breadcrumbs";
 import TalkToExperts from "../components/pages/experts/TalkToExperts";
@@ -43,7 +100,7 @@ function CourseIcon({
 }) {
   if (!name) return <IconBook className={className} stroke={stroke} />;
   if (/^(https?:)?\/\//.test(name) || name.startsWith("/")) {
-    return <img src={name} alt="" className={className} />;
+    return <img src={name} alt="Course feature icon" className={className} />;
   }
   const normalized = name.startsWith("Icon")
     ? name
@@ -440,8 +497,34 @@ export default async function CourseDetailPage({
     },
   ];
 
+  const courseUrl = `${SITE_URL}/course-detail?id=${id}`;
+  const courseDesc = (
+    course.shortDescription ||
+    course.description ||
+    `Online ${course.name} program${provider?.name ? ` at ${provider.name}` : ""}.`
+  ).slice(0, 300);
+
   return (
     <main className="min-h-screen bg-gray-50/50 font-sans text-gray-900 overflow-x-hidden">
+      <JsonLd
+        data={courseSchema({
+          name: course.name,
+          description: courseDesc,
+          url: courseUrl,
+          providerName: provider?.name,
+          providerUrl: provider?.slug ? `${SITE_URL}/universities/${provider.slug}` : undefined,
+        })}
+      />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Online Courses", path: "/online-courses" },
+          ...(degreeType?.slug
+            ? [{ name: degreeType.name, path: `/online-courses/${degreeType.slug}` }]
+            : []),
+          { name: course.name, path: `/course-detail?id=${id}` },
+        ])}
+      />
       {/* Hero Section */}
       <section className="bg-white border-b border-gray-100">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 pt-6 md:pt-12 pb-10 md:pb-14">
@@ -499,7 +582,8 @@ export default async function CourseDetailPage({
                         <img
                           key={i}
                           src={`https://i.pravatar.cc/40?u=${i}`}
-                          alt=""
+                          alt="Student avatar"
+                          aria-hidden="true"
                           className="w-8 h-8 rounded-full border-2 border-white object-cover"
                         />
                       ))}

@@ -135,7 +135,7 @@ export default function Hero({ section }: HeroProps) {
                   >
                     <img
                       src="/SVG%20(2).webp"
-                      alt=""
+                      alt="Privacy shield icon"
                       aria-hidden="true"
                       width={22}
                       height={22}
@@ -180,28 +180,31 @@ export default function Hero({ section }: HeroProps) {
                       return (
                         <span key={idx}>
                           {isSecondWord ? (
-                            <span
-                              style={{
-                                display: "inline-block",
-                                margin: "0 clamp(2px, 0.5vw, 6px)",
-                                transform: "skewY(-5deg)",
-                                background: "linear-gradient(135deg, #7C3AED 0%, #C026D3 100%)",
-                                padding: "0",
-                              }}
-                            >
+                            <>
                               <span
                                 style={{
                                   display: "inline-block",
-                                  padding: "clamp(4px, 1vw, 8px) clamp(10px, 2vw, 16px)",
-                                  color: "white",
-                                  transform: "skewY(5deg)",
-                                  fontStyle: "italic",
-                                  fontWeight: 700,
+                                  margin: "0 clamp(2px, 0.5vw, 6px)",
+                                  transform: "skewY(-5deg)",
+                                  background: "linear-gradient(135deg, #7C3AED 0%, #C026D3 100%)",
+                                  padding: "0",
                                 }}
                               >
-                                {word}
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    padding: "clamp(4px, 1vw, 8px) clamp(10px, 2vw, 16px)",
+                                    color: "white",
+                                    transform: "skewY(5deg)",
+                                    fontStyle: "italic",
+                                    fontWeight: 700,
+                                  }}
+                                >
+                                  {word}
+                                </span>
                               </span>
-                            </span>
+                              {" "}
+                            </>
                           ) : isFrom ? (
                             <>
                               <br />
@@ -254,7 +257,7 @@ export default function Hero({ section }: HeroProps) {
                   { icon: '/Container (49).webp', label: statStudents, sub: 'Enrolled' },
                 ].map((stat, i) => (
                   <div key={i} className="flex flex-col items-center lg:flex-row lg:items-start gap-1.5 sm:gap-2 text-center lg:text-left" style={{ flex: 1, minWidth: 0 }}>
-                    <img src={stat.icon} alt="" aria-hidden="true" width={36} height={36} loading="lazy" className="flex-shrink-0" style={{ width: 'clamp(24px, 5vw, 36px)', height: 'clamp(24px, 5vw, 36px)', objectFit: 'contain' }} />
+                    <img src={stat.icon} alt={`${stat.label || "Statistic"} icon`} aria-hidden="true" width={36} height={36} loading="lazy" className="flex-shrink-0" style={{ width: 'clamp(24px, 5vw, 36px)', height: 'clamp(24px, 5vw, 36px)', objectFit: 'contain' }} />
                     <div style={{ minWidth: 0 }}>
                       {(() => {
                         const lbl = String(stat.label || "").trim();
@@ -314,9 +317,14 @@ export default function Hero({ section }: HeroProps) {
 
               {/* 4-badge static row */}
               <div className="mt-6 lg:mt-8 flex items-center gap-2 lg:gap-4 w-full justify-center lg:justify-start">
-                {['/Stats.webp', '/Container (43).webp', '/Container (44).webp', '/Container (45).webp'].map((src, i) => (
+                {[
+                  { src: '/Stats.webp', alt: 'Trusted programs badge' },
+                  { src: '/Container (43).webp', alt: 'Top universities badge' },
+                  { src: '/Container (44).webp', alt: 'Verified providers badge' },
+                  { src: '/Container (45).webp', alt: 'Industry recognition badge' },
+                ].map((b, i) => (
                   <div key={i} className="flex-shrink-0" style={{ height: 'clamp(28px, 5vw, 44px)', flex: 1, maxWidth: 150 }}>
-                    <img src={src} alt="" aria-hidden="true" width={150} height={44} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                    <img src={b.src} alt={b.alt} aria-hidden="true" width={150} height={44} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                   </div>
                 ))}
               </div>
@@ -392,7 +400,7 @@ export default function Hero({ section }: HeroProps) {
                   >
                     <img
                       src="/Container (51).webp"
-                      alt=""
+                      alt="Online courses feature icon"
                       aria-hidden="true"
                       width={52}
                       height={52}

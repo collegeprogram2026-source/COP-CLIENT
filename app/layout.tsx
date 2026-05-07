@@ -4,10 +4,73 @@ import "./globals.css";
 import Layout from "./components/pages/sections/Layout";
 import { Toaster } from "react-hot-toast";
 import SmoothScroll from "./components/providers/SmoothScroll";
+import { JsonLd, organizationSchema, websiteSchema } from "./lib/jsonld";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://cop-client-nine.vercel.app";
 
 export const metadata: Metadata = {
-  title: "CollegeProgram",
-  description: "Discover a world of knowledge and opportunities with our online education platform",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "CollegeProgram — Online Degree Programs from Top Universities",
+    template: "%s | CollegeProgram",
+  },
+  description:
+    "Discover online degree programs from top universities. Compare courses, fees, and rankings, and talk to expert counselors to find your perfect program.",
+  keywords: [
+    "online courses",
+    "online degree",
+    "online universities",
+    "college programs",
+    "distance learning",
+    "MBA online",
+    "online education",
+    "compare universities",
+  ],
+  applicationName: "CollegeProgram",
+  authors: [{ name: "CollegeProgram" }],
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    siteName: "CollegeProgram",
+    title: "CollegeProgram — Online Degree Programs from Top Universities",
+    description:
+      "Discover online degree programs from top universities. Compare courses, fees, and rankings, and talk to expert counselors to find your perfect program.",
+    images: [
+      {
+        url: "/logo.webp",
+        width: 1200,
+        height: 630,
+        alt: "CollegeProgram",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CollegeProgram — Online Degree Programs from Top Universities",
+    description:
+      "Discover online degree programs from top universities. Compare courses, fees, and rankings, and talk to expert counselors.",
+    images: ["/logo.webp"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/logo.webp",
+  },
 };
 
 const inter = Inter({
@@ -52,6 +115,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://encrypted-tbn0.gstatic.com" />
         <link rel="preconnect" href="https://upload.wikimedia.org" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://i.pinimg.com" />
+        <JsonLd data={organizationSchema()} />
+        <JsonLd data={websiteSchema()} />
       </head>
       <body className="min-h-full flex flex-col">
         <SmoothScroll>

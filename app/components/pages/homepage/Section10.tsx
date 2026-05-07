@@ -4,6 +4,7 @@ import { SectionContent } from "@/app/lib/types";
 import { richTextToPlain } from "./tuUtils";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { JsonLd, faqSchema } from "@/app/lib/jsonld";
 
 interface Section10Props {
   section: SectionContent;
@@ -87,8 +88,13 @@ export default function Section10({ section, questionsSection }: Section10Props)
     "Everything you need to know about online education"
   );
 
+  const faqsForSchema = faqs
+    .filter((f) => f.question && f.answer)
+    .slice(0, 20);
+
   return (
     <section className="w-full bg-white py-16 px-4">
+      {faqsForSchema.length > 0 && <JsonLd data={faqSchema(faqsForSchema)} />}
       <div className="max-w-6xl mx-auto flex flex-col items-center">
 
         {/* Pill */}

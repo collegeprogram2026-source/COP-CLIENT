@@ -372,7 +372,7 @@ export default function ArticlesPage({ cmsArticles, pageTitle, pageSubtitle }: A
                   transition: "background 0.15s",
                 }}
               >
-                <Image src={cat.icon} alt="" width={16} height={16} />
+                <Image src={cat.icon} alt={`${cat.label} category icon`} width={16} height={16} />
                 <span>{cat.label}</span>
                 <span
                   style={{

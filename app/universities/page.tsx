@@ -2,6 +2,8 @@ import { getPageContent, getProviders } from "@/app/lib/api";
 import { PageResponse } from "@/app/lib/types";
 import UniversityPage from "@/app/components/pages/universityPage";
 
+export const revalidate = 300;
+
 function mergeWithPlaceholders(data: PageResponse) {
   const sections = data.page?.sections || [];
   const content = data.content || [];

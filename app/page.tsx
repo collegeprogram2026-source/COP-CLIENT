@@ -3,6 +3,8 @@ import { PageResponse, SectionContent } from "@/app/lib/types";
 // import SectionRenderer from "@/app/components/SectionRenderer";
 import Homepage from "@/app/components/pages/homepage";
 
+export const revalidate = 300;
+
 function mergeWithPlaceholders(data: PageResponse) {
   const sections = data.page?.sections || [];
   const content = data.content || [];

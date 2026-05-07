@@ -125,22 +125,22 @@ export default function TalkToExperts() {
                 <div>
                   <p style={{ fontFamily: "Inter", fontSize: "14px", fontWeight: 600, color: "#101828", marginBottom: "8px" }}>India</p>
                   <div style={{ display: "flex", alignItems: "flex-start", gap: "6px", marginBottom: "8px" }}>
-                    <img src="/Icon.webp" alt="" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
+                    <img src="/Icon.webp" alt="Office address" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
                     <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", whiteSpace: "pre-line", margin: 0 }}>{"123 Education Hub, Sector 5\nBengaluru, Karnataka\n560001"}</p>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <img src="/Icon (2).webp" alt="" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
+                    <img src="/Icon (2).webp" alt="Phone contact" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
                     <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", margin: 0 }}>+91 80 1234 5678</p>
                   </div>
                 </div>
                 <div>
                   <p style={{ fontFamily: "Inter", fontSize: "14px", fontWeight: 600, color: "#101828", marginBottom: "8px" }}>United States</p>
                   <div style={{ display: "flex", alignItems: "flex-start", gap: "6px", marginBottom: "8px" }}>
-                    <img src="/Icon.webp" alt="" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
+                    <img src="/Icon.webp" alt="Office address" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
                     <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", whiteSpace: "pre-line", margin: 0 }}>{"456 Tech Campus Drive\nSan Francisco, CA\n94105"}</p>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <img src="/Icon (2).webp" alt="" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
+                    <img src="/Icon (2).webp" alt="Phone contact" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
                     <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", margin: 0 }}>+1 415 123 4567</p>
                   </div>
                 </div>

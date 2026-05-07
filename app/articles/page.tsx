@@ -2,6 +2,8 @@ import { getPageContent } from "@/app/lib/api";
 import { PageResponse } from "@/app/lib/types";
 import ArticlesPage, { ArticleData } from "@/app/components/pages/articles/Articles";
 
+export const revalidate = 300;
+
 export const metadata = {
   title: "Articles | CollegeProgram",
   description: "Latest blogs, guides and resources on education and career growth.",

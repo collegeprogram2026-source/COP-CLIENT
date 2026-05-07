@@ -297,7 +297,7 @@ export default function Footer() {
                   aria-label={`Visit our ${icon.alt}`}
                   className="opacity-60 hover:opacity-100 transition-opacity"
                 >
-                  <img src={icon.src} alt="" aria-hidden="true" className="w-8 h-8" />
+                  <img src={icon.src} alt={`${icon.alt} icon`} aria-hidden="true" className="w-8 h-8" />
                 </a>
               ))}
             </div>

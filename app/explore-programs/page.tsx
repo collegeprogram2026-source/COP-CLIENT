@@ -2,6 +2,8 @@ import { getPageContent, getDegreeTypes, getCourses, getSpecializations } from "
 import { PageResponse } from "@/app/lib/types";
 import ExploreProgramsPage from "@/app/components/pages/exploreProgramsPage";
 
+export const revalidate = 300;
+
 function mergeWithPlaceholders(data: PageResponse) {
   const sections = data.page?.sections || [];
   const content = data.content || [];

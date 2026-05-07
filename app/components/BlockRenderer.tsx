@@ -50,7 +50,7 @@ export default function BlockRenderer({ blocks }: { blocks: Block[] | undefined 
             <div key={i} className={`w-full ${alignMap[block.align || "center"]}`}>
               <img
                 src={block.value}
-                alt=""
+                alt="Content image"
                 className="rounded-xl max-w-full h-auto border border-zinc-200"
               />
             </div>
@@ -80,7 +80,7 @@ export default function BlockRenderer({ blocks }: { blocks: Block[] | undefined 
                     {it.icon && (
                       <div className="mb-3 w-10 h-10 flex items-center justify-center rounded-lg bg-zinc-100">
                         {isUrl(it.icon) ? (
-                          <img src={it.icon} alt="" className="w-6 h-6 object-contain" />
+                          <img src={it.icon} alt={`${it.title || "Item"} icon`} className="w-6 h-6 object-contain" />
                         ) : (
                           <span className="text-xl">{it.icon}</span>
                         )}
