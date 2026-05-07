@@ -3,6 +3,8 @@
 import { SectionContent } from "@/app/lib/types";
 import { richTextToPlain } from "./tuUtils";
 import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
+// TalkToExpertsForm loads Firebase — defer until section enters viewport
 const TalkToExpertsForm = dynamic(() => import("../../shared/TalkToExpertsForm"), { ssr: false });
 
 interface Section5Props {
@@ -11,6 +13,19 @@ interface Section5Props {
 
 export default function Section5({ section }: Section5Props) {
   const v = section.values || {};
+  const sectionRef = useRef<HTMLElement>(null);
+  const [formVisible, setFormVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => { if (entries[0].isIntersecting) { setFormVisible(true); io.disconnect(); } },
+      { rootMargin: "200px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const get = (aliases: string[], fallback = ""): string => {
     for (const alias of aliases) {
@@ -46,7 +61,7 @@ export default function Section5({ section }: Section5Props) {
   );
 
   return (
-    <section id="contact-experts" style={{ width: "100%", backgroundColor: "#FFFFFF", padding: "clamp(40px, 6vw, 60px) 0" }}>
+    <section ref={sectionRef} id="contact-experts" style={{ width: "100%", backgroundColor: "#FFFFFF", padding: "clamp(40px, 6vw, 60px) 0" }}>
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)" }}>
 
         {/* ── MOBILE VERSION (hidden on lg and up) ── */}
@@ -54,7 +69,7 @@ export default function Section5({ section }: Section5Props) {
           <h2 style={{ fontFamily: "Inter", fontSize: "clamp(24px, 6vw, 32px)", fontWeight: 700, lineHeight: 1.2, color: "#101828", marginBottom: "16px" }}>{title}</h2>
           <DescPara />
           <div style={{ marginTop: "24px", textAlign: "left" }}>
-            <TalkToExpertsForm source="homepage_section5" isHomePage={true} programs={programs} />
+            {formVisible && <TalkToExpertsForm source="homepage_section5" isHomePage={true} programs={programs} />}
           </div>
         </div>
 
@@ -110,7 +125,7 @@ export default function Section5({ section }: Section5Props) {
           </div>
 
           {/* ── RIGHT SIDE: FORM CARD ────────────────────────────────────────── */}
-          <TalkToExpertsForm source="homepage_section5" isHomePage={true} programs={programs} />
+          {formVisible && <TalkToExpertsForm source="homepage_section5" isHomePage={true} programs={programs} />}
         </div>
       </div>
       <div id="recaptcha-s5" />

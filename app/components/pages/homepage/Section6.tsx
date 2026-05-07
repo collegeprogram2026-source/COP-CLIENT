@@ -62,46 +62,40 @@ export default function Section6({ section }: Section6Props) {
   const currentTitle = defaultHeadings[headingIndex] || title;
 
   const [totalPrograms, setTotalPrograms] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Try to fetch real trending programs from API; fallback to mock
     const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-    const fetchROI = async () => {
-      try {
-        const res = await fetch(`${apiBase}/api/public/providers/programs/best-roi`, { cache: "no-store" });
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) setRoiPrograms(data);
-        }
-      } catch { /* fallback to mock */ }
-    };
-
-    const fetchTrending = async () => {
-      try {
-        const res = await fetch(`${apiBase}/api/public/providers/programs/trending`, { cache: "no-store" });
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) setTrendingPrograms(data);
-        }
-      } catch { /* fallback to mock */ }
-    };
-
-    const fetchTotalCount = async () => {
-      try {
-        const res = await fetch(`${apiBase}/api/public/provider-courses/count`, { cache: "no-store" });
-        if (res.ok) {
-          const data = await res.json();
-          if (typeof data.count === "number") setTotalPrograms(data.count);
-        }
-      } catch (err) {
-        console.error("Failed to fetch programs count:", err);
+    const fetchAll = async () => {
+      const [roiRes, trendRes, countRes] = await Promise.allSettled([
+        fetch(`${apiBase}/api/public/providers/programs/best-roi`, { cache: "no-store" }),
+        fetch(`${apiBase}/api/public/providers/programs/trending`, { cache: "no-store" }),
+        fetch(`${apiBase}/api/public/provider-courses/count`, { cache: "no-store" }),
+      ]);
+      if (roiRes.status === 'fulfilled' && roiRes.value.ok) {
+        const data = await roiRes.value.json();
+        if (Array.isArray(data) && data.length > 0) setRoiPrograms(data);
+      }
+      if (trendRes.status === 'fulfilled' && trendRes.value.ok) {
+        const data = await trendRes.value.json();
+        if (Array.isArray(data) && data.length > 0) setTrendingPrograms(data);
+      }
+      if (countRes.status === 'fulfilled' && countRes.value.ok) {
+        const data = await countRes.value.json();
+        if (typeof data.count === "number") setTotalPrograms(data.count);
       }
     };
 
-    fetchROI();
-    fetchTrending();
-    fetchTotalCount();
+    // Defer API calls until section is near the viewport
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => { if (entries[0].isIntersecting) { fetchAll(); io.disconnect(); } },
+      { rootMargin: "300px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
   useEffect(() => {
@@ -122,7 +116,7 @@ export default function Section6({ section }: Section6Props) {
 
 
   return (
-    <section className="w-full bg-white py-10 md:py-16">
+    <section ref={sectionRef} className="w-full bg-white py-10 md:py-16">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div
           className="text-center mb-8 md:mb-12"
