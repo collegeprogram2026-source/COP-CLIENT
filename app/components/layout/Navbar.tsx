@@ -61,6 +61,7 @@ export default function Navbar() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const suggestionRef = useRef<HTMLDivElement>(null);
+  const searchDataFetched = useRef(false);
 
   useEffect(() => {
     setSelectedIndex(-1);
@@ -238,6 +239,7 @@ export default function Navbar() {
     return () => { cancelled = true };
   }, []);
 
+  // Degree types needed immediately for the Programs dropdown in the nav
   useEffect(() => {
     const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
     fetch(`${apiBase}/api/public/degree-types`)
@@ -251,9 +253,16 @@ export default function Navbar() {
           })));
         }
       })
-      .catch(err => console.error("Error fetching degree types:", err));
+      .catch(() => { });
+  }, []);
 
-    // Fetch trending provider-courses, providers, and the full course list for search suggestions
+  // Search autocomplete data — deferred until the user actually opens search.
+  // These 3 endpoints total ~150KiB and are useless on initial page load.
+  const fetchSearchData = React.useCallback(() => {
+    if (searchDataFetched.current) return;
+    searchDataFetched.current = true;
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
     fetch(`${apiBase}/api/public/providers/programs/trending`, { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
@@ -263,7 +272,6 @@ export default function Navbar() {
             .map((p: any) => ({
               title: p.title || p.name || "",
               slug: p.slug || "",
-              // Prefer parent Course id; fall back to provider-course id
               id: p.courseId?._id || p.courseId || p._id || "",
             }))
             .filter((c) => c.title);
@@ -470,7 +478,7 @@ export default function Navbar() {
                     setSearchQuery(e.target.value);
                     setShowSuggestions(true);
                   }}
-                  onFocus={() => setShowSuggestions(true)}
+                  onFocus={() => { fetchSearchData(); setShowSuggestions(true); }}
                   onKeyDown={handleKeyDown}
                 />
               </div>
@@ -623,7 +631,7 @@ export default function Navbar() {
                     setSearchQuery(e.target.value);
                     setShowSuggestions(true);
                   }}
-                  onFocus={() => setShowSuggestions(true)}
+                  onFocus={() => { fetchSearchData(); setShowSuggestions(true); }}
                   onKeyDown={handleKeyDown}
                 />
               </div>

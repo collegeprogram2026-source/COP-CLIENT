@@ -29,6 +29,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "upload.wikimedia.org" },
       { protocol: "https", hostname: "res.cloudinary.com" },
       { protocol: "https", hostname: "logo.clearbit.com" },
+      { protocol: "https", hostname: "i.pinimg.com" },
     ],
   },
   async headers() {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { IconMapPin, IconMail, IconPhone } from '@tabler/icons-react';
 
@@ -126,17 +126,16 @@ function getDegreeTitle(degreeType: { name: string; slug: string }): string {
 export default function Footer() {
   const [degreeSections, setDegreeSections] = useState<DegreeSection[]>(FALLBACK_DEGREE_SECTIONS);
   const [universities, setUniversities] = useState<FooterItem[]>(FALLBACK_UNIVERSITIES);
+  const footerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-    // Fetch provider-courses home-summary (courses grouped by degree type)
     const fetchCourses = async () => {
       try {
         const res = await fetch(`${baseUrl}/api/public/provider-courses/home-summary`);
         if (!res.ok) throw new Error("Failed to fetch");
         const data: ProviderCourseSummary[] = await res.json();
-
         if (data && data.length > 0) {
           const sections: DegreeSection[] = data.map((group) => ({
             title: getDegreeTitle(group.degreeType),
@@ -145,48 +144,52 @@ export default function Footer() {
               href: `/course-detail?id=${course.slug || course.courseId || course._id}`,
             })),
           }));
-
-          // Pad to exactly 7 sections using fallback data if needed
           const merged = sections.slice(0, 7);
           if (merged.length < 7) {
             const existingTitles = new Set(merged.map((s) => s.title));
             for (const fallback of FALLBACK_DEGREE_SECTIONS) {
               if (merged.length >= 7) break;
-              if (!existingTitles.has(fallback.title)) {
-                merged.push(fallback);
-              }
+              if (!existingTitles.has(fallback.title)) merged.push(fallback);
             }
           }
           setDegreeSections(merged);
         }
       } catch (err) {
         console.warn("Footer: Using fallback course data", err);
-        // Keep fallback data (already set as default state)
       }
     };
 
-    // Fetch providers (trending universities)
     const fetchProviders = async () => {
       try {
         const res = await fetch(`${baseUrl}/api/public/providers`);
         if (!res.ok) throw new Error("Failed to fetch");
         const data: ProviderListItem[] = await res.json();
-
         if (data && data.length > 0) {
-          const items: FooterItem[] = data.slice(0, ITEMS_LIMIT).map((p) => ({
+          setUniversities(data.slice(0, ITEMS_LIMIT).map((p) => ({
             label: p.name,
             href: `/universities/${p.slug}`,
-          }));
-          setUniversities(items);
+          })));
         }
       } catch (err) {
         console.warn("Footer: Using fallback university data", err);
-        // Keep fallback data (already set as default state)
       }
     };
 
-    fetchCourses();
-    fetchProviders();
+    // Defer footer API calls until the footer enters the viewport
+    const el = footerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchCourses();
+          fetchProviders();
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
   const usefulLinks = [
@@ -216,7 +219,7 @@ export default function Footer() {
   const row2Sections = degreeSections.slice(4, 7);
 
   return (
-    <footer className="relative w-full text-white bg-[#0D1B2E] overflow-hidden">
+    <footer ref={footerRef} className="relative w-full text-white bg-[#0D1B2E] overflow-hidden">
 
 
       <div className="relative z-10 w-full px-6 md:px-12 lg:px-20 pt-8 md:pt-16 pb-10">

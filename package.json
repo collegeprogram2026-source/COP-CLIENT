@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lh": "lighthouse --output=html --output-path=./lighthouse-report.html --chrome-flags=\"--headless --no-sandbox\" --only-categories=performance",
+    "lh:mobile": "lighthouse --output=html --output-path=./lighthouse-mobile.html --chrome-flags=\"--headless --no-sandbox\" --only-categories=performance --form-factor=mobile --screenEmulation.mobile=true --screenEmulation.width=390 --screenEmulation.height=844 --screenEmulation.deviceScaleFactor=3 --throttling-method=simulate"
   },
   "dependencies": {
     "@react-oauth/google": "^0.13.5",
@@ -44,6 +46,7 @@
     "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "lighthouse": "^13.2.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^5"
   }
