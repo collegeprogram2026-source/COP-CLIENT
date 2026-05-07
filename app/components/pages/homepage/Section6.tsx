@@ -173,7 +173,7 @@ export default function Section6({ section }: Section6Props) {
             }}
           >
             <span>Browse All {totalPrograms !== null ? `${totalPrograms}+` : "2000+"} Programs</span>
-            <img src="/Icon%20(3).webp" alt="icon" width={20} height={20} loading="lazy" decoding="async" style={{ width: 20, height: 20 }} />
+            <img src="/Icon%20(3).webp" alt="" aria-hidden="true" width={20} height={20} loading="lazy" decoding="async" style={{ width: 20, height: 20 }} />
           </button>
         </Link>
       </div>

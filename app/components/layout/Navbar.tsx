@@ -385,6 +385,8 @@ export default function Navbar() {
             >
               <button
                 onClick={() => setDropdownOpen((v) => !v)}
+                aria-expanded={dropdownOpen}
+                aria-haspopup="menu"
                 className={`flex items-center gap-1 font-semibold text-[13px] leading-[19.5px] transition cursor-pointer px-3 py-2 rounded-lg ${pathname.startsWith('/explore-programs') ? 'bg-white/25 text-white shadow-sm' : 'text-white hover:bg-white/10'
                   }`}
                 style={{ fontFamily: "var(--font-nunito), sans-serif" }}
@@ -461,6 +463,7 @@ export default function Navbar() {
                 <input
                   type="text"
                   placeholder="Search programs..."
+                  aria-label="Search programs"
                   className="bg-transparent outline-none text-sm placeholder-white/70 text-white w-36"
                   value={searchQuery}
                   onChange={(e) => {
@@ -589,6 +592,7 @@ export default function Navbar() {
             </div>
             <button
               onClick={() => setIsMenuOpen(false)}
+              aria-label="Close menu"
               className="w-10 h-10 flex items-center justify-center text-purple-600 bg-purple-50 hover:bg-purple-100 rounded-2xl transition-all active:scale-90"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -612,6 +616,7 @@ export default function Navbar() {
                 <input
                   type="text"
                   placeholder="Search programs..."
+                  aria-label="Search programs"
                   className="w-full bg-white border border-purple-100 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 rounded-2xl py-4 pl-12 pr-4 text-sm text-gray-700 placeholder-purple-300 outline-none transition-all shadow-sm shadow-purple-50"
                   value={searchQuery}
                   onChange={(e) => {

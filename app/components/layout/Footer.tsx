@@ -281,14 +281,21 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-8">Social Media Links</h3>
             <div className="flex items-center gap-4">
               {[
-                { src: "/linkedin.webp", alt: "LinkedIn" },
-                { src: "/facebook.webp", alt: "Facebook" },
-                { src: "/instagram.webp", alt: "Instagram" },
-                { src: "/gmail.webp", alt: "Gmail" }
+                { src: "/linkedin.webp", alt: "LinkedIn", href: "https://www.linkedin.com/" },
+                { src: "/facebook.webp", alt: "Facebook", href: "https://www.facebook.com/" },
+                { src: "/instagram.webp", alt: "Instagram", href: "https://www.instagram.com/" },
+                { src: "/gmail.webp", alt: "Email", href: "mailto:onlinecollegeprogram@gmail.com" }
               ].map((icon, i) => (
-                <Link key={i} href="#" className="opacity-60 hover:opacity-100 transition-opacity">
-                  <img src={icon.src} alt={icon.alt} className="w-8 h-8" />
-                </Link>
+                <a
+                  key={i}
+                  href={icon.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visit our ${icon.alt}`}
+                  className="opacity-60 hover:opacity-100 transition-opacity"
+                >
+                  <img src={icon.src} alt="" aria-hidden="true" className="w-8 h-8" />
+                </a>
               ))}
             </div>
           </div>
@@ -332,11 +339,11 @@ export default function Footer() {
               Our Policy
             </Link>
           </p>
-          <p className="text-gray-500 text-[11px] leading-relaxed mb-10 px-4 md:px-10">
+          <p className="text-gray-300 text-[11px] leading-relaxed mb-10 px-4 md:px-10">
             CollegeProgram aims to provide unbiased and precise information to aspirants, along with comparative guidance on universities and their programs. The content on the website, including rankings, is for general informational and educational purposes only and should not be considered a substitute for official information provided by academic partners. While we make every effort to keep the information accurate and up to date, CollegeProgram does not guarantee the completeness or reliability of the content and is not responsible for any errors, omissions, or results stemming from its use.
           </p>
 
-          <div className="flex flex-col items-center gap-1 text-[11px] text-gray-500">
+          <div className="flex flex-col items-center gap-1 text-[11px] text-gray-300">
             <p>© 2026 CollegeProgram.2026. All Rights Reserved</p>
             <p className="flex items-center gap-2">
               Design & Developed by

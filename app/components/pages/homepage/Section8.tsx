@@ -571,6 +571,8 @@ function ReviewModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
           >
             <button
               onClick={onClose}
+              aria-label="Close review form"
+              type="button"
               style={{
                 position: "absolute",
                 top: 24,
@@ -657,6 +659,8 @@ function ReviewModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                       key={star}
                       type="button"
                       onClick={() => setFormData({ ...formData, rating: star })}
+                      aria-label={`Rate ${star} out of 5`}
+                      aria-pressed={star <= formData.rating}
                       style={{ background: "none", border: "none", cursor: "pointer", padding: 0, transition: "transform 0.1s" }}
                       className="hover:scale-110"
                     >
@@ -837,6 +841,7 @@ function CustomDropdown({ options, value, onChange, placeholder }: { options: { 
                 <input
                   type="text"
                   autoFocus
+                  aria-label="Search universities"
                   placeholder="Search universities..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}

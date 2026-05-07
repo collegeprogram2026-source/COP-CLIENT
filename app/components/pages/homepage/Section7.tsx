@@ -99,7 +99,7 @@ export default function Section7({ section }: Section7Props) {
                 }}
               >
                 <div style={{ width: 48, height: 48, borderRadius: 12, background: '#F5F3FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Image src={box.icon} alt={`icon-${idx}`} width={24} height={24} />
+                  <Image src={box.icon} alt="" aria-hidden="true" width={24} height={24} />
                 </div>
                 <div>
                   <h3 style={{ fontSize: 15, fontWeight: 700, color: '#111827', lineHeight: '20px', marginBottom: 6 }}>{box.heading}</h3>
@@ -132,7 +132,7 @@ export default function Section7({ section }: Section7Props) {
               {boxFields.slice(0, 4).map((box, idx) => (
                 <div key={idx} className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-[16px] p-8 flex flex-col gap-3 items-start">
                   <div className="w-14 h-14 rounded-lg bg-[#F3E8FF] flex items-center justify-center flex-shrink-0">
-                    <Image src={box.icon} alt={`icon-${idx}`} width={28} height={28} />
+                    <Image src={box.icon} alt="" aria-hidden="true" width={28} height={28} />
                   </div>
                   <div>
                     <h3 className="text-[16px] leading-[22px] font-semibold text-[#1F2937] mb-1">{box.heading}</h3>
@@ -149,7 +149,7 @@ export default function Section7({ section }: Section7Props) {
           {boxFields.slice(4, 6).map((box, idx) => (
             <div key={`bottom-${idx}`} className="col-span-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-[16px] p-8 flex flex-col gap-3 items-start self-stretch">
               <div className="w-14 h-14 rounded-lg bg-[#F3E8FF] flex items-center justify-center flex-shrink-0">
-                <Image src={box.icon} alt={`icon-bottom-${idx}`} width={28} height={28} />
+                <Image src={box.icon} alt="" aria-hidden="true" width={28} height={28} />
               </div>
               <div>
                 <h3 className="text-[16px] leading-[22px] font-semibold text-[#1F2937] mb-1">{box.heading}</h3>
@@ -160,7 +160,7 @@ export default function Section7({ section }: Section7Props) {
           {/* Box 7: double-wide, content centred */}
           <div className="col-span-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-[16px] p-8 flex flex-col gap-3 items-center justify-center self-stretch text-center">
             <div className="w-14 h-14 rounded-lg bg-[#F3E8FF] flex items-center justify-center flex-shrink-0">
-              <Image src={boxFields[6].icon} alt="icon-partner" width={28} height={28} />
+              <Image src={boxFields[6].icon} alt="" aria-hidden="true" width={28} height={28} />
             </div>
             <div>
               <h3 className="text-[16px] leading-[22px] font-semibold text-[#1F2937] mb-1">{boxFields[6].heading}</h3>

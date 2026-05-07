@@ -170,6 +170,7 @@ export default function Section10({ section, questionsSection }: Section10Props)
               }}
             >
               <button
+                aria-expanded={openIndex === idx}
                 className="hover:bg-gray-50 transition-colors duration-200"
                 style={{
                   width: "100%",

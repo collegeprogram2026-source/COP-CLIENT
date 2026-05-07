@@ -236,7 +236,7 @@ export default function Hero({ section }: HeroProps) {
               <div className="block lg:hidden mt-5 mb-2 w-full rounded-2xl overflow-hidden">
                 <Image
                   src="/Margin.webp"
-                  alt="Hero"
+                  alt="Student exploring online degree programs on CollegeProgram"
                   width={1100}
                   height={1331}
                   priority
@@ -338,7 +338,7 @@ export default function Hero({ section }: HeroProps) {
               {/* Main image - without white background box - responsive */}
               <Image
                 src="/Margin.webp"
-                alt="Hero student"
+                alt="Student exploring online degree programs on CollegeProgram"
                 width={1100}
                 height={1331}
                 priority

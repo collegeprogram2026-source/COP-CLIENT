@@ -266,6 +266,8 @@ export default function Section3Client({ courseGroups }: Props) {
             <button
               key={idx}
               onClick={() => { setAnimated(true); setOffset(idx + 1); }}
+              aria-label={`Go to slide ${idx + 1}`}
+              aria-current={idx === realIndex ? "true" : undefined}
               style={{
                 width: idx === realIndex ? 20 : 8,
                 height: 8,

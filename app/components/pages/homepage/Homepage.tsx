@@ -124,7 +124,7 @@ export default function Homepage({ sections }: HomepageProps) {
   );
 
   return (
-    <main className="min-h-screen w-full flex flex-col items-stretch" style={{ fontFamily: 'Inter, Arial, Helvetica, sans-serif' }}>
+    <div className="min-h-screen w-full flex flex-col items-stretch" style={{ fontFamily: 'Inter, Arial, Helvetica, sans-serif' }}>
       {/* Hero: rendered explicitly so homepage layout is clear here. */}
       {hero ? (
         <div className="w-full">
@@ -176,6 +176,6 @@ export default function Homepage({ sections }: HomepageProps) {
 
       {/* Section 10: Frequently Asked Questions - rendered explicitly below Blogs & Resources */}
       {section10 ? <Section10 key={section10._id} section={section10} questionsSection={questionsSection} /> : null}
-    </main>
+    </div>
   );
 }

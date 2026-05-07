@@ -151,9 +151,10 @@ export default function TalkToExpertsForm({
           }}>
             {options.length > 8 && (
               <div style={{ padding: "8px", borderBottom: "1px solid #F3F4F6" }}>
-                <input 
+                <input
                   type="text"
                   placeholder="Search..."
+                  aria-label="Search options"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
