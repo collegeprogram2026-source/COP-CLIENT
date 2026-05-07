@@ -11,9 +11,9 @@ export default function TalkToExperts() {
   ];
   const benefits = ["Free career counseling", "Course recommendations", "University guidance", "Scholarship information", "EMI & payment options"];
   const experts = [
-    { name: "Dr. Priya Sharma", role: "Education Counsellor", exp: "24 yrs", spec: "Technology & Management", img: "/Image (Dr. Priya Sharma).png" },
-    { name: "Rajesh Kumar", role: "Admission Advisor", exp: "20 yrs", spec: "Technology & Engineering", img: "/Image (Rahul Mehta).png" },
-    { name: "Anjali Verma", role: "Admission Expert", exp: "31 yrs", spec: "Healthcare & Science", img: "/Image (Anita Desai).png" },
+    { name: "Dr. Priya Sharma", role: "Education Counsellor", exp: "24 yrs", spec: "Technology & Management", img: "/Image (Dr. Priya Sharma).webp" },
+    { name: "Rajesh Kumar", role: "Admission Advisor", exp: "20 yrs", spec: "Technology & Engineering", img: "/Image (Rahul Mehta).webp" },
+    { name: "Anjali Verma", role: "Admission Expert", exp: "31 yrs", spec: "Healthcare & Science", img: "/Image (Anita Desai).webp" },
   ];
   const programs = ["MBA & Management Programs", "Tech & Data Science", "International Programs"];
 
@@ -119,28 +119,28 @@ export default function TalkToExperts() {
               </p>
               <p style={{ fontFamily: "Inter", fontSize: "16px", fontWeight: 700, color: "#101828", marginBottom: "12px" }}>Our office</p>
               <div style={{ marginBottom: "16px", borderRadius: "8px", overflow: "hidden" }}>
-                <img src="/Section 5.png" alt="Our office" style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }} />
+                <img src="/Section 5.webp" alt="Our office" style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }} />
               </div>
               <div style={{ display: "flex", gap: "48px", flexWrap: "wrap" }}>
                 <div>
                   <p style={{ fontFamily: "Inter", fontSize: "14px", fontWeight: 600, color: "#101828", marginBottom: "8px" }}>India</p>
                   <div style={{ display: "flex", alignItems: "flex-start", gap: "6px", marginBottom: "8px" }}>
-                    <img src="/Icon.png" alt="" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
+                    <img src="/Icon.webp" alt="" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
                     <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", whiteSpace: "pre-line", margin: 0 }}>{"123 Education Hub, Sector 5\nBengaluru, Karnataka\n560001"}</p>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <img src="/Icon (2).png" alt="" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
+                    <img src="/Icon (2).webp" alt="" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
                     <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", margin: 0 }}>+91 80 1234 5678</p>
                   </div>
                 </div>
                 <div>
                   <p style={{ fontFamily: "Inter", fontSize: "14px", fontWeight: 600, color: "#101828", marginBottom: "8px" }}>United States</p>
                   <div style={{ display: "flex", alignItems: "flex-start", gap: "6px", marginBottom: "8px" }}>
-                    <img src="/Icon.png" alt="" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
+                    <img src="/Icon.webp" alt="" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
                     <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", whiteSpace: "pre-line", margin: 0 }}>{"456 Tech Campus Drive\nSan Francisco, CA\n94105"}</p>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <img src="/Icon (2).png" alt="" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
+                    <img src="/Icon (2).webp" alt="" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
                     <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", margin: 0 }}>+1 415 123 4567</p>
                   </div>
                 </div>

@@ -1,33 +1,38 @@
 'use client'
 
-import Lenis from 'lenis'
 import { useEffect } from 'react'
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Initialize Lenis
-    const lenis = new Lenis({
-      autoRaf: true,
-    });
+    let lenis: { stop: () => void; start: () => void; destroy: () => void } | null = null;
+    let observer: MutationObserver | null = null;
+    let cancelled = false;
 
-    // Stop/start Lenis when modals toggle body overflow
-    const observer = new MutationObserver(() => {
-      const isLocked = document.body.style.overflow === 'hidden';
-      if (isLocked) {
-        lenis.stop();
-      } else {
-        lenis.start();
-      }
-    });
+    const init = async () => {
+      const { default: Lenis } = await import('lenis');
+      if (cancelled) return;
 
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['style'],
-    });
+      lenis = new Lenis({ autoRaf: true });
+
+      observer = new MutationObserver(() => {
+        const isLocked = document.body.style.overflow === 'hidden';
+        if (isLocked) lenis?.stop();
+        else lenis?.start();
+      });
+      observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+    };
+
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number };
+    if (typeof w.requestIdleCallback === 'function') {
+      w.requestIdleCallback(init, { timeout: 2000 });
+    } else {
+      setTimeout(init, 1500);
+    }
 
     return () => {
-      observer.disconnect();
-      lenis.destroy();
+      cancelled = true;
+      observer?.disconnect();
+      lenis?.destroy();
     }
   }, [])
 

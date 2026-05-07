@@ -74,7 +74,7 @@ export default function Section8({ section }: Section8Props) {
       name: "Rahul Sharma",
       degree: "MBA Student",
       university: "IIMS",
-      avatar: "/Girl.png",
+      avatar: "/Girl.webp",
     },
     {
       quote: getFieldValue(
@@ -94,7 +94,7 @@ export default function Section8({ section }: Section8Props) {
       name: "Aditya Patel",
       degree: "BBA Student",
       university: "LPU",
-      avatar: "/Container (40).png",
+      avatar: "/Container (40).webp",
     },
     {
       quote: getFieldValue(
@@ -104,7 +104,7 @@ export default function Section8({ section }: Section8Props) {
       name: "Sneha Gupta",
       degree: "MBA Student",
       university: "Amity Online",
-      avatar: "/Girl.png",
+      avatar: "/Girl.webp",
     },
   ];
 
@@ -114,7 +114,7 @@ export default function Section8({ section }: Section8Props) {
       name: r.name,
       degree: r.title,
       university: r.providerId?.name || "Verified Student",
-      avatar: r.providerId?.logo || "/Girl.png"
+      avatar: r.providerId?.logo || "/Girl.webp"
     }))
     : staticCards;
 
@@ -340,7 +340,7 @@ export default function Section8({ section }: Section8Props) {
                                 style={{ objectFit: "cover" }}
                                 onError={(e) => {
                                   const img = e?.target as HTMLImageElement | null;
-                                  if (img) img.src = "/Girl.png";
+                                  if (img) img.src = "/Girl.webp";
                                 }}
                               />
                             </div>

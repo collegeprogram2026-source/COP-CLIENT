@@ -9,17 +9,17 @@ import { useMemo, useState } from "react";
 // Default icons mapped by category name (case-insensitive match).
 // Anything unmapped uses the fallback icon.
 const CATEGORY_ICON_MAP: Record<string, string> = {
-  "career guide": "/Icon (4).png",
-  "technology": "/Icon (5).png",
-  "business strategy": "/Icon (6).png",
-  "marketing": "/Icon (7).png",
-  "leadership": "/Icon (8).png",
-  "data science": "/Icon (9).png",
-  "study tips": "/Icon (5).png",
-  "admission guide": "/Icon (6).png",
-  "mba": "/Icon (4).png",
+  "career guide": "/Icon (4).webp",
+  "technology": "/Icon (5).webp",
+  "business strategy": "/Icon (6).webp",
+  "marketing": "/Icon (7).webp",
+  "leadership": "/Icon (8).webp",
+  "data science": "/Icon (9).webp",
+  "study tips": "/Icon (5).webp",
+  "admission guide": "/Icon (6).webp",
+  "mba": "/Icon (4).webp",
 };
-const FALLBACK_ICON = "/Icon (4).png";
+const FALLBACK_ICON = "/Icon (4).webp";
 
 const ALL_ARTICLES = [
   {
@@ -31,7 +31,7 @@ const ALL_ARTICLES = [
     description:
       "Explore the most in-demand MBA specializations and discover which one aligns with your career goals and industry trends.",
     author: "Dr. Priya Sharma",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "how-to-balance-work-and-online-learning",
@@ -42,7 +42,7 @@ const ALL_ARTICLES = [
     description:
       "Working professionals share their tips for successfully managing full-time jobs while pursuing online degrees.",
     author: "Rahul Mehta",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "online-mba-admission-process-2026",
@@ -53,7 +53,7 @@ const ALL_ARTICLES = [
     description:
       "Everything you need to know about applying to top online MBA programs, from eligibility to entrance exams.",
     author: "Anita Desai",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "top-10-mba-specializations-2026-b",
@@ -64,7 +64,7 @@ const ALL_ARTICLES = [
     description:
       "Explore the most in-demand MBA specializations and discover which one aligns with your career goals and industry trends.",
     author: "Dr. Priya Sharma",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "how-to-balance-work-and-online-learning-b",
@@ -75,7 +75,7 @@ const ALL_ARTICLES = [
     description:
       "Working professionals share their tips for successfully managing full-time jobs while pursuing online degrees.",
     author: "Rahul Mehta",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "online-mba-admission-process-2026-b",
@@ -86,7 +86,7 @@ const ALL_ARTICLES = [
     description:
       "Everything you need to know about applying to top online MBA programs, from eligibility to entrance exams.",
     author: "Anita Desai",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "is-online-mba-worth-it-2026",
@@ -97,7 +97,7 @@ const ALL_ARTICLES = [
     description:
       "We surveyed 200 online MBA graduates to bring you an unfiltered look at ROI, promotions, and career shifts.",
     author: "Dr. Priya Sharma",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "5-best-note-taking-apps-2026",
@@ -108,7 +108,7 @@ const ALL_ARTICLES = [
     description:
       "Stay organized and ace your exams with these top-rated digital tools designed specifically for online learners.",
     author: "Rahul Mehta",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "du-sol-admission-2026",
@@ -119,7 +119,7 @@ const ALL_ARTICLES = [
     description:
       "A comprehensive guide to getting into Delhi University's School of Open Learning programs in 2026.",
     author: "Anita Desai",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "top-companies-hiring-online-mba-2026",
@@ -130,7 +130,7 @@ const ALL_ARTICLES = [
     description:
       "Discover which top employers are actively recruiting candidates with online MBA degrees this year.",
     author: "Dr. Priya Sharma",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "ai-ml-careers-online-mca",
@@ -141,7 +141,7 @@ const ALL_ARTICLES = [
     description:
       "A step-by-step roadmap for transitioning into Artificial Intelligence careers through online MCA programs.",
     author: "Rahul Mehta",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
   {
     slug: "executive-education-vs-mba",
@@ -152,7 +152,7 @@ const ALL_ARTICLES = [
     description:
       "Breaking down the differences between short-term executive courses and full-degree MBA programs.",
     author: "Anita Desai",
-    image: "/Blogs.png",
+    image: "/Blogs.webp",
   },
 ];
 

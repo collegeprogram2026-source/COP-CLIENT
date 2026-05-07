@@ -25,7 +25,7 @@ const LoginBanner = () => {
             <div
                 className="absolute inset-0 z-0"
                 style={{
-                    backgroundImage: 'url(/authCover.png)',
+                    backgroundImage: 'url(/authCover.webp)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}

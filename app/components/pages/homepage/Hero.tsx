@@ -1,6 +1,7 @@
 'use client'
 import { SectionContent } from "@/app/lib/types";
 import { motion } from "framer-motion";
+import Image from "next/image";
 interface HeroProps {
   section: SectionContent;
 }
@@ -137,7 +138,7 @@ export default function Hero({ section }: HeroProps) {
                     }}
                   >
                     <img
-                      src="/SVG%20(2).png"
+                      src="/SVG%20(2).webp"
                       alt="icon"
                       className="object-contain flex-shrink-0"
                       style={{ width: "clamp(14px, 2.4vw, 22px)", height: "clamp(14px, 2.4vw, 22px)" }}
@@ -234,9 +235,14 @@ export default function Hero({ section }: HeroProps) {
 
               {/* Mobile-only hero image */}
               <div className="block lg:hidden mt-5 mb-2 w-full rounded-2xl overflow-hidden">
-                <img
-                  src="/Margin.png"
+                <Image
+                  src="/Margin.webp"
                   alt="Hero"
+                  width={1100}
+                  height={1331}
+                  priority
+                  fetchPriority="high"
+                  sizes="100vw"
                   style={{ width: '100%', height: 'auto', display: 'block' }}
                 />
               </div>
@@ -244,9 +250,9 @@ export default function Hero({ section }: HeroProps) {
               {/* Stats row */}
               <div className="mt-4 sm:mt-6 lg:mt-10 xl:mt-12 flex flex-row gap-2 sm:gap-8 lg:gap-10 items-start justify-center lg:justify-start">
                 {[
-                  { icon: '/Container (47).png', label: statUniversities, sub: 'Partnerships' },
-                  { icon: '/Container (48).png', label: statPrograms, sub: 'Available' },
-                  { icon: '/Container (49).png', label: statStudents, sub: 'Enrolled' },
+                  { icon: '/Container (47).webp', label: statUniversities, sub: 'Partnerships' },
+                  { icon: '/Container (48).webp', label: statPrograms, sub: 'Available' },
+                  { icon: '/Container (49).webp', label: statStudents, sub: 'Enrolled' },
                 ].map((stat, i) => (
                   <div key={i} className="flex flex-col items-center lg:flex-row lg:items-start gap-1.5 sm:gap-2 text-center lg:text-left" style={{ flex: 1, minWidth: 0 }}>
                     <img src={stat.icon} alt="icon" className="flex-shrink-0" style={{ width: 'clamp(24px, 5vw, 36px)', height: 'clamp(24px, 5vw, 36px)', objectFit: 'contain' }} />
@@ -309,7 +315,7 @@ export default function Hero({ section }: HeroProps) {
 
               {/* 4-badge static row */}
               <div className="mt-6 lg:mt-8 flex items-center gap-2 lg:gap-4 w-full justify-center lg:justify-start">
-                {['/Stats.png', '/Container (43).png', '/Container (44).png', '/Container (45).png'].map((src, i) => (
+                {['/Stats.webp', '/Container (43).webp', '/Container (44).webp', '/Container (45).webp'].map((src, i) => (
                   <div key={i} className="flex-shrink-0" style={{ height: 'clamp(28px, 5vw, 44px)', flex: 1, maxWidth: 150 }}>
                     <img src={src} alt="badge" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                   </div>
@@ -333,9 +339,14 @@ export default function Hero({ section }: HeroProps) {
               }} /> */}
 
               {/* Main image - without white background box - responsive */}
-              <img
-                src="/Margin.png"
+              <Image
+                src="/Margin.webp"
                 alt="Hero student"
+                width={1100}
+                height={1331}
+                priority
+                fetchPriority="high"
+                sizes="(max-width: 1024px) 100vw, 548px"
                 className="relative z-10 rounded-2xl object-cover"
                 style={{
                   boxShadow: "none",
@@ -383,7 +394,7 @@ export default function Hero({ section }: HeroProps) {
                     }}
                   >
                     <img
-                      src="/Container (51).png"
+                      src="/Container (51).webp"
                       alt="online course icon"
                       style={{
                         width: "52px",

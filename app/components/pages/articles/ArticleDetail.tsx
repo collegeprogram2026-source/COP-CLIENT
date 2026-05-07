@@ -35,10 +35,10 @@ const DUMMY_ARTICLE: ArticleDetailData = {
   title: "The Future of Business Education in a Digital Age",
   authorName: "Dr. Dinesh Jenkins",
   authorRole: "Head of Partnerships",
-  authorAvatar: "/Image (Dr. Priya Sharma).png",
+  authorAvatar: "/Image (Dr. Priya Sharma).webp",
   date: "Oct 24, 2026",
   readTime: "3 min read",
-  heroImage: "/Blogs.png",
+  heroImage: "/Blogs.webp",
   tags: ["TECHNOLOGY", "STRATEGY", "DIGITAL TRANSFORMATION"],
   tableOfContents: [
     { id: "paradigm-shift", label: "The Paradigm Shift" },
@@ -751,7 +751,7 @@ function RelatedCard({
       {/* Image + badge */}
       <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", flexShrink: 0 }}>
         <Image
-          src="/Blogs.png"
+          src="/Blogs.webp"
           alt={article.title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"

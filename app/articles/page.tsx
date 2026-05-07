@@ -58,7 +58,7 @@ function extractArticles(data: PageResponse): ArticleData[] {
         author: getVal(v, "author", "author_name", "by"),
         image:
           getVal(v, "image", "thumbnail", "cover", "featured_image") ||
-          "/Blogs.png",
+          "/Blogs.webp",
       };
     })
     .filter((a) => Boolean(a.title));

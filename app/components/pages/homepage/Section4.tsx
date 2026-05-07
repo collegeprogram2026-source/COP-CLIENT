@@ -92,9 +92,9 @@ export default function Section4({ section }: Section4Props) {
   // ── Parse counselor data from 3 named CMS textarea fields ──────────────────
   // Each field value is 5 lines: title, specialty, experience, studentsGuided, nextAvailable
   const COUNSELOR_DEFS = [
-    { name: "Dr. Priya Sharma", cmsKey: "Dr. Priya sharma", image: "/Image (Dr. Priya Sharma).png", rating: 4.9, reviewCount: 1250 },
-    { name: "Rahul Mehta", cmsKey: "Rahul Mehta", image: "/Image (Rahul Mehta).png", rating: 4.9, reviewCount: 1250 },
-    { name: "Anita Desai", cmsKey: "Anita Desai", image: "/Image (Anita Desai).png", rating: 5.0, reviewCount: 1250 },
+    { name: "Dr. Priya Sharma", cmsKey: "Dr. Priya sharma", image: "/Image (Dr. Priya Sharma).webp", rating: 4.9, reviewCount: 1250 },
+    { name: "Rahul Mehta", cmsKey: "Rahul Mehta", image: "/Image (Rahul Mehta).webp", rating: 4.9, reviewCount: 1250 },
+    { name: "Anita Desai", cmsKey: "Anita Desai", image: "/Image (Anita Desai).webp", rating: 5.0, reviewCount: 1250 },
   ];
 
   const FALLBACK_LINES = [

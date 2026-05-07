@@ -93,7 +93,7 @@ export default function CourseCard({
             />
           ) : (
             <Image
-              src="/ProgramCategories (1).png"
+              src="/ProgramCategories (1).webp"
               alt="program category"
               fill
               className="object-cover"
@@ -254,7 +254,7 @@ export default function CourseCard({
           />
         ) : (
           <Image
-            src="/ProgramCategories (1).png"
+            src="/ProgramCategories (1).webp"
             alt="program category"
             fill
             className="object-cover"

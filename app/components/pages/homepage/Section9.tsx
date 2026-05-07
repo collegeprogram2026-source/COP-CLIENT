@@ -218,7 +218,7 @@ export default function Section9({ section }: Section9Props) {
               style={{ minHeight: 360, borderRadius: 20 }}
             >
               <div style={{ position: 'relative', width: '100%', height: 160, flexShrink: 0 }}>
-                <Image src="/Blogs.png" alt={article.title} fill sizes="280px" style={{ objectFit: 'cover' }} />
+                <Image src="/Blogs.webp" alt={article.title} fill sizes="280px" style={{ objectFit: 'cover' }} />
                 <span style={{
                   position: 'absolute',
                   top: 12,
@@ -271,7 +271,7 @@ export default function Section9({ section }: Section9Props) {
               {/* Image with category badge overlay */}
               <div style={{ position: "relative", width: "100%", height: "160px", flexShrink: 0 }}>
                 <Image
-                  src="/Blogs.png"
+                  src="/Blogs.webp"
                   alt={article.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"

@@ -37,37 +37,37 @@ export default function Section7({ section }: Section7Props) {
   // 7 boxes (each with heading + content). Icons are images in /public named Container (56).png .. Container (62).png
   const boxFields = [
     {
-      icon: "/Container (56).png",
+      icon: "/Container (56).webp",
       heading: getFieldValue(["Box 1 Heading", "Box1Heading", "Field1Heading", "Field 1 Heading"], "Smart Program Discovery"),
       content: getFieldValue(["Box 1 Content", "Box1Content", "Field1Content", "Field 1 Content"], "AI-powered search helps you find the perfect program"),
     },
     {
-      icon: "/Container (57).png",
+      icon: "/Container (57).webp",
       heading: getFieldValue(["Box 2 Heading", "Box2Heading", "Field2Heading", "Field 2 Heading"], "Expert Counseling"),
       content: getFieldValue(["Box 2 Content", "Box2Content", "Field2Content", "Field 2 Content"], "Get personalized guidance from certified education counselors with 10+ years experience"),
     },
     {
-      icon: "/Container (58).png",
+      icon: "/Container (58).webp",
       heading: getFieldValue(["Box 3 Heading", "Box3Heading", "Field3Heading", "Field 3 Heading"], "4.8 / 5 Average Rating"),
       content: getFieldValue(["Box 3 Content", "Box3Content", "Field3Content", "Field 3 Content"], "Trusted by thousands of learners for quality content, insightful mentors, and real results"),
     },
     {
-      icon: "/Container (59).png",
+      icon: "/Container (59).webp",
       heading: getFieldValue(["Box 4 Heading", "Box4Heading", "Field4Heading", "Field 4 Heading"], "Scholarship Assistance"),
       content: getFieldValue(["Box 4 Content", "Box4Content", "Field4Content", "Field 4 Content"], "Access exclusive scholarships and financial aid opportunities"),
     },
     {
-      icon: "/Container (60).png",
+      icon: "/Container (60).webp",
       heading: getFieldValue(["Box 5 Heading", "Box5Heading", "Field5Heading", "Field 5 Heading"], "50,000+ Enrolled"),
       content: getFieldValue(["Box 5 Content", "Box5Content", "Field5Content", "Field 5 Content"], "Join a thriving community of learners advancing their careers"),
     },
     {
-      icon: "/Container (61).png",
+      icon: "/Container (61).webp",
       heading: getFieldValue(["Box 6 Heading", "Box6Heading", "Field6Heading", "Field 6 Heading"], "2000+ Programs"),
       content: getFieldValue(["Box 6 Content", "Box6Content", "Field6Content", "Field 6 Content"], "Explore a wide range of courses across domains designed for your goals"),
     },
     {
-      icon: "/Container (62).png",
+      icon: "/Container (62).webp",
       heading: getFieldValue(["Box 7 Heading", "Box7Heading", "Field7Heading", "Field 7 Heading"], "500 +Partner University"),
       content: getFieldValue(["Box 7 Content", "Box7Content", "Field7Content", "Field 7 Content"], "Collaborate with top universities worldwide offering recognized industry - relevant education"),
     },
@@ -115,7 +115,7 @@ export default function Section7({ section }: Section7Props) {
           {/* Left: Image */}
           <div className="w-full">
             <Image
-              src="/Choose us .png"
+              src="/Choose us .webp"
               alt="Why choose us"
               width={601}
               height={420}

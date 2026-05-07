@@ -388,19 +388,19 @@ export default function ProfilePage() {
         {
           name: "Dr. Priya Sharma",
           cmsKey: "Dr. Priya sharma",
-          image: "/Image (Dr. Priya Sharma).png",
+          image: "/Image (Dr. Priya Sharma).webp",
           fallback: ["Senior Education Counselor", "MBA & Management Programs", "12 years experience", "3500+ students guided", "Today, 4:00 PM"],
         },
         {
           name: "Rahul Mehta",
           cmsKey: "Rahul Mehta",
-          image: "/Image (Rahul Mehta).png",
+          image: "/Image (Rahul Mehta).webp",
           fallback: ["Career Guidance Expert", "Tech & Data Science", "10 years experience", "2800+ students guided", "Tomorrow, 10:00 AM"],
         },
         {
           name: "Anita Desai",
           cmsKey: "Anita Desai",
-          image: "/Image (Anita Desai).png",
+          image: "/Image (Anita Desai).webp",
           fallback: ["Study Abroad Specialist", "International Programs", "15 years experience", "4200+ students guided", "Tomorrow, 2:30 PM"],
         },
       ];

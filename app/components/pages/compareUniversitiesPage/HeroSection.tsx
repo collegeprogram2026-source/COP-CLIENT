@@ -65,7 +65,7 @@ const HeroSection = () => {
                     <div className="relative h-full flex items-center justify-center mt-8 lg:mt-0">
                         <div className="relative w-full max-w-[550px] aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-2xl border-4 border-white/10">
                             <Image
-                                src="/images/hero_guy_laptop.png"
+                                src="/images/hero_guy_laptop.webp"
                                 alt="Student comparing universities"
                                 fill
                                 className="object-cover"

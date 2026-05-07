@@ -20,7 +20,7 @@ export default function Section5({ section }: Section5Props) {
 
   const title = get(["title", "Title", "Main Title"], "Talk to our expert counselors");
   const desc = get(["description", "Description", "subtitle"], "Have questions about programs, admissions, or career paths? Fill out the form and our expert counselors will be in touch directly.");
-  const officeImg = get(["officeImage", "Office Image", "image"], "/Section 5.png");
+  const officeImg = get(["officeImage", "Office Image", "image"], "/Section 5.webp");
   const indiaAddr = get(["indiaAddress", "India Address"], "123 Education Hub, Sector 5\nBengaluru, Karnataka\n560001");
   const indiaPhone = get(["indiaPhone", "India Phone"], "+91 80 1234 5678");
   const usaAddr = get(["usaAddress", "USA Address"], "456 Tech Campus Drive\nSan Francisco, CA\n94105");
@@ -80,13 +80,13 @@ export default function Section5({ section }: Section5Props) {
               <div>
                 <p style={{ fontFamily: "Inter", fontSize: "14px", fontWeight: 600, color: "#101828", marginBottom: "8px" }}>India</p>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "6px", marginBottom: "8px" }}>
-                  <img src="/Icon.png" alt="" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
+                  <img src="/Icon.webp" alt="" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
                   <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", whiteSpace: "pre-line", margin: 0 }}>
                     {indiaAddr}
                   </p>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <img src="/Icon (2).png" alt="" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
+                  <img src="/Icon (2).webp" alt="" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
                   <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", margin: 0 }}>{indiaPhone}</p>
                 </div>
               </div>
@@ -95,13 +95,13 @@ export default function Section5({ section }: Section5Props) {
               <div>
                 <p style={{ fontFamily: "Inter", fontSize: "14px", fontWeight: 600, color: "#101828", marginBottom: "8px" }}>United States</p>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "6px", marginBottom: "8px" }}>
-                  <img src="/Icon.png" alt="" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
+                  <img src="/Icon.webp" alt="" style={{ width: "16px", height: "16px", marginTop: "2px", flexShrink: 0 }} />
                   <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", whiteSpace: "pre-line", margin: 0 }}>
                     {usaAddr}
                   </p>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <img src="/Icon (2).png" alt="" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
+                  <img src="/Icon (2).webp" alt="" style={{ width: "16px", height: "16px", flexShrink: 0 }} />
                   <p style={{ fontFamily: "Inter", fontSize: "14px", lineHeight: "20px", color: "#4A5565", margin: 0 }}>{usaPhone}</p>
                 </div>
               </div>

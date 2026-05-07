@@ -225,7 +225,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-8">
           <div className="flex flex-col">
             <div className="mb-6">
-              <img src="/logo.png" alt="CollegeProgram logo" className="h-16 w-auto block -ml-3" />
+              <img src="/logo.webp" alt="CollegeProgram logo" className="h-16 w-auto block -ml-3" />
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Discover a world of knowledge and opportunities
@@ -281,10 +281,10 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-8">Social Media Links</h3>
             <div className="flex items-center gap-4">
               {[
-                { src: "/linkedin.png", alt: "LinkedIn" },
-                { src: "/facebook.png", alt: "Facebook" },
-                { src: "/instagram.png", alt: "Instagram" },
-                { src: "/gmail.png", alt: "Gmail" }
+                { src: "/linkedin.webp", alt: "LinkedIn" },
+                { src: "/facebook.webp", alt: "Facebook" },
+                { src: "/instagram.webp", alt: "Instagram" },
+                { src: "/gmail.webp", alt: "Gmail" }
               ].map((icon, i) => (
                 <Link key={i} href="#" className="opacity-60 hover:opacity-100 transition-opacity">
                   <img src={icon.src} alt={icon.alt} className="w-8 h-8" />
@@ -295,7 +295,7 @@ export default function Footer() {
         </div>
         <div
           className="absolute inset-0 opacity-5 pointer-events-none bg-cover bg-center"
-          style={{ backgroundImage: "url('/footerBg.png')" }}
+          style={{ backgroundImage: "url('/footerBg.webp')" }}
         />
         <div className="border-t border-gray-800 mb-8" />
 
@@ -341,7 +341,7 @@ export default function Footer() {
             <p className="flex items-center gap-2">
               Design & Developed by
               <Link href="https://www.supercx.co/" target="_blank" rel="noopener noreferrer">
-                <img src="/supercxLogo.png" alt="SuperCX" className="h-6 w-auto hover:opacity-80 transition-opacity" />
+                <img src="/supercxLogo.webp" alt="SuperCX" className="h-6 w-auto hover:opacity-80 transition-opacity" />
               </Link>
             </p>
           </div>

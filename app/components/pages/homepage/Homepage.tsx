@@ -1,12 +1,16 @@
+import dynamic from "next/dynamic";
 import SectionRenderer from "@/app/components/SectionRenderer";
 import Hero from "./Hero";
 import Section5 from "./Section5";
 import Section6 from "./Section6";
 import Section7 from "./Section7";
-import Section8 from "./Section8";
-import Section9 from "./Section9";
-import Section10 from "./Section10";
 import { SectionContent } from "@/app/lib/types";
+
+// Below-the-fold sections — split into separate chunks so they don't bloat
+// the initial homepage bundle. Still SSRed for SEO.
+const Section8 = dynamic(() => import("./Section8"));
+const Section9 = dynamic(() => import("./Section9"));
+const Section10 = dynamic(() => import("./Section10"));
 
 interface HomepageProps {
   sections: SectionContent[];
