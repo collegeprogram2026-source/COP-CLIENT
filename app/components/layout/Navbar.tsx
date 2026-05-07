@@ -353,7 +353,7 @@ export default function Navbar() {
             {promoText ? (
               <div style={{ overflow: "hidden" }}>
                 <div className="promo-wrapper">
-                  <div ref={trackRef} className="promo-track promo-animate" style={{ ['--marquee-distance' as any]: marqueeVars.distance, ['--marquee-duration' as any]: marqueeVars.duration } as React.CSSProperties}>
+                  <div ref={trackRef} className={`promo-track${marqueeVars.distance !== "0px" ? " promo-animate" : ""}`} style={{ ['--marquee-distance' as any]: marqueeVars.distance, ['--marquee-duration' as any]: marqueeVars.duration } as React.CSSProperties}>
                     <div ref={contentRef} className="promo-content" aria-hidden={false}>
                       <div className="promo-item">{promoText}</div>
                     </div>
@@ -507,8 +507,8 @@ export default function Navbar() {
             <Link
               href="/talk-to-experts"
               className={`hidden sm:flex items-center gap-2 transition px-4 py-2 rounded-lg text-[13px] leading-[19.5px] font-bold shadow ${pathname.startsWith('/talk-to-experts')
-                ? 'bg-orange-800 text-white ring-2 ring-white/50'
-                : 'bg-orange-700 hover:bg-orange-800 text-white'
+                ? 'bg-orange-600 text-white ring-2 ring-white/50'
+                : 'bg-orange-500 hover:bg-orange-600 text-white'
                 }`}
               style={{ fontFamily: "var(--font-nunito), sans-serif" }}
             >
@@ -708,7 +708,7 @@ export default function Navbar() {
           <div className="px-6 py-5 border-t border-purple-100 bg-white/50 space-y-3">
             <Link
               href="/talk-to-experts"
-              className="flex items-center justify-center gap-3 w-full py-3.5 bg-gradient-to-r from-orange-700 to-orange-800 text-white rounded-2xl font-black text-sm uppercase tracking-[1px] shadow-[0_10px_20px_-5px_rgba(194,65,12,0.4)] active:scale-95 transition-all"
+              className="flex items-center justify-center gap-3 w-full py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl font-black text-sm uppercase tracking-[1px] shadow-[0_10px_20px_-5px_rgba(249,115,22,0.4)] active:scale-95 transition-all"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
