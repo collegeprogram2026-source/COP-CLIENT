@@ -1,4 +1,4 @@
-import { getPageContent } from "@/app/lib/api";
+import { getPageContent, getCoursesHomeSummary } from "@/app/lib/api";
 import { PageResponse, SectionContent } from "@/app/lib/types";
 // import SectionRenderer from "@/app/components/SectionRenderer";
 import Homepage from "@/app/components/pages/homepage";
@@ -49,6 +49,11 @@ function mergeWithPlaceholders(data: PageResponse) {
 }
 
 export default async function Home() {
+  // Kick off course data fetch in parallel with page content so both hit the
+  // backend simultaneously. When Section3 later calls getCoursesHomeSummary()
+  // the result comes from Next.js's per-request fetch memoization cache.
+  void getCoursesHomeSummary().catch(() => {});
+
   let data: PageResponse | null = null;
 
   try {

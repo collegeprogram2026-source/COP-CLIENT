@@ -120,7 +120,7 @@ export default function Section7({ section }: Section7Props) {
               width={601}
               height={420}
               className="object-cover rounded-lg w-full h-auto"
-              priority
+              loading="lazy"
             />
           </div>
 
