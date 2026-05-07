@@ -1,9 +1,13 @@
 "use client";
 
 import React from "react";
+import dynamic from "next/dynamic";
 import Navbar from "../../layout/Navbar";
-import Footer from "../../layout/Footer";
 import { usePathname } from "next/navigation";
+
+// Footer is below the fold — split into its own chunk so it doesn't
+// inflate the initial JS bundle and delay LCP.
+const Footer = dynamic(() => import("../../layout/Footer"), { ssr: true });
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

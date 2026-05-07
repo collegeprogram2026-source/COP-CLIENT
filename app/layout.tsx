@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Inter, Nunito } from "next/font/google";
 import "./globals.css";
 import Layout from "./components/pages/sections/Layout";
-import { Toaster } from "react-hot-toast";
 import SmoothScroll from "./components/providers/SmoothScroll";
+
+const Toaster = dynamic(
+  () => import("react-hot-toast").then((m) => m.Toaster),
+  { ssr: false }
+);
 
 export const metadata: Metadata = {
   title: "CollegeProgram",
@@ -37,6 +42,16 @@ export default function RootLayout({
       className={`h-full antialiased ${inter.variable} ${nunito.variable}`}
     >
       <head>
+        {/* LCP hero image — preloaded so the browser fetches it before the React
+            tree mounts. Responsive imagesrcset matches the Hero <Image sizes>. */}
+        <link
+          rel="preload"
+          as="image"
+          href="/Margin.webp"
+          imageSrcSet="/Margin.webp"
+          imageSizes="(max-width: 640px) 95vw, (max-width: 1024px) 50vw, 548px"
+          fetchPriority="high"
+        />
         {/* Backend fetches run server-side (Vercel→Render); browsers never connect directly.
             Preconnecting to onrender.com wastes browser connection budget. */}
         <link rel="dns-prefetch" href="https://encrypted-tbn0.gstatic.com" />

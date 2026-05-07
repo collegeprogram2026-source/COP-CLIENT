@@ -1,4 +1,3 @@
-'use client'
 import { SectionContent } from "@/app/lib/types";
 import Image from "next/image";
 interface HeroProps {
@@ -233,14 +232,15 @@ export default function Hero({ section }: HeroProps) {
                 </p>
               )}
 
-              {/* Mobile-only hero image */}
+              {/* Mobile-only hero image — above the fold, so eager + high priority */}
               <div className="block lg:hidden mt-5 mb-2 w-full rounded-2xl overflow-hidden">
                 <Image
                   src="/Margin.webp"
                   alt="Hero"
                   width={1100}
                   height={1331}
-                  loading="lazy"
+                  priority
+                  fetchPriority="high"
                   sizes="95vw"
                   style={{ width: '100%', height: 'auto', display: 'block' }}
                 />
