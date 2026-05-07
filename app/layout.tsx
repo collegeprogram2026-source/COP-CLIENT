@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { Inter, Nunito } from "next/font/google";
 import "./globals.css";
 import Layout from "./components/pages/sections/Layout";
+import { Toaster } from "react-hot-toast";
 import SmoothScroll from "./components/providers/SmoothScroll";
-
-const Toaster = dynamic(
-  () => import("react-hot-toast").then((m) => m.Toaster),
-  { ssr: false }
-);
 
 export const metadata: Metadata = {
   title: "CollegeProgram",
