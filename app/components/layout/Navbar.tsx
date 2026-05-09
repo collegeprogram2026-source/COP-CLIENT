@@ -582,7 +582,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed inset-0 z-[100] transition-all duration-500 md:hidden ${isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        className={`fixed inset-0 z-[110] transition-all duration-500 md:hidden ${isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
       >
         {/* Backdrop */}
         <div

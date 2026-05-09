@@ -332,7 +332,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Disclaimer & Copyright Section */}
-      <div className="relative z-10 w-full border-t border-gray-800/50 pt-4 pb-10">
+      <div className="relative z-10 w-full border-t border-gray-800/50 pt-4 pb-32 md:pb-10">
         <div className="flex flex-col items-center text-center max-w-6xl mx-auto px-6">
           <p className="text-gray-300 text-xs font-bold mb-6">
             <Link href="/disclaimer" className="underline underline-offset-2 hover:text-white transition-colors">

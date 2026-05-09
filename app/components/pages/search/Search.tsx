@@ -251,16 +251,16 @@ export default function SearchPage() {
 
   return (
     <div
-      className="md:pt-18 px-5 pb-[60px] bg-white flex flex-col items-center justify-center font-['Inter',_Arial,_Helvetica,_sans-serif]"
+      className="pt-8 md:pt-18 px-4 md:px-5 pb-[60px] bg-white flex flex-col items-center min-h-screen font-['Inter',_Arial,_Helvetica,_sans-serif]"
     >
       <div
-        className="w-[65vw] min-h-[65vh] flex flex-col items-center"
+        className="w-full md:w-[75vw] lg:w-[65vw] flex flex-col items-center"
       >
         {/* ── Outer wrapper ── */}
         <div className="w-full">
 
           {/* Back button */}
-          <div className="mb-8">
+          <div className="mb-6 md:mb-8">
             <button
               onClick={() => router.back()}
               className="inline-flex items-center gap-1.5 bg-transparent p-0 border-none cursor-pointer text-[#7C3AED] font-semibold text-[13px] leading-5"
@@ -271,14 +271,14 @@ export default function SearchPage() {
           </div>
 
           {/* Heading */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-6 md:mb-8">
             <h1
-              className="font-bold text-[32px] leading-10 text-[#101828] m-0"
+              className="font-bold text-2xl md:text-[32px] leading-tight md:leading-10 text-[#101828] m-0"
             >
               Find your path with the right information!
             </h1>
             <p
-              className="font-normal text-base leading-6 text-[#6B7280] mt-2 mb-0"
+              className="font-normal text-sm md:text-base leading-6 text-[#6B7280] mt-2 mb-0"
             >
               Discover online courses, universities &amp; specializations.
             </p>
@@ -286,14 +286,14 @@ export default function SearchPage() {
 
           {/* ── Inner search box ── */}
           <div
-            className="w-full bg-white rounded-xl border border-[#E5E7EB] shadow-[0px_1px_3px_rgba(0,0,0,0.08)] p-6 px-7"
+            className="w-full bg-white rounded-xl border border-[#E5E7EB] shadow-[0px_1px_3px_rgba(0,0,0,0.08)] p-4 md:p-6 md:px-7"
           >
             {/* Search bar — mic removed */}
             <div className="relative" ref={suggestionRef}>
               <div
-                className="flex items-center gap-3 border border-[#E5E7EB] rounded-lg p-3 px-3.5 bg-[#FAFAFA]"
+                className="flex items-center gap-2 md:gap-3 border border-[#E5E7EB] rounded-lg p-2.5 md:p-3 px-3 md:px-3.5 bg-[#FAFAFA]"
               >
-                <SearchIcon className="w-4.5 h-4.5 text-[#9CA3AF] shrink-0" />
+                <SearchIcon className="w-4 h-4 md:w-4.5 md:h-4.5 text-[#9CA3AF] shrink-0" />
                 <input
                   type="text"
                   value={query}
@@ -304,12 +304,12 @@ export default function SearchPage() {
                   onFocus={() => setShowSuggestions(true)}
                   onKeyDown={handleKeyDown}
                   placeholder='Search "University & Courses"'
-                  className="flex-1 border-none outline-none font-['Inter',_Arial,_Helvetica,_sans-serif] text-sm text-[#1F2937] bg-transparent"
+                  className="flex-1 border-none outline-none font-['Inter',_Arial,_Helvetica,_sans-serif] text-sm text-[#1F2937] bg-transparent min-w-0"
                 />
                 {query.trim() && (
                   <button
                     onClick={() => handleSearch()}
-                    className="py-1.5 px-4 rounded-lg bg-gradient-to-br from-[#4F39F6] to-[#9810FA] text-white border-none text-[13px] font-semibold cursor-pointer shrink-0"
+                    className="py-1.5 px-3 md:px-4 rounded-lg bg-gradient-to-br from-[#4F39F6] to-[#9810FA] text-white border-none text-[12px] md:text-[13px] font-semibold cursor-pointer shrink-0"
                   >
                     Search
                   </button>
@@ -348,12 +348,12 @@ export default function SearchPage() {
                   <TrendingUp className="w-4 h-4 text-[#7C3AED]" />
                   <span className="font-semibold text-sm text-[#111827]">Trending Courses</span>
                 </div>
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2 md:gap-2.5">
                   {trendingCourses.map((course) => (
                     <button
                       key={course.title}
                       onClick={() => handleTrendingClick(course)}
-                      className="border border-[#D1D5DB] rounded-lg bg-[#F9FAFB] py-1.5 px-3 text-[13px] font-medium text-[#374151] cursor-pointer font-['Inter',_Arial,_Helvetica,_sans-serif] leading-5"
+                      className="border border-[#D1D5DB] rounded-lg bg-[#F9FAFB] py-1.5 px-2.5 md:px-3 text-[12px] md:text-[13px] font-medium text-[#374151] cursor-pointer font-['Inter',_Arial,_Helvetica,_sans-serif] leading-5 transition-colors hover:bg-gray-50"
                     >
                       {course.title}
                     </button>
@@ -368,12 +368,12 @@ export default function SearchPage() {
                 <Sparkles className="w-4 h-4 text-[#7C3AED]" />
                 <span className="font-semibold text-sm text-[#111827]">Best ROI Specializations</span>
               </div>
-              <div className="flex flex-wrap gap-2.5">
+              <div className="flex flex-wrap gap-2 md:gap-2.5">
                 {IN_DEMAND_SPECIALIZATIONS.map((spec) => (
                     <button
                       key={spec}
                       onClick={() => handleSearch(spec)}
-                      className="border border-[#D1D5DB] rounded-lg bg-[#F9FAFB] py-1.5 px-3 text-[13px] font-medium text-[#374151] cursor-pointer font-['Inter',_Arial,_Helvetica,_sans-serif] leading-5"
+                      className="border border-[#D1D5DB] rounded-lg bg-[#F9FAFB] py-1.5 px-2.5 md:px-3 text-[12px] md:text-[13px] font-medium text-[#374151] cursor-pointer font-['Inter',_Arial,_Helvetica,_sans-serif] leading-5 transition-colors hover:bg-gray-50"
                     >
                     {spec}
                   </button>
@@ -386,18 +386,18 @@ export default function SearchPage() {
         {/* ── end outer wrapper ── */}
 
         {/* ── Browse categories ── */}
-        <div className="flex flex-col items-center gap-3 mt-6">
+        <div className="flex flex-col items-center gap-4 mt-8 md:mt-10 mb-10">
           <p className="font-normal text-[13px] text-[#6B7280] m-0">Or explore by category</p>
-          <div className="flex gap-2.5">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0">
             <button
               onClick={() => router.push("/explore-programs")}
-              className="py-2 px-6 rounded-lg border-[1.5px] border-[#7C3AED] bg-white text-[#7C3AED] font-semibold text-[13px] leading-5 cursor-pointer font-['Inter',_Arial,_Helvetica,_sans-serif]"
+              className="py-2.5 px-6 rounded-lg border-[1.5px] border-[#7C3AED] bg-white text-[#7C3AED] font-semibold text-[13px] leading-5 cursor-pointer font-['Inter',_Arial,_Helvetica,_sans-serif] hover:bg-[#F5F3FF] transition-colors w-full sm:w-auto"
             >
               Browse Programs
             </button>
             <button
               onClick={() => router.push("/universities")}
-              className="py-2 px-6 rounded-lg border-[1.5px] border-[#7C3AED] bg-white text-[#7C3AED] font-semibold text-[13px] leading-5 cursor-pointer font-['Inter',_Arial,_Helvetica,_sans-serif]"
+              className="py-2.5 px-6 rounded-lg border-[1.5px] border-[#7C3AED] bg-white text-[#7C3AED] font-semibold text-[13px] leading-5 cursor-pointer font-['Inter',_Arial,_Helvetica,_sans-serif] hover:bg-[#F5F3FF] transition-colors w-full sm:w-auto"
             >
               Browse Universities
             </button>

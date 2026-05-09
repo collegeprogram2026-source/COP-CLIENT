@@ -133,7 +133,7 @@ export default function Section8({ section }: Section8Props) {
 
   return (
     <section className="w-full bg-white py-[clamp(32px,6vw,64px)]">
-      <div className="max-w-[1280px] mx-auto px-6">
+      <div className="max-w-[1280px] mx-auto px-4 md:px-6">
 
         {/* Pill */}
         <div className="flex justify-center mb-5">
@@ -161,7 +161,7 @@ export default function Section8({ section }: Section8Props) {
         {/* Carousel: Cards with overlaid arrows */}
         <div className="relative">
           {/* Mobile: focus-center slider */}
-          <FocusCenterSlider className="mb-8" interval={5000}>
+          <FocusCenterSlider className="mt-8 mb-8" interval={5000} cardWidth={260}>
             {cards.map((card, idx) => (
               <div
                 key={`m8-${idx}`}
