@@ -26,7 +26,7 @@ export default function StatsBox({
   const sRating = splitStat(rating);
   return (
     <div
-      className="w-full bg-gradient-to-r from-[#EAD8FF] via-[#E3CEFF] to-[#EAD8FF] py-[clamp(20px,4vw,36px)] px-[clamp(8px,2vw,16px)]"
+      className="mt-5 md:mt-0 w-full bg-gradient-to-r from-[#EAD8FF] via-[#E3CEFF] to-[#EAD8FF] py-[clamp(20px,4vw,36px)] px-[clamp(8px,2vw,16px)]"
     >
       {/* Single row — all 4 stats side by side */}
       <div className="flex flex-row items-center justify-between gap-1">

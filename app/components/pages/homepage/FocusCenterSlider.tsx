@@ -170,32 +170,21 @@ export default function FocusCenterSlider({
       </div>
 
       {/* Dot indicators */}
-      <div className="flex justify-center" style={{ marginTop: 12 }}>
+      <div className="flex justify-center items-center" style={{ marginTop: 12 }}>
         {children.map((_, idx) => (
           <button
             key={idx}
             aria-label={`Slide ${idx + 1}`}
             onClick={() => { setAnimated(true); setOffset(idx + 1); }}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 44,
-              height: 44,
-              background: "none",
-              border: "none",
-              padding: 0,
-              cursor: "pointer",
-            }}
+            className="p-1.5 bg-transparent border-none cursor-pointer outline-none flex items-center justify-center"
+            style={{ WebkitTapHighlightColor: "transparent" }}
           >
             <span
+              className="block rounded-full transition-all duration-300"
               style={{
-                display: "block",
-                width: idx === realIndex ? 20 : 8,
+                width: idx === realIndex ? 24 : 8,
                 height: 8,
-                borderRadius: 99,
-                background: idx === realIndex ? "#7C3AED" : "#D1D5DB",
-                transition: "all 0.3s ease",
+                background: idx === realIndex ? "#4F39F6" : "#D1D5DB",
               }}
             />
           </button>

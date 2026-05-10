@@ -198,7 +198,7 @@ export default function Hero({ section }: HeroProps) {
               </div>
 
               {/* Stats row */}
-              <div className="mt-4 sm:mt-6 lg:mt-10 xl:mt-12 flex flex-row gap-2 sm:gap-8 lg:gap-10 items-start justify-center lg:justify-start">
+              <div className="mt-10 sm:mt-10 lg:mt-10 xl:mt-12 flex flex-row gap-2 sm:gap-8 lg:gap-10 items-start justify-center lg:justify-start">
                 {[
                   { icon: '/Container (47).webp', label: statUniversities, sub: 'Partnerships' },
                   { icon: '/Container (48).webp', label: statPrograms, sub: 'Available' },
@@ -258,7 +258,7 @@ export default function Hero({ section }: HeroProps) {
 
               {/* Trusted badge */}
               {trustedText && (
-                <div className="mt-6 lg:mt-8 text-[clamp(13px,1.5vw,15px)] text-[#6A7282] font-medium leading-[1.5]">
+                <div className="mt-10 lg:mt-8 text-[clamp(13px,1.5vw,15px)] text-[#6A7282] font-medium leading-[1.5]">
                   {trustedText}
                 </div>
               )}
