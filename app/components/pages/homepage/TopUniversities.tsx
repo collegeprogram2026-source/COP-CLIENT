@@ -110,7 +110,7 @@ export default async function TopUniversities({ section }: TopUniversitiesProps)
 
   return (
     <section className="w-full bg-white">
-      <div className="w-full px-0 py-2 lg:py-3">
+      <div className="w-full px-0 lg:py-3">
         {/* Container with 2 Boxes - Full Width (removed extra separator and outer shadow) */}
         <div className="grid grid-cols-1 gap-0 overflow-hidden">
           <UpperWhiteBox title={title} universityLogos={universityLogos} />

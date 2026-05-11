@@ -171,24 +171,42 @@ export default function FocusCenterSlider({
 
       {/* Dot indicators */}
       <div className="flex justify-center items-center" style={{ marginTop: 12 }}>
-        {children.map((_, idx) => (
-          <button
-            key={idx}
-            aria-label={`Slide ${idx + 1}`}
-            onClick={() => { setAnimated(true); setOffset(idx + 1); }}
-            className="p-1.5 bg-transparent border-none cursor-pointer outline-none flex items-center justify-center"
-            style={{ WebkitTapHighlightColor: "transparent" }}
-          >
-            <span
-              className="block rounded-full transition-all duration-300"
-              style={{
-                width: idx === realIndex ? 24 : 8,
-                height: 8,
-                background: idx === realIndex ? "#4F39F6" : "#D1D5DB",
-              }}
-            />
-          </button>
-        ))}
+        {(() => {
+          const maxDots = 4;
+          const numDots = Math.min(count, maxDots);
+          if (numDots <= 1) return null;
+
+          return Array.from({ length: numDots }).map((_, dotIdx) => {
+            const isActive = numDots === count
+              ? dotIdx === realIndex
+              : Math.round((realIndex / (count - 1)) * (numDots - 1)) === dotIdx;
+
+            return (
+              <button
+                key={dotIdx}
+                aria-label={`Page ${dotIdx + 1}`}
+                onClick={() => {
+                  setAnimated(true);
+                  const targetIndex = numDots === count
+                    ? dotIdx
+                    : Math.round((dotIdx / (numDots - 1)) * (count - 1));
+                  setOffset(targetIndex + 1);
+                }}
+                className="p-1.5 bg-transparent border-none cursor-pointer outline-none flex items-center justify-center"
+                style={{ WebkitTapHighlightColor: "transparent" }}
+              >
+                <span
+                  className="block rounded-full transition-all duration-300"
+                  style={{
+                    width: isActive ? 24 : 8,
+                    height: 8,
+                    background: isActive ? "#4F39F6" : "#D1D5DB",
+                  }}
+                />
+              </button>
+            );
+          });
+        })()}
       </div>
     </div>
   );
