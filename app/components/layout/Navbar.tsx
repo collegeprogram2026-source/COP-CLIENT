@@ -330,7 +330,8 @@ export default function Navbar() {
   const isHomepage = pathname === "/";
 
   return (
-    <header className="sticky top-0 z-50">
+    <>
+      <header className="sticky top-0 z-50">
       <style>{`
         .promo-wrapper{overflow:hidden;width:100%;}
         .promo-track{display:flex;align-items:center;gap:2.5rem;width:max-content}
@@ -579,6 +580,7 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+    </header>
 
       {/* Mobile Drawer */}
       <div
@@ -762,6 +764,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-    </header>
+    </>
   );
 }

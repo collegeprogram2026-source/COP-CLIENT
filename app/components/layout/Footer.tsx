@@ -347,7 +347,7 @@ export default function Footer() {
               Our Policy
             </Link>
           </p>
-          <p className="text-gray-300 text-[11px] leading-relaxed mb-10 px-4 md:px-10">
+          <p className="text-gray-300 text-[11px] leading-relaxed mb-10 px-4 md:px-10 text-justify md:text-center">
             CollegeProgram aims to provide unbiased and precise information to aspirants, along with comparative guidance on universities and their programs. The content on the website, including rankings, is for general informational and educational purposes only and should not be considered a substitute for official information provided by academic partners. While we make every effort to keep the information accurate and up to date, CollegeProgram does not guarantee the completeness or reliability of the content and is not responsible for any errors, omissions, or results stemming from its use.
           </p>
 

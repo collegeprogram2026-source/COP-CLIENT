@@ -104,7 +104,7 @@ export default function Hero({ section }: HeroProps) {
     <section className="relative w-full bg-white text-gray-900 overflow-visible">
       {/* Responsive container with proper scaling */}
       {/* pt accounts for sticky promo bar (~36px) + fixed navbar pill (~92px) minus the outer pt-10 (40px) = ~88px needed */}
-      <div className="w-full pt-5 lg:pt-[32px] pb-6">
+      <div className="w-full pt-5 lg:pt-[32px] pb-4 lg:pb-6">
         <div className="max-w-7xl mx-auto">
           <div className="relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12 xl:gap-16">
             {/* Left column: text */}
@@ -264,7 +264,7 @@ export default function Hero({ section }: HeroProps) {
               )}
 
               {/* 4-badge static row */}
-              <div className="mt-6 lg:mt-8 flex items-center gap-2 lg:gap-4 w-full justify-center lg:justify-start">
+              <div className="mt-4 lg:mt-8 flex items-center gap-2 lg:gap-4 w-full justify-center lg:justify-start">
                 {[
                   { src: '/Stats.webp', alt: 'Trusted programs badge' },
                   { src: '/Container (43).webp', alt: 'Top universities badge' },

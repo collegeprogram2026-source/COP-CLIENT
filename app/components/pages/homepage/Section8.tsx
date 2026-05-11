@@ -290,19 +290,34 @@ export default function Section8({ section }: Section8Props) {
         {/* Pagination Dots — desktop only (mobile uses FocusCenterSlider dots) */}
         {totalDots > 1 && (
           <div className="hidden md:flex justify-center items-center gap-1.5 mt-6">
-            {Array.from({ length: totalDots }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveSlide(i)}
-                aria-label={`Slide ${i + 1}`}
-                className="hover:opacity-70 transition-[width,background] duration-200 rounded-full border-none cursor-pointer p-0"
-                style={{
-                  width: i === activeSlide ? 24 : 8,
-                  height: 8,
-                  background: i === activeSlide ? "#4F39F6" : "#D1D5DB",
-                }}
-              />
-            ))}
+            {(() => {
+              const maxDots = 4;
+              const numDots = Math.min(totalDots, maxDots);
+              return Array.from({ length: numDots }).map((_, dotIdx) => {
+                const isActive = numDots === totalDots
+                  ? dotIdx === activeSlide
+                  : Math.round((activeSlide / (totalDots - 1)) * (numDots - 1)) === dotIdx;
+
+                return (
+                  <button
+                    key={dotIdx}
+                    onClick={() => {
+                      const targetSlide = numDots === totalDots
+                        ? dotIdx
+                        : Math.round((dotIdx / (numDots - 1)) * (totalDots - 1));
+                      setActiveSlide(targetSlide);
+                    }}
+                    aria-label={`Slide ${dotIdx + 1}`}
+                    className="hover:opacity-70 transition-[width,background] duration-200 rounded-full border-none cursor-pointer p-0"
+                    style={{
+                      width: isActive ? 24 : 8,
+                      height: 8,
+                      background: isActive ? "#4F39F6" : "#D1D5DB",
+                    }}
+                  />
+                );
+              });
+            })()}
           </div>
         )}
 

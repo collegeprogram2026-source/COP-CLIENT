@@ -44,7 +44,7 @@ export default function UpperWhiteBox({
 
   return (
     <div
-      className="w-full bg-white p-[clamp(1.25rem,3.5vw,2.5rem)_clamp(0.75rem,3vw,1.5rem)] min-h-[160px] flex flex-col items-center justify-start rounded-t-xl overflow-hidden"
+      className="w-full bg-white p-[clamp(1.25rem,3.5vw,2.5rem)_clamp(0.75rem,3vw,1.5rem)] lg:min-h-[160px] flex flex-col items-center justify-start rounded-t-xl overflow-hidden"
     >
       {title && (
         <h2
